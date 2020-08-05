@@ -47,13 +47,37 @@ const userSchema = Schema({
 		},
 		required: [true, "Password Required"],
 	},
-	todo: [
-		{
-			type: Schema.Types.ObjectId,
-			default: null,
-			ref: "todo",
-		},
-	],
+	skills:[{
+		type:String
+	}],
+	hourlyRate:{
+		type:Number
+	},
+	isClient:{
+		type:Boolean,
+		default:false
+	},
+	isFreelancer:{
+		type:Boolean,
+		default:false
+	},
+	companyName:{
+		type:String
+	},
+	jobApplied:[{
+		type:Schema.Types.ObjectId,
+		ref:"jobs",
+		default:null
+	}],
+	jobPosted:[{
+		type:Schema.Types.ObjectId,
+		ref:"jobs",
+		default:null,
+	}],
+	profileOverview:{
+		type:String
+	}
+	
 });
 
 userSchema.statics.findByEmailAndPassword = async function(email, password) {
