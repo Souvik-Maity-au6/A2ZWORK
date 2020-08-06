@@ -19,10 +19,10 @@
 /front-end/.env.development.local
 /front-end/.env.test.local
 /front-end/.env.production.local
-
 /front-end/npm-debug.log*
 /front-end/yarn-debug.log*
 /front-end/yarn-error.log*
+/front-end/src/config.js
 
 # dependencies(back-end) 
 
