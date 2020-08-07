@@ -47,6 +47,10 @@ const userSchema = Schema({
 		},
 		required: [true, "Password Required"],
 	},
+	isAuthorized:{
+		type:Boolean,
+		default:false
+	},
 	skills:[{
 		type:String
 	}],
@@ -100,12 +104,12 @@ userSchema.statics.findByEmailAndPassword = async function(email, password) {
 
 userSchema.methods.generateToken = async function() {
 	this.token = await sign({ id: this._id }, process.env.PRIVATE_KEY, {
-		expiresIn: 60 * 1,
+		expiresIn: 60*10,
 	});
 };
 userSchema.methods.generateRefreshToken = async function() {
 	this.refreshToken = await sign({ id: this._id }, process.env.PRIVATE_KEY, {
-		expiresIn: 60 * 1,
+		expiresIn: 60*20,
 	});
 };
 

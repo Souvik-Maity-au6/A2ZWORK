@@ -5,7 +5,8 @@ const {
 	logout,
 	checkAuthentication,
 	createClientAccount,
-	createFreelancerAccount
+	createFreelancerAccount,
+	verify,
 } = require("../../controllers/user/userController");
 // const {
 // 	authentication,
@@ -20,8 +21,10 @@ const router = Router();
 router.post("/userRegistration", register);
 router.post("/userLogin", login);
 router.delete("/userLogout", authentication, logout);
-// router.get("/checkAuthentication", authentication, checkAuthentication);
+router.get("/checkAuthentication", authentication, checkAuthentication);
 router.post("/createClientAccount",authentication,createClientAccount)
 router.post("/createFreelancerAccount",authentication,createFreelancerAccount)
+router.get("/verify",verify);
+// router.get("/resendEmail",resendEmail);
 
 module.exports = router;
