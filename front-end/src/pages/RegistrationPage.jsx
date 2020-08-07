@@ -9,25 +9,40 @@ import linkedin_icon from '../img/linkedin_icon.svg';
 import '../styles/LoginPage.css'
 
 class RegistrationPage extends Component {
+    state = {
+        client: false,
+        freelancer: false,
+    }
+
+    handleAcountTypeClient = () => {
+        this.setState({ client: true, freelancer: false })
+    }
+    handleAcountTypeFreelancer = () => {
+        this.setState({ client: false, freelancer: true })
+    }
     render() {
         return (
             <div className="login-container">
                 <div className="login-form-container">
                     <h4 className="my-4">Get your free account</h4>
+                    <div className="account-type">
+                        <button onClick={this.handleAcountTypeClient} className={`account-type-button-1 ${this.state.client && 'active'}`} >Hire for a project</button>
+                        <button onClick={this.handleAcountTypeFreelancer} className={`account-type-button-2 ${this.state.freelancer && 'active'}`}>Work as a freelancer</button>
+                    </div>
                     <form>
                         <div className="login-input-container">
                             <i className="fa fa-user user-icon" aria-hidden="true"></i>
-                            <input className="user-input-field" type="text" name="name" placeholder="User name" />
+                            <input className="user-input-field" type="text" name="name" placeholder="Name" required />
                         </div>
                         <div className="login-input-container">
                             <i className="fa fa-envelope email-icon" aria-hidden="true"></i>
-                            <input className="email-input-field" type="email" name="email" placeholder="Email" />
+                            <input className="email-input-field" type="email" name="email" placeholder="Email" required />
                         </div>
                         <div className="login-input-container">
                             <i className="fa fa-key password-icon" aria-hidden="true"></i>
-                            <input className="password-input-field" type="password" name="password" placeholder="Password" />
+                            <input className="password-input-field" type="password" name="password" placeholder="Password" required />
                         </div>
-                        <input className="login-button btn-warning" type="submit" value="Sign up" />
+                        <input className="login-button btn-warning" type="submit" value="Create My Acount" />
                     </form>
                     <div className="login-border">
                         <div className="login-border-line-1"></div>

@@ -1,28 +1,57 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import Swal from 'sweetalert2'
 import FacebookLogin from 'react-facebook-login'
 import GoogleLogin from 'react-google-login';
 import GitHubLogin from 'react-github-login';
 import LinkedIn from 'react-linkedin-login-oauth2';
 import google_icon from '../img/google_icon.svg'
 import linkedin_icon from '../img/linkedin_icon.svg';
-
+import { userLogin } from '../redux/actions/userAction'
+import { mapToPropsUser } from '../redux/mapStateToProps'
 import '../styles/LoginPage.css'
 
+const initialState = {
+    email: "",
+    password: "",
+}
+
 class LoginPage extends Component {
+    state = initialState
+    handleChangeLogin = (event) => {
+        this.setState({ [event.target.name]: event.target.value })
+    }
+    handleSubmitLogin = async (event) => {
+        event.preventDefault()
+        try {
+            const response = await this.props.userLogin(this.state)
+            Swal.fire({
+                icon: 'success',
+                title: `${response}`,
+            })
+        } catch (err) {
+            console.log(err)
+            Swal.fire({
+                icon: 'error',
+                title: `${err}`,
+            })
+        }
+        this.setState(initialState)
+    }
     render() {
         return (
             <div className="login-container">
                 <div className="login-form-container">
                     <h4 className="my-4">Log in and get to work</h4>
-                    <form>
+                    <form onSubmit={this.handleSubmitLogin}>
                         <div className="login-input-container">
                             <i className="fa fa-envelope email-icon" aria-hidden="true"></i>
-                            <input className="email-input-field" type="email" name="email" placeholder="Email" />
+                            <input onChange={this.handleChangeLogin} className="email-input-field" type="email" name="email" placeholder="Email" value={this.state.email} required />
                         </div>
                         <div className="login-input-container-psw">
                             <i className="fa fa-key password-icon" aria-hidden="true"></i>
-                            <input className="password-input-field" type="password" name="password" placeholder="Password" />
+                            <input onChange={this.handleChangeLogin} className="password-input-field" type="password" name="password" placeholder="Password" value={this.state.password} required />
                         </div>
                         <div className="error-message">
                             <Link to="/forgotPassword"><p>Forgot password?</p></Link>
@@ -85,4 +114,4 @@ class LoginPage extends Component {
     }
 }
 
-export default LoginPage
+export default connect(mapToPropsUser, { userLogin })(LoginPage)

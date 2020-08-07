@@ -27,21 +27,18 @@ module.exports = {
 			user[0].generateToken();
 			user[0].generateRefreshToken();
 			await user[0].save({ validateBeforeSave: false });
-			if(user[0].isClient){
+			if (user[0].isClient) {
 				return res.send({
-
 					msg: `Welcome ${user[0].userName}`,
 					userId: user[0].id,
 					userName: user[0].userName,
 					userEmail: user[0].userEmail,
 					accessToken: user[0].token,
 					refreshToken: user[0].refreshToken,
-					companyName:user[0].companyName,
-					isClient:user[0].isClient,
-					isFreelancer:user[0].isFreelancer
-
-				})
-
+					companyName: user[0].companyName,
+					isClient: user[0].isClient,
+					isFreelancer: user[0].isFreelancer,
+				});
 			}
 			return res.status(200).send({
 				msg: `Welcome ${user[0].userName}`,
@@ -50,11 +47,11 @@ module.exports = {
 				userEmail: user[0].userEmail,
 				accessToken: user[0].token,
 				refreshToken: user[0].refreshToken,
-				isClient:user[0].isClient,
-				isFreelancer:user[0].isFreelancer
+				isClient: user[0].isClient,
+				isFreelancer: user[0].isFreelancer,
 			});
 		} catch (err) {
-			return res.status(404).send({ msg: err.message });
+			return res.status(404).send({ msg: err });
 		}
 	},
 
@@ -86,42 +83,47 @@ module.exports = {
 
 	//----------- Creating Client Account ----------//
 
-	async createClientAccount(req,res){
-		const checkUserClient = await userModel.findOne({_id:req.userId})
+	async createClientAccount(req, res) {
+		const checkUserClient = await userModel.findOne({ _id: req.userId });
 
-		if (checkUserClient.isClient){
+		if (checkUserClient.isClient) {
 			return res.send({
-				msg:"You already have a client account !!!"
-			})
-		}	
-		const updatedUser = await userModel.findByIdAndUpdate({_id: req.userId},{...req.body},{new: true});
-		console.log(updatedUser)
-		
-	
+				msg: "You already have a client account !!!",
+			});
+		}
+		const updatedUser = await userModel.findByIdAndUpdate(
+			{ _id: req.userId },
+			{ ...req.body },
+			{ new: true },
+		);
+		console.log(updatedUser);
+
 		return res.send({
-			user : updatedUser
-		})
+			user: updatedUser,
+		});
 	},
 
 	//----------- Creating Freelancer Account ----------//
 
-	async createFreelancerAccount(req,res){
-		const checkUserClient = await userModel.findOne({_id:req.userId})
+	async createFreelancerAccount(req, res) {
+		const checkUserClient = await userModel.findOne({ _id: req.userId });
 		// console.log()
 
-		if (checkUserClient.isFreelancer){
+		if (checkUserClient.isFreelancer) {
 			return res.send({
-				msg:"You already have a Freelancer account !!!"
-			})
-		}	
-		console.log("he")
-		const updatedUser = await userModel.findByIdAndUpdate({_id: req.userId},{...req.body},{new: true});
-		console.log(updatedUser)
-		
-	
-		return res.send({
-			user : updatedUser
-		})
-	}
+				msg: "You already have a Freelancer account !!!",
+			});
+		}
+		console.log("he");
+		const updatedUser = await userModel.findByIdAndUpdate(
+			{ _id: req.userId },
+			{ ...req.body },
+			{ new: true },
+		);
+		console.log(updatedUser);
 
+		return res.send({
+			user: updatedUser,
+		});
+	},
 };

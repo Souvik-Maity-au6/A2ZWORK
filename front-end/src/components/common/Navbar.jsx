@@ -19,7 +19,7 @@ const Navbar = () => {
                         </li>
                     </ul>
                     <form className="form-inline mr-auto nav-search-form">
-                        <input className="mr-sm-2 nav-search-input" type="search" placeholder="Search for jobs or freelancers..." />
+                        <input className="mr-sm-2 nav-search-input" type="search" placeholder="Search for jobs or freelancers..." required />
                         <input className="btn btn-success nav-search-button" type="submit" value="Search" />
                     </form>
                     <ul className="navbar-nav">

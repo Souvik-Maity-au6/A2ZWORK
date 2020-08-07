@@ -147,4 +147,36 @@
     background-color: #fff200;
     margin-bottom: 10px;
 }
+.account-type {
+    margin-bottom: 15px;
+}
+
+.account-type-button-1 {
+    margin-right: 20px;
+    width: 160px;
+    padding: 9px;
+    outline: none;
+    border-radius: 8px;
+    background-color: azure;
+}
+
+.account-type-button-2 {
+    margin-left: 20px;
+    width: 175px;
+    padding: 9px;
+    outline: none;
+    border-radius: 8px;
+    background-color: azure;
+}
+
+.account-type-button-1:hover {
+    background-color: #fff200 
+}
+.active {
+    background-color: #fff200 ;
+    border: none;
+}
+.account-type-button-2:hover {
+    background-color: #fff200 
+}
 

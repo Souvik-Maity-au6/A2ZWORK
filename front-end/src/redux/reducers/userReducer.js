@@ -4,12 +4,14 @@ import {
 	LOGOUT_USER,
 	EXPIRE_USER_TOKEN,
 	UPDATE_USER_TOKEN,
+	SET_ERROR_MESSAGE,
 } from "../actionTypes";
 
 const initialState = {
 	user: JSON.parse(localStorage.getItem("user")) || null,
 	isAuthenticating: false,
 	isRouteProtected: false,
+	errorMessage: null,
 };
 
 const userReducer = (state = initialState, action) => {
@@ -32,6 +34,8 @@ const userReducer = (state = initialState, action) => {
 			const updateUserJson = JSON.stringify(payload);
 			localStorage.setItem("user", updateUserJson);
 			return { ...state, user: payload };
+		case SET_ERROR_MESSAGE:
+			return { ...state, errorMessage: payload };
 		default:
 			return state;
 	}

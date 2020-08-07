@@ -24,19 +24,24 @@ export const userRegistration = newUser => async dispatch => {
 };
 
 export const userLogin = currentUser => async dispatch => {
-	try {
-		dispatch({ type: TOGGLE_AUTHENTICATING });
-		const response = await axios.post(`${keys.BASE_URL_LOCAL}/userLogin`, {
-			userEmail: currentUser.userEmail,
-			password: currentUser.password,
-		});
-		// console.log(response.data);
-		dispatch({ type: SET_USER, payload: response.data });
-	} catch (err) {
-		console.error(err);
-	} finally {
-		dispatch({ type: TOGGLE_AUTHENTICATING });
-	}
+	return new Promise(async (resolve, reject) => {
+		try {
+			console.log(currentUser);
+			dispatch({ type: TOGGLE_AUTHENTICATING });
+			const response = await axios.post(`${keys.BASE_URL_LOCAL}/userLogin`, {
+				userEmail: currentUser.email,
+				password: currentUser.password,
+			});
+			console.log(response.data);
+			dispatch({ type: SET_USER, payload: response.data });
+			resolve(response.data.msg);
+		} catch (err) {
+			console.error(err.response.data);
+			reject(err.response.data.msg);
+		} finally {
+			dispatch({ type: TOGGLE_AUTHENTICATING });
+		}
+	});
 };
 
 export const userLogout = () => async (dispatch, getState) => {
@@ -115,7 +120,7 @@ export const checkAuthentication = async () => {
 				},
 			},
 		);
-		console.log("xx", response.data);
+		// console.log("xx", response.data);
 		return response.data;
 	} catch (err) {
 		console.error(err.response.data);
