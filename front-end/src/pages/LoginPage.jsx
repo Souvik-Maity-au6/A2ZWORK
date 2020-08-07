@@ -39,6 +39,9 @@ class LoginPage extends Component {
         }
         this.setState(initialState)
     }
+    handleClickSignup = () => {
+        this.props.history.push("/register")
+    }
     render() {
         return (
             <div className="login-container">
@@ -106,7 +109,7 @@ class LoginPage extends Component {
                         <div className="login-border-line-2"></div>
                     </div>
                     <div className="signup-section">
-                        <button className="login-signup-button btn-warning">Sign Up</button>
+                        <button onClick={this.handleClickSignup} className="login-signup-button btn-warning">Sign Up</button>
                     </div>
                 </div>
             </div>

@@ -8,17 +8,33 @@ import linkedin_icon from '../img/linkedin_icon.svg';
 
 import '../styles/LoginPage.css'
 
-class RegistrationPage extends Component {
-    state = {
-        client: false,
-        freelancer: false,
-    }
+const initialState = {
+    client: false,
+    freelancer: false,
+    name: "",
+    email: "",
+    password: "",
+}
 
+
+class RegistrationPage extends Component {
+    state = initialState
+    handleChangeRegistration = (event) => {
+        this.setState({ [event.target.name]: event.target.value })
+    }
+    handleSubmitRegistration = (event) => {
+        event.preventDefault()
+        console.log(this.state)
+        this.setState(initialState)
+    }
     handleAcountTypeClient = () => {
         this.setState({ client: true, freelancer: false })
     }
     handleAcountTypeFreelancer = () => {
         this.setState({ client: false, freelancer: true })
+    }
+    handleClickLogin = () => {
+        this.props.history.push('/login')
     }
     render() {
         return (
@@ -29,18 +45,18 @@ class RegistrationPage extends Component {
                         <button onClick={this.handleAcountTypeClient} className={`account-type-button-1 ${this.state.client && 'active'}`} >Hire for a project</button>
                         <button onClick={this.handleAcountTypeFreelancer} className={`account-type-button-2 ${this.state.freelancer && 'active'}`}>Work as a freelancer</button>
                     </div>
-                    <form>
+                    <form onSubmit={this.handleSubmitRegistration}>
                         <div className="login-input-container">
                             <i className="fa fa-user user-icon" aria-hidden="true"></i>
-                            <input className="user-input-field" type="text" name="name" placeholder="Name" required />
+                            <input onChange={this.handleChangeRegistration} className="user-input-field" type="text" name="name" placeholder="Name" value={this.state.name} required />
                         </div>
                         <div className="login-input-container">
                             <i className="fa fa-envelope email-icon" aria-hidden="true"></i>
-                            <input className="email-input-field" type="email" name="email" placeholder="Email" required />
+                            <input onChange={this.handleChangeRegistration} className="email-input-field" type="email" name="email" placeholder="Email" value={this.state.email} required />
                         </div>
                         <div className="login-input-container">
                             <i className="fa fa-key password-icon" aria-hidden="true"></i>
-                            <input className="password-input-field" type="password" name="password" placeholder="Password" required />
+                            <input onChange={this.handleChangeRegistration} className="password-input-field" type="password" name="password" placeholder="Password" value={this.state.password} required />
                         </div>
                         <input className="login-button btn-warning" type="submit" value="Create My Acount" />
                     </form>
@@ -74,8 +90,6 @@ class RegistrationPage extends Component {
                             className="github-login-button"
                             buttonText="Continue with GitHub"
                         />
-
-
                         <LinkedIn
                             clientId="81lx5we2omq9xh"
                             onFailure="{this.handleFailure}"
@@ -92,7 +106,7 @@ class RegistrationPage extends Component {
                         <div className="signup-border-line-2"></div>
                     </div>
                     <div className="signup-section">
-                        <button className="login-signup-button btn-warning">Log in</button>
+                        <button onClick={this.handleClickLogin} className="login-signup-button btn-warning">Log in</button>
                     </div>
                 </div>
             </div>

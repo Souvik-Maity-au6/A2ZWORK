@@ -12,16 +12,18 @@ import AboutPage from "./pages/AboutPage";
 import LoginPage from "./pages/LoginPage";
 import RegistrationPage from "./pages/RegistrationPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import changePasswordPage from "./pages/changePasswordPage";
 
 function App() {
 	return (
 		<div className="App">
 			<Navbar />
 			<Switch>
-				<Route path="/about" component={AboutPage} />
-				<Route path="/register" component={RegistrationPage} />
-				<Route path="/login" component={LoginPage} />
-				<Route path="/forgotPassword" component={ForgotPasswordPage} />
+				<Route exact path="/about" component={AboutPage} />
+				<Route exact path="/register" component={RegistrationPage} />
+				<Route exact path="/login" component={LoginPage} />
+				<Route exact path="/forgotPassword" component={ForgotPasswordPage} />
+				<Route exact path="/changePassword" component={changePasswordPage} />
 				<Route path="/" component={HomePage} />
 				<Redirect to="/" />
 			</Switch>
