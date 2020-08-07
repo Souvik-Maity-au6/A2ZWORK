@@ -1,20 +1,42 @@
 const userModel = require("../../models/user/User");
+const path = require("path")
+const {verify} = require("jsonwebtoken")
 const mail = require("../../sendMail");
 const ObjectId = require("mongodb").ObjectID;
+const {sendVerifyDesign} = require("../../static/verify.js");
+const { setTimeout } = require("timers");
+const { sign } = require("crypto");
 
 module.exports = {
   // --------- User Registration ---------------- //
 
   async register(req, res) {
     try {
+      console.log(req.body);
+      if (!(req.body.isClient ^ req.body.isFreelancer)) {
+        return res.status(400).send({
+          msg: "Please select your account type !!!",
+        });
+      }
       const newUser = new userModel({ ...req.body });
       const user = await newUser.save();
+      user.generateToken()
+      await user.save({validateBeforeSave:false})
       console.log("user register=", user);
+      // let link = `http://localhost:5000/verify?token=${user.token}`
+      const verifyHtml = sendVerifyDesign(`http://localhost:5000/verify?token=${user.token}`, user.userName)
       // let html= `<a href="${process.env.USER_VERIFY_LINK}verify?token=${user.token}">Verify</a>`;
-      let html = `<a href="http://localhost:5000/verify?id=${user._id}">Verify</a>`;
-      await mail.mailConfig(html, newUser);
+      const mailConfig={
+        html:verifyHtml,
+        newUser,
+        subject:"Verify your email address to complete registration",
+      }
+      // let html = `<a href="http://localhost:5000/verify?token=${user.token}">Verify</a>`;
+      await mail.mailConfig(mailConfig);
       return res.status(200).send({
-        msg: "User registered sucessfully",
+        msg:
+          "Account created sucessfully, please verify your email before login !!!",
+        warning: "Didnot get email ? please register again !!!",
       });
     } catch (err) {
       console.log(err);
@@ -156,8 +178,8 @@ module.exports = {
     console.log(req.query);
     const { token } = req.query;
     try {
-      // verify(token,process.env.PRIVATE_KEY);
-      const user = await userModel.findById(ObjectId(req.query.id));
+      verify(token,process.env.PRIVATE_KEY);
+      const user = await userModel.findOne({token});
       console.log(user);
       if (user) {
         user.isAuthorized = true;
@@ -166,14 +188,92 @@ module.exports = {
         // console.log(user);
         await user.save({ validateBeforeSave: false });
 
-        return res.send({
-          msg: "You have been Suceesfully Verified you can login now ",
-        });
+        // return res.send({
+        //   // msg: "You have been Suceesfully Verified you can login now ",
+        // });
+        return res.send(`<h1 style="text-align:center">You have been sucessfully verified</h1> <script>setTimeout(()=>{
+          window.location.href="http://localhost:5000/login"
+        },4000)</script>`)
       }
     } catch (err) {
-      console.log("Hello");
-      //   return res.redirect(`/resendEmail?token=${token}`);
-      // return res.send({msg:"Your token email token is expired please login to generate new token"});
+      console.log(err.message);
+        return res.redirect(`/resendEmail?token=${token}`);
     }
   },
+  async sendForgotPasswordEmail(req, res) {
+    const { userEmail} = req.body;
+    if (!userEmail) {
+      return res.send({
+        msg:
+          "please provide your email !!!",
+      });
+    }
+    const user = await userModel.find({ userEmail: userEmail });
+    const forgotPasswordToken  = await sign( {id:user._id}, process.env.PRIVATE_KEY,{expiresIn:"4h"})
+    
+    let html = `<a href="http://localhost:5000/changePassword/${user[0].token/forgotPasswordToken}">Click Here to change the password</a>`;
+        const email = await mail.mailConfig(html, user[0]);
+        return res
+          .status(200)
+          .send({
+            msg:
+              "Change Password link has been send . Please Check your Email to change password",
+          });
+      },
+
+      async changePassword(req,res){
+
+        try{
+          
+              const {newPassword,confirmPassword}= req.body
+              const {token} = req.params
+              // verify(token,process.env.PRIVATE_KEY)
+              if(!newPassword){
+                    res.send({
+                    msg:"New Password field cannot be empty !!!"
+                  })
+              }
+              else{ 
+                res.send({
+                  msg:"New Password field cannot be empty !!!"
+                })
+              }
+      
+              if ( newPassword !== confirmPassword ){
+                return res.send({
+                    msg: "Confirm password donot match the new Password !!!"
+                })
+              }
+              const user =  await userModel.findOne({token})
+              user.password= newPassword
+              const changedUserPassword = await newUserPassword.save()
+      
+              if(changedUserPassword){
+                return res.send({
+                  msg:"Password has been changed sucessfully !!!"
+                })
+              }
+
+        }
+        catch(err){
+            return res.send({
+              msg:err.message
+            })
+        }
+
+      },
+      async resendEmail(req,res){
+
+        console.log("token::",req.query.token)
+        const {token} = req.query
+        const user = await userModel.findOne({token});
+        console.log(user);
+        // console.log("Hello Iam going to resend Email");
+        user.generateToken();
+        const updatedUser = await user.save({validateBeforeSave:false});
+        let html= `<a href="http://localhost:5000/verify?token=${updatedUser.token}">Verify</a>`;
+        await mail.mailConfig(html,user);
+        return  res.send("Your token was expired so we send another conformation email so please check your inbox");
+    },
+ 
 };

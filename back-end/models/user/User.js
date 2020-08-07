@@ -14,15 +14,12 @@ const userSchema = Schema({
 	userName: {
 		type: String,
 		trim: true,
-		sparse: true,
-		lowercase: true,
-		unique: true,
+		// sparse: true,
 		required: [true, "Name required"],
 	},
 	userEmail: {
 		type: String,
 		trim: true,
-		sparse: true,
 		lowercase: true,
 		unique: true,
 		required: [true, "Email required"],
@@ -43,7 +40,7 @@ const userSchema = Schema({
 					psw,
 				);
 			},
-			message: "Please enter a valid password",
+			message: "Please enter a valid password that must contain min 6 character atleast one upper case , one lower case and one special character",
 		},
 		required: [true, "Password Required"],
 	},
@@ -104,7 +101,7 @@ userSchema.statics.findByEmailAndPassword = async function(email, password) {
 
 userSchema.methods.generateToken = async function() {
 	this.token = await sign({ id: this._id }, process.env.PRIVATE_KEY, {
-		expiresIn: 60*10,
+		expiresIn: 60*1,
 	});
 };
 userSchema.methods.generateRefreshToken = async function() {
