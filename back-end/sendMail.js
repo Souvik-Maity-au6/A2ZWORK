@@ -9,7 +9,6 @@ module.exports = {
 
         console.log("new User=",newUser)
 
-        try{
 
 
             const transport = createTransport({
@@ -37,12 +36,6 @@ module.exports = {
                     // text:`Node Mailer is done bro your email:${newUser.companyEmail} password:${password}`
                     html
                 })
-              }
-
-        catch(err){
-            return res.send({
-                msg:err.message
-            })
-        }
+            
     }
 }

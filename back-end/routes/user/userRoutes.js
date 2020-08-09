@@ -25,7 +25,7 @@ router.get("/checkAuthentication", authentication, checkAuthentication);
 router.post("/createClientAccount",authentication,createClientAccount)
 router.post("/createFreelancerAccount",authentication,createFreelancerAccount)
 router.get("/verify",verify);
-router.get("/sendForgotPasswordEmail/",sendForgotPasswordEmail);
+router.post("/sendForgotPasswordEmail",sendForgotPasswordEmail);
 router.get("/changePassword/:token",changePassword);
 router.get("/resendEmail",resendEmail);
 

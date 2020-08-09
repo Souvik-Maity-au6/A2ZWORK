@@ -1,6 +1,6 @@
 module.exports={
 
-    sendForgotPasswordDesign(){
+    sendForgotPasswordDesign(link,name){
         return `<!DOCTYPE html>
         <html lang="en">
         <head>
@@ -14,11 +14,11 @@ module.exports={
             color : azure; padding: 30px">
                     <h1 style="text-align: center;">A2ZWORK</h1>
                     <h3 style="text-align: center;">We received a request to change your password</h3>
-                    <h5>Hi, Souvik,</h5>
+                    <h5>Hi, ${name},</h5>
                     <p>We at A2ZWORK take the trust and safety of our users seriously. Use the link below to set up a new password for your account.</p>
                     <div class="verify-container" style="text-align: center">
-                        <button class="verify-button" style="width: 300px ; padding: 10px; background: #fff200; outline: none;
-            border-radius: 8px; cursor: pointer;" value="">Change password</button>
+                    <a href="${link}"><button class="verify-button" style="width: 300px ; padding: 10px; background: #fff200; outline: none;
+            border-radius: 8px; cursor: pointer;" value="">Change password</button></a>
                     </div>
                     <p>Thanks for your time,</p>
                     <p><b>The A2ZWORK Team</b></p>

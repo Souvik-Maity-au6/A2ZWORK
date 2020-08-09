@@ -4,8 +4,9 @@ const {verify} = require("jsonwebtoken")
 const mail = require("../../sendMail");
 const ObjectId = require("mongodb").ObjectID;
 const {sendVerifyDesign} = require("../../static/verify.js");
+const {sendForgotPasswordDesign} = require("../../static/forgetPassword")
 const { setTimeout } = require("timers");
-const { sign } = require("crypto");
+const { sign } = require("jsonwebtoken");
 
 module.exports = {
   // --------- User Registration ---------------- //
@@ -208,16 +209,26 @@ module.exports = {
           "please provide your email !!!",
       });
     }
-    const user = await userModel.find({ userEmail: userEmail });
+    const user = await userModel.findOne({ userEmail: userEmail });
+    console.log(user)
     const forgotPasswordToken  = await sign( {id:user._id}, process.env.PRIVATE_KEY,{expiresIn:"4h"})
-    
-    let html = `<a href="http://localhost:5000/changePassword/${user[0].token/forgotPasswordToken}">Click Here to change the password</a>`;
-        const email = await mail.mailConfig(html, user[0]);
+    const forgotPasswordHtml = sendForgotPasswordDesign(`http://localhost:3000/changePassword`, user.userName)
+      
+    const mailConfig={
+      html:forgotPasswordHtml,
+      newUser:user,
+      subject:"Forgot Password Confirmation mail ",
+    }
+
+    // let html = `<a href="http://localhost:5000/changePassword/${user[0].token/forgotPasswordToken}">Click Here to change the password</a>`;
+        const email = await mail.mailConfig(mailConfig);
         return res
           .status(200)
           .send({
             msg:
               "Change Password link has been send . Please Check your Email to change password",
+            forgotPasswordToken,
+            
           });
       },
 
@@ -227,7 +238,7 @@ module.exports = {
           
               const {newPassword,confirmPassword}= req.body
               const {token} = req.params
-              // verify(token,process.env.PRIVATE_KEY)
+              verify(token,process.env.PRIVATE_KEY)
               if(!newPassword){
                     res.send({
                     msg:"New Password field cannot be empty !!!"
@@ -235,7 +246,7 @@ module.exports = {
               }
               else{ 
                 res.send({
-                  msg:"New Password field cannot be empty !!!"
+                  msg:"Confirm Password field cannot be empty !!!"
                 })
               }
       
