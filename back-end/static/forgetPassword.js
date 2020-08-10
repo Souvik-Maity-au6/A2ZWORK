@@ -1,7 +1,6 @@
-module.exports={
-
-    sendForgotPasswordDesign(link,name){
-        return `<!DOCTYPE html>
+module.exports = {
+	sendForgotPasswordDesign(link, name) {
+		return `<!DOCTYPE html>
         <html lang="en">
         <head>
             <meta charset="UTF-8">
@@ -9,7 +8,8 @@ module.exports={
             <title>: A2ZWORK :</title>
         </head>
         <body>
-            <div class="welcome-page-container" style="display: flex; flex-direction: column; justify-content: center; align-items: center">
+            <div class="welcome-page-container" style="width: 90%;
+            margin-left: 10%; ">
                 <div class="welcome-page-card" style="width: 500px; background:#4d4f53;  box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
             color : azure; padding: 30px">
                     <h1 style="text-align: center;">A2ZWORK</h1>
@@ -26,6 +26,6 @@ module.exports={
                 </div>
             </div>
         </body>
-        </html>`
-    }
-}
+        </html>`;
+	},
+};

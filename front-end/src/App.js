@@ -5,6 +5,7 @@ import "./App.css";
 // Load components
 import Navbar from "./components/common/Navbar";
 import Footer from "./components/common/Footer";
+import RouteProtection from "./components/common/RouteProtection";
 
 // Load pages
 import HomePage from "./pages/HomePage";
@@ -13,6 +14,7 @@ import LoginPage from "./pages/LoginPage";
 import RegistrationPage from "./pages/RegistrationPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import changePasswordPage from "./pages/changePasswordPage";
+import JobFeedPage from "./pages/JobFeedPage";
 
 function App() {
 	return (
@@ -23,7 +25,12 @@ function App() {
 				<Route exact path="/register" component={RegistrationPage} />
 				<Route exact path="/login" component={LoginPage} />
 				<Route exact path="/forgotPassword" component={ForgotPasswordPage} />
-				<Route exact path="/changePassword" component={changePasswordPage} />
+				<RouteProtection path="/jobFeed" component={JobFeedPage} />
+				<Route
+					exact
+					path="/changePassword/:forgotPasswordToken"
+					component={changePasswordPage}
+				/>
 				<Route path="/" component={HomePage} />
 				<Redirect to="/" />
 			</Switch>

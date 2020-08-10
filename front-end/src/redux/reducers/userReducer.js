@@ -2,16 +2,13 @@ import {
 	SET_USER,
 	TOGGLE_AUTHENTICATING,
 	LOGOUT_USER,
-	EXPIRE_USER_TOKEN,
-	UPDATE_USER_TOKEN,
-	SET_ERROR_MESSAGE,
+	EXPIRE_REFRESH_TOKEN,
+	UPDATE_ACCESS_TOKEN,
 } from "../actionTypes";
 
 const initialState = {
 	user: JSON.parse(localStorage.getItem("user")) || null,
 	isAuthenticating: false,
-	isRouteProtected: false,
-	errorMessage: null,
 };
 
 const userReducer = (state = initialState, action) => {
@@ -27,15 +24,13 @@ const userReducer = (state = initialState, action) => {
 		case LOGOUT_USER:
 			localStorage.removeItem("user");
 			return { ...state, user: null };
-		case EXPIRE_USER_TOKEN:
+		case EXPIRE_REFRESH_TOKEN:
 			localStorage.removeItem("user");
 			return { ...state, user: null };
-		case UPDATE_USER_TOKEN:
+		case UPDATE_ACCESS_TOKEN:
 			const updateUserJson = JSON.stringify(payload);
 			localStorage.setItem("user", updateUserJson);
 			return { ...state, user: payload };
-		case SET_ERROR_MESSAGE:
-			return { ...state, errorMessage: payload };
 		default:
 			return state;
 	}

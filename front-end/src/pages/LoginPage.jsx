@@ -30,6 +30,7 @@ class LoginPage extends Component {
                 icon: 'success',
                 title: `${response}`,
             })
+            this.props.history.push("/jobFeed")
         } catch (err) {
             console.log(err)
             Swal.fire({

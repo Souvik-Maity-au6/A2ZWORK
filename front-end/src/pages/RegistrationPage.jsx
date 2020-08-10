@@ -3,8 +3,11 @@ import FacebookLogin from 'react-facebook-login'
 import GoogleLogin from 'react-google-login';
 import GitHubLogin from 'react-github-login';
 import LinkedIn from 'react-linkedin-login-oauth2';
+import { connect } from 'react-redux'
+import Swal from 'sweetalert2'
 import google_icon from '../img/google_icon.svg'
 import linkedin_icon from '../img/linkedin_icon.svg';
+import { userRegistration } from '../redux/actions/userAction'
 
 import '../styles/LoginPage.css'
 
@@ -22,9 +25,30 @@ class RegistrationPage extends Component {
     handleChangeRegistration = (event) => {
         this.setState({ [event.target.name]: event.target.value })
     }
-    handleSubmitRegistration = (event) => {
+    handleSubmitRegistration = async (event) => {
         event.preventDefault()
-        console.log(this.state)
+        const newUser = {
+            userName: this.state.name,
+            userEmail: this.state.email,
+            password: this.state.password,
+            isClient: this.state.client,
+            isFreelancer: this.state.freelancer
+        }
+        try {
+            const response = await this.props.userRegistration(newUser)
+            Swal.fire({
+                icon: 'success',
+                title: `${response.title}`,
+                text: `${response.text}`
+            })
+            this.props.history.push('/login')
+        } catch (err) {
+            console.log(err)
+            Swal.fire({
+                icon: 'error',
+                title: `${err}`,
+            })
+        }
         this.setState(initialState)
     }
     handleAcountTypeClient = () => {
@@ -114,4 +138,4 @@ class RegistrationPage extends Component {
     }
 }
 
-export default RegistrationPage
+export default connect(null, { userRegistration })(RegistrationPage)
