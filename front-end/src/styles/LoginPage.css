@@ -172,6 +172,12 @@
 .account-type-button-1:hover {
     background-color: #fff200 
 }
+.account-type-button-1:focus {
+    outline: none;
+}
+.account-type-button-2:focus {
+    outline: none;
+}
 .active {
     background-color: #fff200 ;
     border: none;
@@ -180,3 +186,8 @@
     background-color: #fff200 
 }
 
+.pre-loader {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}

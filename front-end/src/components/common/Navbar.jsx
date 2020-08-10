@@ -1,11 +1,15 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 import logo from '../../img/logo.png'
+import { mapToPropsUser } from "../../redux/mapStateToProps"
+import { userLogout } from '../../redux/actions/userAction'
+import person_icon from '../../img/person_icon.png'
 
-const Navbar = () => {
+const Navbar = (props) => {
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div className="container">
+            <div className="container-fluid">
                 <Link to="/" className="navbar-brand">
                     <img src={logo} width="50" height="50" alt="" loading="lazy" />
                 </Link>
@@ -22,18 +26,37 @@ const Navbar = () => {
                         <input className="mr-sm-2 nav-search-input" type="search" placeholder="Search for jobs or freelancers..." required />
                         <input className="btn btn-success nav-search-button" type="submit" value="Search" />
                     </form>
-                    <ul className="navbar-nav">
-                        <li className="nav-item">
-                            <Link to="/login" className="nav-link">Login</Link>
-                        </li>
-                        <li className="nav-item ml-sm-3">
-                            <Link to="/register" className="nav-link">Signup</Link>
-                        </li>
-                    </ul>
+                    <>
+                        {props.userObj.user ?
+                            <>
+                                <ul className="navbar-nav">
+                                    <li className="nav-item">
+                                        <Link to="/myJobs" className="nav-link">My Jobs</Link>
+                                    </li>
+                                    <li className="nav-item ml-sm-3">
+                                        <Link to="/messages" className="nav-link"><i className="fa fa-envelope pr-2" aria-hidden="true"></i>Messages</Link>
+                                    </li>
+                                </ul>
+                                <Link to="/profile">
+                                    <div className="nav-bar-profile mx-sm-3">
+                                        <img src="" alt="profile" onError={(e) => { e.target.onerror = null; e.target.src = `${person_icon}`; }} width="50"
+                                            height="50" />
+                                    </div>
+                                </Link>
+                            </>
+                            : <ul className="navbar-nav">
+                                <li className="nav-item">
+                                    <Link to="/login" className="nav-link">Login</Link>
+                                </li>
+                                <li className="nav-item ml-sm-3">
+                                    <Link to="/register" className="nav-link">Signup</Link>
+                                </li>
+                            </ul>}
+                    </>
                 </div>
             </div>
         </nav>
     )
 }
 
-export default Navbar
+export default connect(mapToPropsUser, { userLogout })(Navbar)

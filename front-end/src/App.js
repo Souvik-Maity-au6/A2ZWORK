@@ -6,6 +6,7 @@ import "./App.css";
 import Navbar from "./components/common/Navbar";
 import Footer from "./components/common/Footer";
 import RouteProtection from "./components/common/RouteProtection";
+import RouteUnprotection from "./components/common/RouteUnprotection";
 
 // Load pages
 import HomePage from "./pages/HomePage";
@@ -21,18 +22,31 @@ function App() {
 		<div className="App">
 			<Navbar />
 			<Switch>
-				<Route exact path="/about" component={AboutPage} />
-				<Route exact path="/register" component={RegistrationPage} />
-				<Route exact path="/login" component={LoginPage} />
-				<Route exact path="/forgotPassword" component={ForgotPasswordPage} />
+				<RouteUnprotection exact path="/about" component={AboutPage} />
+				<RouteUnprotection
+					exact
+					path="/register"
+					component={RegistrationPage}
+				/>
+				<RouteUnprotection exact path="/login" component={LoginPage} />
+				<RouteUnprotection
+					exact
+					path="/forgotPassword"
+					component={ForgotPasswordPage}
+				/>
 				<RouteProtection path="/jobFeed" component={JobFeedPage} />
 				<Route
 					exact
 					path="/changePassword/:forgotPasswordToken"
 					component={changePasswordPage}
 				/>
-				<Route path="/" component={HomePage} />
-				<Redirect to="/" />
+
+				<RouteUnprotection path="/" component={HomePage} />
+				{localStorage.getItem("user") ? (
+					<Redirect to="/jobFeed" />
+				) : (
+					<Redirect to="/" />
+				)}
 			</Switch>
 			<Footer />
 		</div>

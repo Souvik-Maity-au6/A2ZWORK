@@ -2,11 +2,14 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Swal from 'sweetalert2'
 import { sendForgotPasswordEmail } from '../redux/actions/userAction'
+import pre_loader from '../img/pre_loader.svg';
 import '../styles/LoginPage.css'
 
 
 const initialState = {
     email: "",
+    pre_loader: "none",
+    submit_button: "block"
 }
 
 class ForgotPasswordPage extends Component {
@@ -16,8 +19,11 @@ class ForgotPasswordPage extends Component {
     }
     handleSubmitEmail = async (event) => {
         event.preventDefault()
+        this.setState({ pre_loader: !this.state.pre_loader, submit_button: "none" })
         try {
             const response = await this.props.sendForgotPasswordEmail({ userEmail: this.state.email })
+            this.setState({ pre_loader: !this.state.pre_loader })
+            this.setState({ submit_button: "block" })
             Swal.fire({
                 icon: 'success',
                 title: `${response.title}`,
@@ -42,7 +48,11 @@ class ForgotPasswordPage extends Component {
                             <i className="fa fa-envelope email-icon" aria-hidden="true"></i>
                             <input onChange={this.handleChangeEmail} className="email-input-field" type="email" name="email" placeholder="Email" value={this.state.email} required />
                         </div>
-                        <input className="login-button btn-warning btn-lg mt-2" type="submit" value="Send reset email" />
+                        <div className="pre-loader">
+                            <img src={pre_loader} alt="loading" width="75" height="75" style={{ display: this.state.pre_loader }} />
+                        </div>
+                        <input className="login-button btn-warning btn-lg mt-2"
+                            style={{ display: this.state.submit_button }} type="submit" value="Send reset email" />
                     </form>
                 </div>
             </div>

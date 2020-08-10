@@ -20,12 +20,8 @@ export const userRegistration = newUser => async dispatch => {
 export const userLogin = currentUser => async dispatch => {
 	return new Promise(async (resolve, reject) => {
 		try {
-			console.log(currentUser);
 			dispatch({ type: TOGGLE_AUTHENTICATING });
-			const response = await axios.post("/userLogin", {
-				userEmail: currentUser.email,
-				password: currentUser.password,
-			});
+			const response = await axios.post("/userLogin", currentUser);
 			console.log(response.data);
 			dispatch({ type: SET_USER, payload: response.data });
 			resolve(response.data.msg);

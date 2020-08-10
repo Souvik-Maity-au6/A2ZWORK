@@ -1,13 +1,17 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Swal from 'sweetalert2'
-import { resetPassword } from '../redux/actions/userAction'
-import '../styles/LoginPage.css'
 import { Redirect } from "react-router-dom"
+import { resetPassword } from '../redux/actions/userAction'
+import pre_loader from '../img/pre_loader.svg';
+import '../styles/LoginPage.css'
+
 
 const initialState = {
     newPassword: "",
     confirmPassword: "",
+    pre_loader: "none",
+    submit_button: "block"
 }
 
 class changePasswordPage extends Component {
@@ -17,9 +21,15 @@ class changePasswordPage extends Component {
     }
     handleSubmitPassword = async (event) => {
         event.preventDefault()
+        this.setState({ pre_loader: !this.state.pre_loader, submit_button: "none" })
         const forgotPasswordToken = this.props.match.params.forgotPasswordToken
+        const newPassword = {
+            newPassword: this.state.newPassword,
+            confirmPassword: this.state.confirmPassword,
+        }
         try {
-            const response = await this.props.resetPassword(forgotPasswordToken, this.state)
+            const response = await this.props.resetPassword(forgotPasswordToken, newPassword)
+            this.setState({ pre_loader: !this.state.pre_loader, submit_button: "block" })
             Swal.fire({
                 icon: 'success',
                 title: `${response}`
@@ -51,7 +61,11 @@ class changePasswordPage extends Component {
                                     <i className="fa fa-key password-icon" aria-hidden="true"></i>
                                     <input onChange={this.handleChangePassword} className="password-input-field" type="password" name="confirmPassword" placeholder="Confirm password" value={this.state.confirmPassword} required />
                                 </div>
-                                <input className="login-button btn-warning btn-lg mt-2" type="submit" value="Change password" />
+                                <div className="pre-loader">
+                                    <img src={pre_loader} alt="loading" width="75" height="75" style={{ display: this.state.pre_loader }} />
+                                </div>
+                                <input className="login-button btn-warning 
+                                btn-lg mt-2" style={{ display: this.state.submit_button }} type="submit" value="Change password" />
                             </form>
                         </div>
                     </div>
