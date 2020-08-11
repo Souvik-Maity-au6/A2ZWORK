@@ -14,7 +14,13 @@ export const userRegistration = newUser => async dispatch => {
 			resolve(response.data.msg);
 		} catch (err) {
 			console.error(err.response.data);
-			reject(err.response.data.msg);
+			if (err.response.data.msg.includes("password:")) {
+				reject(
+					"Please enter a valid password that must contain min 6 character atleast one upper case , one lower case and one special character",
+				);
+			} else {
+				reject(err.response.data.msg);
+			}
 		} finally {
 			dispatch({ type: TOGGLE_AUTHENTICATING });
 		}
@@ -92,25 +98,3 @@ export const resetPassword = (forgotPasswordToken, newPassword) => async () => {
 		}
 	});
 };
-
-// export const checkAuthentication = async () => {
-// 	const accessToken = JSON.parse(localStorage.getItem("user")).accessToken;
-// 	const refreshToken = JSON.parse(localStorage.getItem("user")).refreshToken;
-// 	try {
-// 		const response = await axios.get(
-// 			`${keys.BASE_URL_LOCAL}/checkAuthentication`,
-// 			{
-// 				headers: {
-// 					Authorization: `${accessToken},${refreshToken}`,
-// 					Accept: "application/json",
-// 					"Content-Type": "application/json",
-// 				},
-// 			},
-// 		);
-// 		// console.log("xx", response.data);
-// 		return response.data;
-// 	} catch (err) {
-// 		console.error(err.response.data);
-// 		return err.response.data;
-// 	}
-// };

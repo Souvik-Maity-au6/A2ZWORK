@@ -63,7 +63,6 @@ axiosInstance.interceptors.response.use(
 				return axiosInstance.request(originalRequest);
 			} catch (err) {
 				console.log(err);
-				return Promise.reject(err);
 			}
 		} else {
 			return Promise.reject(error);

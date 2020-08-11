@@ -48,7 +48,6 @@ class RegistrationPage extends Component {
 
             this.props.history.push('/login')
         } catch (err) {
-            console.log(err)
             Swal.fire({
                 icon: 'error',
                 title: `${err}`,

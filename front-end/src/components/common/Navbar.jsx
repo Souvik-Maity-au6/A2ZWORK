@@ -9,7 +9,7 @@ import person_icon from '../../img/person_icon.png'
 const Navbar = (props) => {
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div className="container-fluid">
+            <div className="container">
                 <Link to="/" className="navbar-brand">
                     <img src={logo} width="50" height="50" alt="" loading="lazy" />
                 </Link>
@@ -17,11 +17,13 @@ const Navbar = (props) => {
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNav">
-                    <ul className="navbar-nav ml-sm-5">
-                        <li className="nav-item">
-                            <Link to="/about" className="nav-link">How it works</Link>
-                        </li>
-                    </ul>
+                    {props.userObj.user ?
+                        null
+                        : <ul className="navbar-nav ml-sm-5">
+                            <li className="nav-item">
+                                <Link to="/about" className="nav-link">How it works</Link>
+                            </li>
+                        </ul>}
                     <form className="form-inline mr-auto nav-search-form">
                         <input className="mr-sm-2 nav-search-input" type="search" placeholder="Search for jobs or freelancers..." required />
                         <input className="btn btn-success nav-search-button" type="submit" value="Search" />

@@ -46,7 +46,7 @@ module.exports = {
 			});
 		} catch (err) {
 			console.log(err);
-			return res.send({ msg: err.message });
+			return res.status(500).send({ msg: err.message });
 		}
 	},
 
