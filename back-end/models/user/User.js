@@ -105,8 +105,8 @@ userSchema.methods.generateToken = async function() {
 	});
 };
 userSchema.methods.generateRefreshToken = async function() {
-	this.refreshToken = await sign({ id: this._id }, process.env.PRIVATE_KEY, {
-		expiresIn: 60*20,
+	this.refreshToken = await sign({ id: this._id }, process.env.PRIVATE_KEY_REFRESH_TOKEN, {
+		expiresIn: 60*2,
 	});
 };
 

@@ -64,14 +64,13 @@ module.exports = {
 				user[0].generateRefreshToken();
 				await user[0].save({ validateBeforeSave: false });
 
-				return res.send({
+				return res.status(200).send({
 					msg: `Welcome ${user[0].userName}`,
 					userId: user[0].id,
 					userName: user[0].userName,
 					userEmail: user[0].userEmail,
 					accessToken: user[0].token,
 					refreshToken: user[0].refreshToken,
-					companyName: user[0].companyName,
 					isClient: user[0].isClient,
 					isFreelancer: user[0].isFreelancer,
 				});
