@@ -11,7 +11,7 @@ const {
 	changePassword,
 	resendEmail,
 } = require("../../controllers/user/userController");
-const {generateNewAccessToken} = require("../../middlewares/Auth")
+const { generateNewAccessToken } = require("../../middlewares/Auth");
 // const {
 // 	authentication,
 // 	dataAuthentication,
@@ -34,6 +34,6 @@ router.get("/verify", verify);
 router.post("/sendForgotPasswordEmail", sendForgotPasswordEmail);
 router.post("/changePassword/:token", changePassword);
 router.get("/resendEmail", resendEmail);
-router.get("/generateNewAccessToken/:refreshToken",generateNewAccessToken)
+router.get("/generateNewAccessToken/:refreshToken", generateNewAccessToken);
 
 module.exports = router;

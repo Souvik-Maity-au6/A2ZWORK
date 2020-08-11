@@ -88,18 +88,18 @@ module.exports = {
 
 	async logout(req, res) {
 		try {
-			const currentUser = req.user.id;
+			const currentUser = req.userId;
 			const user = await userModel.findById(currentUser);
 			if (user) {
 				user.token = null;
 				user.refreshToken = null;
 				await user.save({ validateBeforeSave: false });
-				return res.send("Thank you visit again");
+				return res.status(200).send({ msg: "Thank you visit again" });
 			} else {
 				throw Error("Please Login first");
 			}
 		} catch (err) {
-			return res.send(err.message);
+			return res.status(500).send(err.message);
 		}
 	},
 	async checkAuthentication(req, res) {

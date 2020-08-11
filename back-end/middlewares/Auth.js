@@ -1,67 +1,58 @@
-const express = require("express")
-const {verify} = require("jsonwebtoken")
-const userModel = require("../models/user/User")
+const { verify } = require("jsonwebtoken");
+const userModel = require("../models/user/User");
 
-module.exports={
+module.exports = {
+	async authentication(req, res, next) {
+		try {
+			const decodedToken = verify(
+				req.headers.authorization,
+				process.env.PRIVATE_KEY,
+			);
+			req.userId = decodedToken.id;
+			next();
+		} catch (err) {
+			if (err.message === "jwt expired") {
+				return res.status(401).send({
+					msg: "Access Token is Expired !!!",
+				});
+			}
+		}
+	},
+	async generateNewAccessToken(req, res) {
+		const { refreshToken } = req.params;
+		try {
+			const userId = verify(
+				refreshToken,
+				process.env.PRIVATE_KEY_REFRESH_TOKEN,
+			);
+			const user = await userModel.findById(userId.id);
 
-    async authentication(req,res,next){
+			user.generateToken();
+			user.generateRefreshToken();
 
-        try{
+			const newUser = await user.save({ validateBeforeSave: false });
 
-            const decodedToken = verify(req.headers.authorization,process.env.PRIVATE_KEY)
-            console.log(decodedToken.id)
-            console.log("one")
-            req.userId = decodedToken.id
-            console.log("r")
-            next()
-
-        }
-        catch(err){
-
-            if (err.message === "jwt expired"){
-
-                return res.status(401).send({
-                    msg:"Access Token is Expired !!!"
-                })
-
-            }
-        }
-    },
-    async generateNewAccessToken(req,res){
-
-
-        try{
-
-            const {refreshToken} = req.params;
-            const userId = verify(refreshToken,process.env.PRIVATE_KEY_REFRESH_TOKEN)
-            const user = await userModel.findById(userId.id)
-
-            user.generateToken();
-            user.generateRefreshToken()
-
-            const newUser = await user.save({validateBeforeSave:false})
-
-            return res.status(200).send({
-                msg: `Welcome back ${newUser.userName}`,
-                userId: newUser.id,
-                userName: newUser.userName,
-                userEmail: newUser.userEmail,
-                accessToken: newUser.token,
-                refreshToken: newUser.refreshToken,
-                isClient: newUser.isClient,
-                isFreelancer: newUser.isFreelancer,
-            });
-
-
-
-        }
-        catch(err){
-            console.log(err.message)
-            if(err.message === "jwt expired"){
-                return res.status(403).send({ msg: "Refresh Token is Expired !!!" });
-            }
-        }
-
-    }
-
-}
+			return res.status(200).send({
+				msg: `Welcome back ${newUser.userName}`,
+				userId: newUser.id,
+				userName: newUser.userName,
+				userEmail: newUser.userEmail,
+				accessToken: newUser.token,
+				refreshToken: newUser.refreshToken,
+				isClient: newUser.isClient,
+				isFreelancer: newUser.isFreelancer,
+			});
+		} catch (err) {
+			console.log(err.message);
+			if (err.message === "jwt expired") {
+				const user = await userModel.findOne({ refreshToken: refreshToken });
+				user.token = null;
+				user.refreshToken = null;
+				await user.save({ validateBeforeSave: false });
+				return res
+					.status(403)
+					.send({ msg: "Your session has been expired...pls login again" });
+			}
+		}
+	},
+};

@@ -40,45 +40,51 @@ const userSchema = Schema({
 					psw,
 				);
 			},
-			message: "Please enter a valid password that must contain min 6 character atleast one upper case , one lower case and one special character",
+			message:
+				"Please enter a valid password that must contain min 6 character atleast one upper case , one lower case and one special character",
 		},
 		required: [true, "Password Required"],
 	},
-	isAuthorized:{
-		type:Boolean,
-		default:false
+	isAuthorized: {
+		type: Boolean,
+		default: false,
 	},
-	skills:[{
-		type:String
-	}],
-	hourlyRate:{
-		type:Number
+	skills: [
+		{
+			type: String,
+		},
+	],
+	hourlyRate: {
+		type: Number,
 	},
-	isClient:{
-		type:Boolean,
-		default:false
+	isClient: {
+		type: Boolean,
+		default: false,
 	},
-	isFreelancer:{
-		type:Boolean,
-		default:false
+	isFreelancer: {
+		type: Boolean,
+		default: false,
 	},
-	companyName:{
-		type:String
+	companyName: {
+		type: String,
 	},
-	jobApplied:[{
-		type:Schema.Types.ObjectId,
-		ref:"jobs",
-		default:null
-	}],
-	jobPosted:[{
-		type:Schema.Types.ObjectId,
-		ref:"jobs",
-		default:null,
-	}],
-	profileOverview:{
-		type:String
-	}
-	
+	jobApplied: [
+		{
+			type: Schema.Types.ObjectId,
+			ref: "jobs",
+			default: null,
+		},
+	],
+	jobPosted: [
+		{
+			type: Schema.Types.ObjectId,
+			ref: "jobs",
+			default: null,
+		},
+	],
+	profileOverview: {
+		type: String,
+	},
 });
 
 userSchema.statics.findByEmailAndPassword = async function(email, password) {
@@ -101,13 +107,17 @@ userSchema.statics.findByEmailAndPassword = async function(email, password) {
 
 userSchema.methods.generateToken = async function() {
 	this.token = await sign({ id: this._id }, process.env.PRIVATE_KEY, {
-		expiresIn: 60*1,
+		expiresIn: 60 * 30,
 	});
 };
 userSchema.methods.generateRefreshToken = async function() {
-	this.refreshToken = await sign({ id: this._id }, process.env.PRIVATE_KEY_REFRESH_TOKEN, {
-		expiresIn: 60*2,
-	});
+	this.refreshToken = await sign(
+		{ id: this._id },
+		process.env.PRIVATE_KEY_REFRESH_TOKEN,
+		{
+			expiresIn: 60 * 40,
+		},
+	);
 };
 
 userSchema.pre("save", async function(next) {

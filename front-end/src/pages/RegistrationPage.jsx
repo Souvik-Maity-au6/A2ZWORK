@@ -40,7 +40,6 @@ class RegistrationPage extends Component {
         }
         try {
             const response = await this.props.userRegistration(newUser)
-            this.setState({ pre_loader: !this.state.pre_loader, submit_button: "block" })
             Swal.fire({
                 icon: 'success',
                 title: `${response.title}`,
@@ -54,7 +53,11 @@ class RegistrationPage extends Component {
                 icon: 'error',
                 title: `${err}`,
             })
+            this.setState(initialState)
         }
+
+    }
+    componentWillUnmount() {
         this.setState(initialState)
     }
     handleAcountTypeClient = () => {

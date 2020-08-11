@@ -17,7 +17,7 @@ module.exports = {
                     <h3 style="text-align: center;">Verify your email address to complete registration</h3>
                     <h5>Hi, ${name}</h5>
                     <p>Let's get started on A2ZWORK, the website that helps companies like yours hire remote talent. Use A2ZWORK to find the professionals you need for everything from one-time projects to long-term work.</p>
-                    <p>We at A2ZWORK take the trust and safety of our users seriously. We just need you to verify your email address by clicking the button below, Use the link below to set up a new password for your account. This link will expire in 2 hours.</p>
+                    <p>We at A2ZWORK take the trust and safety of our users seriously. We just need you to verify your email address by clicking the button below. This link will expire in 2 hours.</p>
                     <div class="verify-container" style="text-align: center">
                         <a href="${link}"><button class="verify-button" style="width: 300px ; padding: 10px; background: #fff200; outline: none;
             border-radius: 8px; cursor: pointer;" value="">Verify Your Account</button>></a>

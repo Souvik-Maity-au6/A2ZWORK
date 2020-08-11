@@ -1,11 +1,15 @@
 import axios from "../../axios";
+
 import { SET_USER, TOGGLE_AUTHENTICATING, LOGOUT_USER } from "../actionTypes";
 
 export const userRegistration = newUser => async dispatch => {
 	return new Promise(async (resolve, reject) => {
 		try {
 			dispatch({ type: TOGGLE_AUTHENTICATING });
-			const response = await axios.post("/userRegistration", newUser);
+			const response = await axios.post(
+				`${process.env.REACT_APP_BASE_URL}/userRegistration`,
+				newUser,
+			);
 			console.log(response.data);
 			resolve(response.data.msg);
 		} catch (err) {
@@ -21,8 +25,11 @@ export const userLogin = currentUser => async dispatch => {
 	return new Promise(async (resolve, reject) => {
 		try {
 			dispatch({ type: TOGGLE_AUTHENTICATING });
-			const response = await axios.post("/userLogin", currentUser);
-			console.log(response.data);
+			const response = await axios.post(
+				`${process.env.REACT_APP_BASE_URL}/userLogin`,
+				currentUser,
+			);
+			// console.log(response.data);
 			dispatch({ type: SET_USER, payload: response.data });
 			resolve(response.data.msg);
 		} catch (err) {
@@ -35,13 +42,19 @@ export const userLogin = currentUser => async dispatch => {
 };
 
 export const userLogout = () => async dispatch => {
-	try {
-		const response = await axios.delete("/userLogout");
-		console.log(response.data);
-		dispatch({ type: LOGOUT_USER });
-	} catch (err) {
-		console.error(err.response);
-	}
+	return new Promise(async (resolve, reject) => {
+		try {
+			const response = await axios.delete(
+				`${process.env.REACT_APP_BASE_URL}/userLogout`,
+			);
+			console.log(response.data);
+			dispatch({ type: LOGOUT_USER });
+			resolve(response.data.msg);
+		} catch (err) {
+			console.error(err.response);
+			reject(err.response.data.msg);
+		}
+	});
 };
 
 export const sendForgotPasswordEmail = userEmail => async () => {

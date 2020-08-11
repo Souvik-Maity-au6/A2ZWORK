@@ -55,11 +55,11 @@ class LoginPage extends Component {
         }
         try {
             const response = await this.props.userLogin(currentUser)
-            this.setState({ pre_loader: !this.state.pre_loader, submit_button: "block" })
             Swal.fire({
                 icon: 'success',
                 title: `${response}`,
             })
+
             this.props.history.push("/jobFeed")
         } catch (err) {
             console.log(err)
@@ -67,7 +67,11 @@ class LoginPage extends Component {
                 icon: 'error',
                 title: `${err}`,
             })
+            this.setState(initialState)
         }
+
+    }
+    componentWillUnmount() {
         this.setState(initialState)
     }
     handleClickSignup = () => {
