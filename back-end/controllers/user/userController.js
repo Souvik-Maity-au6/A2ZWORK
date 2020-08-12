@@ -315,4 +315,29 @@ module.exports = {
 			return res.status(500).send({ msg: err.message });
 		}
 	},
+
+	async postEditUserProfile(req,res){
+
+
+		try{
+
+			const editProfile = await  userModel.findByIdAndUpdate(req.userId,{...req.body},{new:true})
+			
+			// console.log(edit)
+			// const updatedEditPofile = await editProfile.save({validateBeforeSave:false})
+	
+			return res.status(200).send({
+	
+				 user:editProfile
+			})
+
+		}
+		catch(err){
+			return res.status(500).send({
+				msg:err.message
+			})
+		}		
+
+	}
+
 };

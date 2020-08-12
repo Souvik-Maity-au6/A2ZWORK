@@ -45,6 +45,122 @@ const userSchema = Schema({
 		},
 		required: [true, "Password Required"],
 	},
+	title:{
+		type:String
+	},
+	specialization:[
+		{
+			title:{
+				type:String,
+			},
+			skills:[{
+				type:String
+			}]
+		}
+	],
+
+	availability:{
+		type:String
+	},
+	languages:[
+		{
+			medium:{
+				type:String
+			},
+			fluency:{
+				type:String
+			}
+
+		}
+	],
+
+	education:[
+		{
+			collegeName:{
+				type:String
+			},
+			degree:{
+				type:String,
+			},
+			passoutYear:{
+				type:String
+			}
+		}
+	],
+	skills:[
+		{
+			type:String
+		}
+	],
+
+	address:[
+		{
+			street:{
+				type:String,
+			},
+			houseNo:{
+				type:Number
+			},
+			city:{
+				type:String
+			},
+			country:{
+				type:String
+			},
+			state:{
+				type:String
+			}
+		}
+	],
+	phoneNo:{
+		type:Number
+	},
+	panNo:{
+		type:String
+	},
+	addharNo:{
+		type:String,
+	},
+	GSTIN:{
+		type:String
+	},
+	moneyBalance:[
+		{
+
+			earning:{
+				type:Number
+			},
+			spending:{
+				type:Number
+			}
+
+		}
+
+	],
+	projectPreference:{
+		type:String
+	},
+	experienceLevel:{
+		type:String
+	},
+	category:[
+		{
+			type:String
+		}
+	],
+	resume:{
+		type:String
+	},
+	workHistory:[
+		{
+
+			type:String
+		}
+	],
+	profileImage:{
+		type:String
+	},
+	
 	isAuthorized: {
 		type: Boolean,
 		default: false,

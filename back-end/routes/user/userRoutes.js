@@ -10,6 +10,7 @@ const {
 	sendForgotPasswordEmail,
 	changePassword,
 	resendEmail,
+	postEditUserProfile
 } = require("../../controllers/user/userController");
 const { generateNewAccessToken } = require("../../middlewares/Auth");
 // const {
@@ -35,5 +36,6 @@ router.post("/sendForgotPasswordEmail", sendForgotPasswordEmail);
 router.post("/changePassword/:token", changePassword);
 router.get("/resendEmail", resendEmail);
 router.get("/generateNewAccessToken/:refreshToken", generateNewAccessToken);
+router.post("/postEditUserProfile",authentication,postEditUserProfile)
 
 module.exports = router;
