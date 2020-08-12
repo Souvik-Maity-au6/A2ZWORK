@@ -16,12 +16,19 @@ import RegistrationPage from "./pages/RegistrationPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import changePasswordPage from "./pages/changePasswordPage";
 import JobFeedPage from "./pages/JobFeedPage";
+import FreelancerProfilePage from "./pages/FreelancerProfilePage";
+import EditFreelancerProfilePage from "./pages/EditFreelancerProfilePage";
 
 function App() {
 	return (
 		<div className="App">
 			<Navbar />
 			<Switch>
+				<Route path="/freelancerProfile" component={FreelancerProfilePage} />
+				<Route
+					path="/editFreelancerProfile"
+					component={EditFreelancerProfilePage}
+				/>
 				<RouteUnprotection exact path="/about" component={AboutPage} />
 				<RouteUnprotection
 					exact

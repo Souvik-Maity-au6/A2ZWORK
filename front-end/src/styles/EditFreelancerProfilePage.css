@@ -1,0 +1,45 @@
+.edit-profile-container {
+    margin-top: 30px;
+    font-style: italic;
+    background-color: #343A40;
+    min-height: 300px;
+    padding: 50px;
+}
+/* .file-upload-container > label {
+    
+} */
+
+label {
+    color: azure;
+    font-size: 25px;
+    font-style: italic;
+}
+
+
+.file-upload-input {
+    margin-left: 150px;
+    font-size: 16px;
+    background-color: azure;
+    border-radius: 50px;
+    box-shadow: 3px 3px 10px black;
+    width: 60%;
+    outline: none;
+}
+
+::-webkit-file-upload-button {
+    background-color: #E2D60F;
+    padding: 10px;
+    border: none;
+    border-radius: 50px;
+    box-shadow: 1px 0 1px 1px #6b4559;
+    outline: none;
+    cursor: pointer;
+}
+
+.input-title {
+    margin-left: 100px;
+    width: 75%;
+    padding: 10px 20px;
+    outline: none;
+    border-radius: 10px;
+}
