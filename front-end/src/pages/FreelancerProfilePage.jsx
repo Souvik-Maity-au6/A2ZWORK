@@ -151,9 +151,8 @@ class FreelancerProfilePage extends Component {
                                     <p className="pl-3">Intermediate</p>
                                 </div>
                                 <div className="project-details">
-                                    <h6>Categories : </h6>
-                                    <p className="pl-3">Web, Mobile & Software Dev,</p>
-                                    <p className="pl-3">Writing</p>
+                                    <h6>Category : </h6>
+                                    <p className="pl-3">Web, Mobile & Software Dev</p>
                                 </div>
                             </div>
                             <div className="col-7">
