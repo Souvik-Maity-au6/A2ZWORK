@@ -319,8 +319,51 @@ module.exports = {
 	},
 
 	async postEditUserProfile(req, res) {
+		let skills = req.body.skills.split(",")
 		try {
 			console.log(req.files);
+			const copiedReqBody={
+				profileImage:req.body.profileImage,
+				resume:req.body.resume,
+				address:{
+					pinNo:req.body.pinNo,
+					city: req.body.city,
+					country: req.body.country,
+					state: req.body.state
+				},
+				category:req.body.category,
+				education:[
+					{
+						collegeName:req.body.collegeName ,
+						  degree: req.body.degree,
+						  startingYear: req.body.startingYear,
+						  passoutYear: req.body.passoutYear
+					}
+				],
+				skills,
+				languages:[
+					{
+						medium:req.body.medium,
+						fluency:req.body.fluency
+					}
+				],
+				specialization:[{
+					specializationTitle:req.body.specializationTitle,
+					specializationSkills:req.body.specializationSkills
+				}],
+				title: req.body.title,
+				availability:req.body.availability,
+				freelancerDescription:req.body.freelancerDescription,
+				phoneNo:req.body.phoneNo,
+				addharNo:req.body.addharNo,
+				panNo:req.body.panNo,
+				GSTIN:req.body.GSTIN,
+				projectPreference:req.body.projectPreference,
+				experienceLevel:req.body.experienceLevel,
+				hourlyRate:req.body.hourlyRate,
+				acceptTermsCondition:req.body.acceptTermsCondition
+
+			}
 			// console.log("req.files=",req.files)
 			const imageContentProfileImage = convert(
 				req.files[0].originalname,
@@ -344,7 +387,7 @@ module.exports = {
 			const editProfile = new userModel(req.body);
 			const updatedProfile = await userModel.findByIdAndUpdate(
 				req.userId,
-				{ ...req.body },
+				{ ...copiedReqBody },
 				{ new: true },
 			);
 			// console.log(req.userId)

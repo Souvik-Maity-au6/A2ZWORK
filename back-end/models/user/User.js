@@ -50,10 +50,10 @@ const userSchema = Schema({
   },
   specialization: [
     {
-      title: {
+		specializationTitle: {
         type: String,
       },
-      skills: [
+      specializationSkills: [
         {
           type: String,
         },
