@@ -39,7 +39,7 @@ const refreshAccessToken = async () => {
 
 axiosInstance.interceptors.request.use(
 	async config => {
-		// console.log(config);
+		console.log(config);
 		return config;
 	},
 	error => {
@@ -48,12 +48,12 @@ axiosInstance.interceptors.request.use(
 );
 axiosInstance.interceptors.response.use(
 	response => {
-		// console.log(response);
+		console.log(response);
 		return response;
 	},
 	async function(error) {
 		const originalRequest = error.config;
-		// console.log(error.response.status);
+		console.log(error);
 		// console.log(originalRequest);
 		if (error.response.status === 401 && !originalRequest._retry) {
 			originalRequest._retry = true;

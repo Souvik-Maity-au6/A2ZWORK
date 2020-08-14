@@ -39,7 +39,7 @@ const Navbar = (props) => {
                                         <Link to="/messages" className="nav-link"><i className="fa fa-envelope pr-2" aria-hidden="true"></i>Messages</Link>
                                     </li>
                                 </ul>
-                                <Link to="/profile">
+                                <Link to="/freelancerProfile">
                                     <div className="nav-bar-profile mx-sm-3">
                                         <img src="" alt="profile" onError={(e) => { e.target.onerror = null; e.target.src = `${person_icon}`; }} width="50"
                                             height="50" />

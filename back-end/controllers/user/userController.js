@@ -7,9 +7,8 @@ const { sendVerifyDesign } = require("../../static/verify.js");
 const { sendForgotPasswordDesign } = require("../../static/forgetPassword");
 const { setTimeout } = require("timers");
 const { sign } = require("jsonwebtoken");
-const convert = require("../../converter")
-const cloudinary = require("../../cloudinary")
-
+const convert = require("../../converter");
+const cloudinary = require("../../cloudinary");
 
 module.exports = {
 	// --------- User Registration ---------------- //
@@ -319,54 +318,59 @@ module.exports = {
 		}
 	},
 
-	async postEditUserProfile(req,res){
-		try{
-			console.log(req.files)
+	async postEditUserProfile(req, res) {
+		try {
+			console.log(req.files);
 			// console.log("req.files=",req.files)
-			const imageContentProfileImage = convert(req.files[0].originalname, req.files[0].buffer);
-			const imageContentResume = convert(req.files[1].originalname, req.files[1].buffer);
-			console.log("image Content1 =",imageContentProfileImage)
-			console.log("image Content2 =",imageContentResume)
-			const profileImage = await cloudinary.uploader.upload(imageContentProfileImage);
+			const imageContentProfileImage = convert(
+				req.files[0].originalname,
+				req.files[0].buffer,
+			);
+			const imageContentResume = convert(
+				req.files[1].originalname,
+				req.files[1].buffer,
+			);
+			// console.log("image Content1 =", imageContentProfileImage);
+			// console.log("image Content2 =", imageContentResume);
+			const profileImage = await cloudinary.uploader.upload(
+				imageContentProfileImage,
+			);
 			const resume = await cloudinary.uploader.upload(imageContentResume);
 			// console.log(image1.secure_url)
 			// console.log(image2.secure_url)
 			req.body.profileImage = profileImage.secure_url;
-			req.body.resume = resume.secure_url
-            console.log(req.body)
-            const editProfile  = new userModel(req.body)
-            const updatedProfile = await editProfile.save({validateBeforeSave:false})
-            // console.log(req.userId)
-            // console.log(imageUpload._id)
-            // const user = await userModel.findById(req.userId)
-            // user.image.push(imageUpload._id)
-            // await user.save({validateBeforeSave:false})
-            return res.status(200).send({
-                user:updatedProfile
-            })
-		}
-		catch(err){
-			return res.status(500).send({
-				msg:err.message
-			})
-		}		
-
-	},
-	async getUserProfile(req,res){
-
-		try{
-
-			const userProfile = await userModel.findById(req.userId)
+			req.body.resume = resume.secure_url;
+			console.log(req.body);
+			const editProfile = new userModel(req.body);
+			const updatedProfile = await userModel.findByIdAndUpdate(
+				req.userId,
+				{ ...req.body },
+				{ new: true },
+			);
+			// console.log(req.userId)
+			// console.log(imageUpload._id)
+			// const user = await userModel.findById(req.userId)
+			// user.image.push(imageUpload._id)
+			// await user.save({validateBeforeSave:false})
 			return res.status(200).send({
-				userProfile
-			})
-		}
-		catch(err){
-
+				user: updatedProfile,
+			});
+		} catch (err) {
 			return res.status(500).send({
-				msg:err.message
-			})
+				msg: err.message,
+			});
 		}
-	}
-
+	},
+	async getUserProfile(req, res) {
+		try {
+			const userProfile = await userModel.findById(req.userId);
+			return res.status(200).send({
+				userProfile,
+			});
+		} catch (err) {
+			return res.status(500).send({
+				msg: err.message,
+			});
+		}
+	},
 };

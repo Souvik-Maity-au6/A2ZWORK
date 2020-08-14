@@ -18,12 +18,20 @@ import changePasswordPage from "./pages/changePasswordPage";
 import JobFeedPage from "./pages/JobFeedPage";
 import FreelancerProfilePage from "./pages/FreelancerProfilePage";
 import EditFreelancerProfilePage from "./pages/EditFreelancerProfilePage";
+import ClientProfilePage from "./pages/ClientProfilePage";
+import FreelancerProfileViewPage from "./pages/FreelancerProfileViewPage";
 
 function App() {
 	return (
 		<div className="App">
 			<Navbar />
 			<Switch>
+				<Route
+					exact
+					path="/FreelancerProfileViewPage"
+					component={FreelancerProfileViewPage}
+				/>
+				<Route exact path="/clientProfile" component={ClientProfilePage} />
 				<Route path="/freelancerProfile" component={FreelancerProfilePage} />
 				<Route
 					path="/editFreelancerProfile"
