@@ -29,7 +29,7 @@ const multerConfig = {
 
 
         console.log("mime type =",file.mimetype)
-        if(file.mimetype === "image/jpeg" || file.mimetype ==="image/png" || file.mimetype ==="image/jpg" || file.mimetype ==="image/svg" || file.mimetype ==="image/svg+xml")
+        if(file.mimetype === "image/jpeg" || file.mimetype ==="image/png" || file.mimetype ==="image/jpg" || file.mimetype ==="image/svg" || file.mimetype ==="image/svg+xml" || file.mimetype==="application/pdf")
         {
             cb(null,true);
         }

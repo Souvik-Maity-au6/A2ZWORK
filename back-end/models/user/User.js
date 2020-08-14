@@ -69,7 +69,7 @@ const userSchema = Schema({
 			},
 			fluency:{
 				type:String
-			}
+			},
 
 		}
 	],
@@ -85,21 +85,19 @@ const userSchema = Schema({
 			passoutYear:{
 				type:String
 			}
-		}
+		},
+
 	],
 	skills:[
 		{
 			type:String
-		}
+		},
 	],
 
 	address:[
 		{
-			street:{
-				type:String,
-			},
-			houseNo:{
-				type:Number
+			pinNo:{
+				type:String
 			},
 			city:{
 				type:String
@@ -169,6 +167,8 @@ const userSchema = Schema({
 		{
 			type: String,
 		},
+		
+		
 	],
 	hourlyRate: {
 		type: Number,
@@ -198,10 +198,44 @@ const userSchema = Schema({
 			default: null,
 		},
 	],
-	profileOverview: {
-		type: String,
+	vatId:{
+		type:String
 	},
+	companyLink:{
+		type:String
+	},
+	companyDescription:{
+		type:String
+	},
+	companyContactDetails:[
+		{
+
+			pinNo:{
+				type:String
+			},
+			city:{
+				type:String
+			},
+			country:{
+				type:String
+			},
+			state:{
+				type:String
+			}
+		}
+	],
+	acceptTermsCondition:{
+		type:Boolean
+	}
 });
+
+userSchema.path("skills").validate(function(skills){
+
+	if(skills.length > 10){
+		return false
+	}
+	return true
+},"Maximum limit of skills is 10")
 
 userSchema.statics.findByEmailAndPassword = async function(email, password) {
 	let userObj = null;
