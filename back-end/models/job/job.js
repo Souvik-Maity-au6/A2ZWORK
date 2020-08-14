@@ -28,6 +28,12 @@ const jobSchema = Schema({
     }],
     projectDetailFile:{
         type:String
+    },
+    freelancerReview:{
+        type:Number
+    },
+    clientReview:{
+        type:Number
     }
 })
 
