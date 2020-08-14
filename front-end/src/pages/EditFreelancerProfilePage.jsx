@@ -1,9 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import Swal from 'sweetalert2'
+import { headerAuthorization } from '../axios'
 import { editFreelancerProfile } from '../redux/actions/dataAction'
+import pre_loader from '../img/pre_loader.svg';
 import '../styles/EditFreelancerProfilePage.css'
 
 const initialState = {
+    pre_loader: "none",
+    submit_button: "block",
     profileImage: "",
     resume: "",
     title: "",
@@ -37,6 +42,9 @@ const initialState = {
 
 class EditFreelancerProfilePage extends Component {
     state = initialState
+    componentDidMount() {
+        headerAuthorization()
+    }
     handleChangeProfileInput = (event) => {
         this.setState({ [event.target.name]: event.target.value })
     }
@@ -48,7 +56,7 @@ class EditFreelancerProfilePage extends Component {
     }
     handleSubmitProfileData = async (event) => {
         event.preventDefault()
-        console.log(this.state)
+        this.setState({ pre_loader: !this.state.pre_loader, submit_button: "none" })
         const formData = new FormData();
         try {
             formData.append("profileImage", this.state.profileImage);
@@ -78,13 +86,24 @@ class EditFreelancerProfilePage extends Component {
             formData.append("experienceLevel", this.state.experienceLevel)
             formData.append("hourlyRate", this.state.hourlyRate)
             formData.append("acceptTermsCondition", this.state.acceptTermsCondition)
-            this.props.editFreelancerProfile(formData)
+            const response = await this.props.editFreelancerProfile(formData)
+            Swal.fire({
+                icon: 'success',
+                title: `${response}`,
+            })
+            this.props.history.push("/freelancerProfile")
+
         } catch (err) {
-            console.log(err)
+            Swal.fire({
+                icon: 'error',
+                title: `${err}`,
+            })
+            this.setState(initialState)
         }
-
     }
-
+    componentWillUnmount() {
+        this.setState(initialState)
+    }
 
 
 
@@ -97,29 +116,32 @@ class EditFreelancerProfilePage extends Component {
         return (
             <div className="container">
                 <div className="edit-profile-container">
+                    <div className="form-info-header">
+                        <h6>Please fill the fields below very carefully...all *fields are mandatory</h6>
+                    </div>
                     <form onSubmit={this.handleSubmitProfileData}>
                         <div className="file-upload-container">
                             <div className="img-upload mb-3">
-                                <label htmlFor="img-file">Your profile photo : </label>
-                                <input onChange={this.handleChangeProfileImg} type="file" id="img-file" name="profileImage" className="file-upload-input" />
+                                <label htmlFor="img-file">Your profile photo* : </label>
+                                <input onChange={this.handleChangeProfileImg} type="file" id="img-file" name="profileImage" className="file-upload-input" required />
                             </div>
                             <div className="cv-upload mb-3">
-                                <label htmlFor="img-file">Your cv/resume : </label>
-                                <input onChange={this.handleChangeCvFile} type="file" id="img-file" name="resume" className="file-upload-input" />
+                                <label htmlFor="img-file">Your cv/resume* : </label>
+                                <input onChange={this.handleChangeCvFile} type="file" id="img-file" name="resume" className="file-upload-input" required />
                             </div>
                         </div>
                         <div className="profile-title-container">
-                            <label htmlFor="title">Your Title : </label>
-                            <input onChange={this.handleChangeProfileInput} type="text" id="title" name="title" className="input-title" placeholder="Enter a single sentence description of your professional skills/experience(e.g Web Designer)" value={this.state.title} />
+                            <label htmlFor="title">Your Title* : </label>
+                            <input onChange={this.handleChangeProfileInput} type="text" id="title" name="title" className="input-title" placeholder="Enter a single sentence description of your professional skills/experience(e.g Web Designer)" value={this.state.title} required />
                             <div className="row mt-3">
-                                <label htmlFor="description" className="ml-3">Overview : </label>
-                                <textarea onChange={this.handleChangeProfileInput} id="description" name="freelancerDescription" className="input-description" placeholder="Use this space to show clients you have the skills and experience they're looking for.Keep it short and make sure it's error-free." value={this.state.freelancerDescription} ></textarea>
+                                <label htmlFor="description" className="ml-3">Overview* : </label>
+                                <textarea onChange={this.handleChangeProfileInput} id="description" name="freelancerDescription" className="input-description" placeholder="Use this space to show clients you have the skills and experience they're looking for.Keep it short and make sure it's error-free." value={this.state.freelancerDescription} required></textarea>
                             </div>
                         </div>
                         <div className="input-select-container mt-3">
                             <div className="availablity-container">
-                                <label htmlFor="availability">Availability : </label>
-                                <select onChange={this.handleChangeProfileInput} className="select-availability" id="availability" name="availability" value={this.state.availability} >
+                                <label htmlFor="availability">Availability* : </label>
+                                <select onChange={this.handleChangeProfileInput} className="select-availability" id="availability" name="availability" value={this.state.availability} required>
                                     <option value="" disabled>Choose...one</option>
                                     <option value="More than 30 hrs/week">More than 30 hrs/week</option>
                                     <option value="Less than 30 hrs/week">Less than 30 hrs/week</option>
@@ -127,13 +149,13 @@ class EditFreelancerProfilePage extends Component {
                                 </select>
                             </div>
                             <div className="hourly-rate-container">
-                                <label htmlFor="hourlyRate">Hourly Rate : </label>
+                                <label htmlFor="hourlyRate">Hourly Rate* : </label>
                                 <i className="fa fa-usd dolar-icon" aria-hidden="true"></i>
-                                <input onChange={this.handleChangeProfileInput} type="text" id="hourlyRate" name="hourlyRate" placeholder="Your profile rate" className="hourly-rate-input" value={this.state.hourlyRate} />
+                                <input onChange={this.handleChangeProfileInput} type="text" id="hourlyRate" name="hourlyRate" placeholder="Your profile rate" className="hourly-rate-input" value={this.state.hourlyRate} required />
                             </div>
                             <div className="project-preference-container mt-3">
-                                <label htmlFor="projectPreference">Project preferences : </label>
-                                <select onChange={this.handleChangeProfileInput} className="select-project-preference" id="projectPreference" name="projectPreference" value={this.state.projectPreference} >
+                                <label htmlFor="projectPreference">Project preferences* : </label>
+                                <select onChange={this.handleChangeProfileInput} className="select-project-preference" id="projectPreference" name="projectPreference" value={this.state.projectPreference} required>
                                     <option value="" disabled>Choose...one</option>
                                     <option value="Both Short term & long term projects">Both Short term & long term projects</option>
                                     <option value="Long term projects(3+ months)">Long term projects(3+ months)</option>
@@ -141,8 +163,8 @@ class EditFreelancerProfilePage extends Component {
                                 </select>
                             </div>
                             <div className="experience-level-container mt-3">
-                                <label htmlFor="experienceLevel">Experience Level : </label>
-                                <select onChange={this.handleChangeProfileInput} className="select-experience-level" id="experienceLevel" name="experienceLevel" value={this.state.experienceLevel} >
+                                <label htmlFor="experienceLevel">Experience Level* : </label>
+                                <select onChange={this.handleChangeProfileInput} className="select-experience-level" id="experienceLevel" name="experienceLevel" value={this.state.experienceLevel} required>
                                     <option value="" disabled>Choose...one</option>
                                     <option value="Entry level">Entry level</option>
                                     <option value="Intermediate">Intermediate</option>
@@ -150,11 +172,11 @@ class EditFreelancerProfilePage extends Component {
                                 </select>
                             </div>
                             <div className="language-container mt-3">
-                                <label htmlFor="language">Language : </label>
+                                <label htmlFor="language">Language* : </label>
                                 <input onChange={this.handleChangeProfileInput} type="text" id="language" name="languages" className="language-input"
-                                    aria-describedby="language-help" placeholder="Enter one language..." value={this.state.languages} />
-                                <label htmlFor="proficiency">Proficiency : </label>
-                                <select onChange={this.handleChangeProfileInput} id="proficiency" className="select-language-proficiency" name="languageProficiency" value={this.state.languageProficiency} >
+                                    aria-describedby="language-help" placeholder="Enter one language..." value={this.state.languages} required />
+                                <label htmlFor="proficiency">Proficiency* : </label>
+                                <select onChange={this.handleChangeProfileInput} id="proficiency" className="select-language-proficiency" name="languageProficiency" value={this.state.languageProficiency} required>
                                     <option value="" disabled>Please select...</option>
                                     <option value="Basic">Basic</option>
                                     <option value="Conversational">Conversational</option>
@@ -165,36 +187,36 @@ class EditFreelancerProfilePage extends Component {
                             </div>
                             <div className="row category-container mt-3">
                                 <div className="col-2">
-                                    <p className="category-header">Categories : </p>
+                                    <p className="category-header">Categories* : </p>
                                 </div>
                                 <div className="col-10">
                                     <div className="category-checkbox-container">
                                         <label style={{ fontSize: "20px" }} className="category-label">Web, Mobile & Software Dev
-                                    <input onChange={this.handleChangeProfileInput} type="radio" name="category" value="Web, Mobile & Software Dev" />
+                                    <input onChange={this.handleChangeProfileInput} type="radio" name="category" value="Web, Mobile & Software Dev" required />
                                             <span className="checkmark"></span>
                                         </label>
                                         <label style={{ fontSize: "20px" }} className="category-label">Data Science & Analytics
-                                    <input onChange={this.handleChangeProfileInput} type="radio" name="category" value="Data Science & Analytics" />
+                                    <input onChange={this.handleChangeProfileInput} type="radio" name="category" value="Data Science & Analytics" required />
                                             <span className="checkmark"></span>
                                         </label>
                                         <label style={{ fontSize: "20px" }} className="category-label">Sales & Marketing
-                                    <input onChange={this.handleChangeProfileInput} type="radio" name="category" value="Sales & Marketing" />
+                                    <input onChange={this.handleChangeProfileInput} type="radio" name="category" value="Sales & Marketing" required />
                                             <span className="checkmark"></span>
                                         </label>
                                         <label style={{ fontSize: "20px" }} className="category-label">IT & Networking
-                                    <input onChange={this.handleChangeProfileInput} type="radio" name="category" value="IT & Networking" />
+                                    <input onChange={this.handleChangeProfileInput} type="radio" name="category" value="IT & Networking" required />
                                             <span className="checkmark"></span>
                                         </label>
                                         <label style={{ fontSize: "20px" }} className="category-label">Design & Creative
-                                    <input onChange={this.handleChangeProfileInput} type="radio" name="category" value="Design & Creative" />
+                                    <input onChange={this.handleChangeProfileInput} type="radio" name="category" value="Design & Creative" required />
                                             <span className="checkmark"></span>
                                         </label>
                                     </div>
                                 </div>
                             </div>
                             <div className="row skill-container mt-3">
-                                <label htmlFor="skill" className="ml-3">Skills : </label>
-                                <textarea onChange={this.handleChangeProfileInput} id="skill" name="skills" className="input-skill" placeholder="Enter all the skills you have according to your selected category seperated by comma','(e.g Javascript, SEO - Search Engine Optimization...etc.)" value={this.state.skills} ></textarea>
+                                <label htmlFor="skill" className="ml-3">Skills* : </label>
+                                <textarea onChange={this.handleChangeProfileInput} id="skill" name="skills" className="input-skill" placeholder="Enter all the skills you have according to your selected category seperated by comma','(e.g Javascript, SEO - Search Engine Optimization...etc.)" value={this.state.skills} required></textarea>
                             </div>
                         </div>
                         <div className="row education-details-container mt-3">
@@ -232,19 +254,19 @@ class EditFreelancerProfilePage extends Component {
                         </div>
                         <div className="row personal-info-container mt-3">
                             <div className="col-3">
-                                <p className="category-header">Personal Info : </p>
+                                <p className="category-header">Personal Info* : </p>
                             </div>
                             <div className="col-9">
                                 <label style={{ fontSize: "20px" }} htmlFor="cityName">City : </label>
-                                <input onChange={this.handleChangeProfileInput} type="text" id="cityName" name="cityName" className="city-name-input mr-5" placeholder="Enter your city name.." value={this.state.cityName} />
+                                <input onChange={this.handleChangeProfileInput} type="text" id="cityName" name="cityName" className="city-name-input mr-5" placeholder="Enter your city name.." value={this.state.cityName} required />
                                 <label style={{ fontSize: "20px" }} htmlFor="stateName">State : </label>
-                                <input onChange={this.handleChangeProfileInput} type="text" id="stateName" name="stateName" className="city-name-input" placeholder="Enter your state name.." value={this.state.stateName} />
+                                <input onChange={this.handleChangeProfileInput} type="text" id="stateName" name="stateName" className="city-name-input" placeholder="Enter your state name.." value={this.state.stateName} required />
                                 <label style={{ fontSize: "20px" }} htmlFor="countryName">Country : </label>
-                                <input onChange={this.handleChangeProfileInput} type="text" id="countryName" name="countryName" className="city-name-input mr-3" placeholder="Enter your country name.." value={this.state.countryName} />
+                                <input onChange={this.handleChangeProfileInput} type="text" id="countryName" name="countryName" className="city-name-input mr-3" placeholder="Enter your country name.." value={this.state.countryName} required />
                                 <label style={{ fontSize: "20px" }} htmlFor="pinCode">PIN : </label>
-                                <input onChange={this.handleChangeProfileInput} type="text" id="pinCode" name="pinCode" className="city-name-input" placeholder="Enter your postal code.." value={this.state.pinCode} />
+                                <input onChange={this.handleChangeProfileInput} type="text" id="pinCode" name="pinCode" className="city-name-input" placeholder="Enter your postal code.." value={this.state.pinCode} required />
                                 <label style={{ fontSize: "20px" }} htmlFor="phNo">Ph No : </label>
-                                <input onChange={this.handleChangeProfileInput} type="text" id="phNo" name="phNo" className="ph-no-input" placeholder="Enter your mobile no with country code.." value={this.state.phNo} />
+                                <input onChange={this.handleChangeProfileInput} type="text" id="phNo" name="phNo" className="ph-no-input" placeholder="Enter your mobile no with country code.." value={this.state.phNo} required />
                                 <label style={{ fontSize: "20px" }} htmlFor="panNo">Pan Card No : </label>
                                 <input onChange={this.handleChangeProfileInput} type="text" id="panNo" name="panCardNo" className="ph-no-input" placeholder="Enter your pan card no.." value={this.state.panCardNo} />
                                 <label style={{ fontSize: "20px" }} htmlFor="adharNo">Adhar Card No : </label>
@@ -254,10 +276,13 @@ class EditFreelancerProfilePage extends Component {
                             </div>
                         </div>
                         <div className="terms-conditions-container">
-                            <label style={{ color: '#fff200' }} className="terms-conditions-lable">I accept the all the terms and conditions.
-                                 <input onChange={(event) => { this.setState({ acceptTermsCondition: event.target.checked }) }} type="checkbox" name="termsConditionsCheckbox" />
+                            <label style={{ color: '#fff200' }} className="terms-conditions-lable">I accept the all the terms and conditions*.
+                                 <input onChange={(event) => { this.setState({ acceptTermsCondition: event.target.checked }) }} type="checkbox" name="termsConditionsCheckbox" required />
                                 <span className="terms-conditions-checkmark"></span>
                             </label>
+                        </div>
+                        <div className="pre-loader">
+                            <img src={pre_loader} alt="loading" width="75" height="75" style={{ display: this.state.pre_loader }} />
                         </div>
                         <div className="submit-profile-info">
                             <input type="submit" className="profile-info-submit-btn" value="Save" />

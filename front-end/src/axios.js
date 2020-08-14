@@ -39,7 +39,7 @@ const refreshAccessToken = async () => {
 
 axiosInstance.interceptors.request.use(
 	async config => {
-		console.log(config);
+		// console.log(config);
 		return config;
 	},
 	error => {
@@ -48,21 +48,23 @@ axiosInstance.interceptors.request.use(
 );
 axiosInstance.interceptors.response.use(
 	response => {
-		console.log(response);
+		// console.log(response);
 		return response;
 	},
 	async function(error) {
 		const originalRequest = error.config;
-		console.log(error);
+		// console.log(error);
 		// console.log(originalRequest);
-		if (error.response.status === 401 && !originalRequest._retry) {
+		if (error.response.status === 403) {
+			return Promise.reject(error);
+		} else if (error.response.status === 401 && !originalRequest._retry) {
 			originalRequest._retry = true;
 			try {
 				const accessToken = await refreshAccessToken();
 				originalRequest.headers["Authorization"] = accessToken;
 				return axiosInstance.request(originalRequest);
 			} catch (err) {
-				console.log(err);
+				return Promise.reject(error);
 			}
 		} else {
 			return Promise.reject(error);

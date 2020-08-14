@@ -319,85 +319,81 @@ module.exports = {
 	},
 
 	async postEditUserProfile(req, res) {
-		let skills = req.body.skills.split(",")
+		let skills = req.body.skills.split(",");
+		let specializationSkills = req.body.specializationSkills.split(",");
 		try {
 			console.log(req.files);
-			const copiedReqBody={
-				profileImage:req.body.profileImage,
-				resume:req.body.resume,
-				address:{
-					pinNo:req.body.pinNo,
-					city: req.body.city,
-					country: req.body.country,
-					state: req.body.state
-				},
-				category:req.body.category,
-				education:[
-					{
-						collegeName:req.body.collegeName ,
-						  degree: req.body.degree,
-						  startingYear: req.body.startingYear,
-						  passoutYear: req.body.passoutYear
-					}
-				],
-				skills,
-				languages:[
-					{
-						medium:req.body.medium,
-						fluency:req.body.fluency
-					}
-				],
-				specialization:[{
-					specializationTitle:req.body.specializationTitle,
-					specializationSkills:req.body.specializationSkills
-				}],
-				title: req.body.title,
-				availability:req.body.availability,
-				freelancerDescription:req.body.freelancerDescription,
-				phoneNo:req.body.phoneNo,
-				addharNo:req.body.addharNo,
-				panNo:req.body.panNo,
-				GSTIN:req.body.GSTIN,
-				projectPreference:req.body.projectPreference,
-				experienceLevel:req.body.experienceLevel,
-				hourlyRate:req.body.hourlyRate,
-				acceptTermsCondition:req.body.acceptTermsCondition
-
+			if (req.files.length) {
+				const imageContentProfileImage = convert(
+					req.files[0].originalname,
+					req.files[0].buffer,
+				);
+				const imageContentResume = convert(
+					req.files[1].originalname,
+					req.files[1].buffer,
+				);
+				const profileImage = await cloudinary.uploader.upload(
+					imageContentProfileImage,
+				);
+				const resume = await cloudinary.uploader.upload(imageContentResume);
+				console.log(req.body);
+				const copiedReqBody = {
+					profileImage: profileImage.secure_url,
+					resume: resume.secure_url,
+					address: {
+						pinNo: req.body.pinNo,
+						city: req.body.city,
+						country: req.body.country,
+						state: req.body.state,
+					},
+					category: req.body.category,
+					education: [
+						{
+							collegeName: req.body.collegeName,
+							degree: req.body.degree,
+							startingYear: req.body.startingYear,
+							passoutYear: req.body.passoutYear,
+						},
+					],
+					skills,
+					languages: [
+						{
+							medium: req.body.medium,
+							fluency: req.body.fluency,
+						},
+					],
+					specialization: [
+						{
+							specializationTitle: req.body.specializationTitle,
+							specializationSkills,
+						},
+					],
+					title: req.body.title,
+					availability: req.body.availability,
+					freelancerDescription: req.body.freelancerDescription,
+					phoneNo: req.body.phoneNo,
+					addharNo: req.body.addharNo,
+					panNo: req.body.panNo,
+					GSTIN: req.body.GSTIN,
+					projectPreference: req.body.projectPreference,
+					experienceLevel: req.body.experienceLevel,
+					hourlyRate: req.body.hourlyRate,
+					acceptTermsCondition: req.body.acceptTermsCondition,
+				};
+				const updatedProfile = await userModel.findByIdAndUpdate(
+					req.userId,
+					{ ...copiedReqBody },
+					{ new: true },
+				);
+				return res.status(200).send({
+					msg: "Your profile has been updated successfully !!!",
+					user: updatedProfile,
+				});
+			} else {
+				return res.status(403).send({
+					msg: "Pls fill all the required fields !!!",
+				});
 			}
-			// console.log("req.files=",req.files)
-			const imageContentProfileImage = convert(
-				req.files[0].originalname,
-				req.files[0].buffer,
-			);
-			const imageContentResume = convert(
-				req.files[1].originalname,
-				req.files[1].buffer,
-			);
-			// console.log("image Content1 =", imageContentProfileImage);
-			// console.log("image Content2 =", imageContentResume);
-			const profileImage = await cloudinary.uploader.upload(
-				imageContentProfileImage,
-			);
-			const resume = await cloudinary.uploader.upload(imageContentResume);
-			// console.log(image1.secure_url)
-			// console.log(image2.secure_url)
-			req.body.profileImage = profileImage.secure_url;
-			req.body.resume = resume.secure_url;
-			console.log(req.body);
-			const editProfile = new userModel(req.body);
-			const updatedProfile = await userModel.findByIdAndUpdate(
-				req.userId,
-				{ ...copiedReqBody },
-				{ new: true },
-			);
-			// console.log(req.userId)
-			// console.log(imageUpload._id)
-			// const user = await userModel.findById(req.userId)
-			// user.image.push(imageUpload._id)
-			// await user.save({validateBeforeSave:false})
-			return res.status(200).send({
-				user: updatedProfile,
-			});
 		} catch (err) {
 			return res.status(500).send({
 				msg: err.message,

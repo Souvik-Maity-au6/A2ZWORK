@@ -33,7 +33,7 @@ function App() {
 				/>
 				<Route exact path="/clientProfile" component={ClientProfilePage} />
 				<Route path="/freelancerProfile" component={FreelancerProfilePage} />
-				<Route
+				<RouteProtection
 					path="/editFreelancerProfile"
 					component={EditFreelancerProfilePage}
 				/>

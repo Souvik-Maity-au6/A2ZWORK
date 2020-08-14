@@ -1,3 +1,9 @@
+.form-info-header {
+    color: #fff200;
+    text-align: center;
+    margin-bottom: 50px;
+}
+
 .edit-profile-container {
     margin-top: 30px;
     font-style: italic;
@@ -114,7 +120,7 @@ label {
 .language-input {
     margin-left: 120px;
     margin-right: 10px;
-    width: 400px;
+    width: 350px;
     padding: 10px 0 10px 10px;
     border-radius: 10px;
     outline: none;
@@ -389,4 +395,10 @@ label {
 
 .profile-info-submit-btn:focus {
     outline: none;
+}
+
+.pre-loader {
+    display: flex;
+    justify-content: center;
+    text-align: center;
 }

@@ -1,7 +1,6 @@
 import axios from "../../axios";
 
 export const editFreelancerProfile = mainProfileData => async () => {
-	console.log(mainProfileData);
 	return new Promise(async (resolve, reject) => {
 		try {
 			const response = await axios.post(
@@ -10,10 +9,14 @@ export const editFreelancerProfile = mainProfileData => async () => {
 				mainProfileData,
 			);
 			console.log(response.data);
-			resolve(response.data);
+			resolve(response.data.msg);
 		} catch (err) {
 			console.error(err.response.data);
-			reject(err);
+			if (err.response.status === 401) {
+				reject("Your session has been expired...pls login again");
+			} else {
+				reject(err.response.data.msg);
+			}
 		}
 	});
 };

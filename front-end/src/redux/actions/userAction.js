@@ -58,7 +58,11 @@ export const userLogout = () => async dispatch => {
 			resolve(response.data.msg);
 		} catch (err) {
 			console.error(err.response);
-			reject(err.response.data.msg);
+			if (err.response.status === 401) {
+				reject("Your session has been expired...pls login again");
+			} else {
+				reject(err.response.data.msg);
+			}
 		}
 	});
 };
