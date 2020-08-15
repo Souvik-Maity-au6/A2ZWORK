@@ -22,21 +22,31 @@ const multerConfig = {
         }
     }),
     limits:{
-        fileSize: 1024 *1024 *10
+        fileSize: 1024*2
     
     },
     fileFilter: function(req,file,cb){
 
 
-        console.log("mime type =",file.mimetype)
-        if(file.mimetype === "image/jpeg" || file.mimetype ==="image/png" || file.mimetype ==="image/jpg" || file.mimetype ==="image/svg" || file.mimetype ==="image/svg+xml" || file.mimetype==="application/pdf")
-        {
-            cb(null,true);
+        try{
+
+            console.log("mime type =",file.mimetype)
+            if(file.mimetype === "image/jpeg" || file.mimetype ==="image/png" || file.mimetype ==="image/jpg" || file.mimetype ==="image/svg" || file.mimetype ==="image/svg+xml" || file.mimetype==="application/pdf")
+            {
+                cb(null,true);
+            }
+            else{
+                var newError = new Error("File Type is in correct");
+                newError.name="MulterError";
+                cb(newError,false);
+            }
+
         }
-        else{
-            var newError = new Error("File Type is in correct");
-            newError.name="MulterError";
-            cb(newError,false);
+        catch(err){
+            console.log(err.message)
+            return res.status(404).send({
+                msg:err.message
+            })
         }
     }
 }

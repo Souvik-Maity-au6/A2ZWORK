@@ -20,6 +20,14 @@ app.get("/", (req, res) => {
 	return res.send({ message: "Welcome To project testing" });
 });
 
+app.use((err,req,res,next)=>{
+
+	return res.status(403).send({
+		msg:err.message
+	})
+
+})
+
 app.listen(PORT, () => {
 	console.log("Server is running at port", PORT);
 });

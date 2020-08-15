@@ -42,3 +42,4 @@ router.post("/postEditUserProfile",authentication,upload.any(),postEditUserProfi
 router.get("/getUserProfile",authentication,getUserProfile)
 
 module.exports = router;
+
