@@ -404,6 +404,7 @@ module.exports = {
 		try {
 			const userProfile = await userModel.findById(req.userId);
 			return res.status(200).send({
+				msg: "All user profile details",
 				userProfile,
 			});
 		} catch (err) {

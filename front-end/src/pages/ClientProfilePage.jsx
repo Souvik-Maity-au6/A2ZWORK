@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import Swal from 'sweetalert2'
 import { mapToPropsUser } from "../redux/mapStateToProps"
@@ -10,6 +10,9 @@ import '../styles/ClientProfilePage.css'
 class ClientProfilePage extends Component {
     componentDidMount() {
         headerAuthorization()
+    }
+    handleClickEditProfile = () => {
+        this.props.history.push("/editClientProfile")
     }
     handleLogout = async () => {
         try {
@@ -34,13 +37,15 @@ class ClientProfilePage extends Component {
                             <div className="col-5">
                                 <div className="profile-main-container">
                                     <div className="profile-img-container">
+                                        <div className="profile-img-edit-pencil"><i className="fa fa-pencil" aria-hidden="true"></i>
+                                        </div>
                                         <img src="" alt="profile" onError={(e) => { e.target.onerror = null; e.target.src = `${person_icon}`; }} className="profile-img" width="100" height="100" />
                                     </div>
                                     <div className="profile-description">
-                                        <h2>Souvik Maity <Link to="/">
+                                        <h2>Souvik Maity <a href="https://souvik-mtube.netlify.app">
                                             <i className="fa fa-check-square-o" style={{ color: "#28A745" }} aria-hidden="true"></i>
-                                        </Link></h2>
-                                        <h4>Company : mTube</h4>
+                                        </a></h2>
+                                        <h4>Company : mTube <span className="edit-pencil"><i className="fa fa-pencil" aria-hidden="true"></i></span></h4>
                                         <h6>Website : <a href="https://souvik-mtube.netlify.app">https://souvik-mtube.netlify.app</a></h6>
                                         <h6>Tagline : Make your dream true.</h6>
                                         <p>I am very good at handling clients. I complete my work on time. My clients will be satisfied and my work is very accurate as given in offer.</p>
@@ -49,7 +54,7 @@ class ClientProfilePage extends Component {
                             </div>
                             <div className="col-7">
                                 <div className="profile-main-button-container">
-                                    <button className="btn btn-success">
+                                    <button onClick={this.handleClickEditProfile} className="btn btn-success">
                                         Edit Profile
                                     </button>
                                     <button className="btn btn-success mx-5">
@@ -87,10 +92,6 @@ class ClientProfilePage extends Component {
                                     <p className="px-3">123456789</p>
                                 </div>
                                 <div className="project-details">
-                                    <h6>Adhar No : </h6>
-                                    <p className="px-3">123456789</p>
-                                </div>
-                                <div className="project-details">
                                     <h6>GSTIN : </h6>
                                     <p className="px-3">123456789</p>
                                 </div>
@@ -100,7 +101,7 @@ class ClientProfilePage extends Component {
                                 </div>
                             </div>
                             <div className="col-7">
-                                <h4>Company contact : </h4>
+                                <h4>Company contact : <span className="edit-pencil"><i className="fa fa-pencil" aria-hidden="true"></i></span></h4>
                                 <div className="language">
                                     <h6>Owner : </h6>
                                     <p className="px-3">Souvik Maity</p>
@@ -113,6 +114,14 @@ class ClientProfilePage extends Component {
                                 <div className="language">
                                     <h6>Ph no : </h6>
                                     <p className="px-3">123456789</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row profile-view-container mt-3">
+                            <div className="col">
+                                <h4>Job history : </h4>
+                                <div className="work-history-container">
+                                    <h6>No Job History available</h6>
                                 </div>
                             </div>
                         </div>

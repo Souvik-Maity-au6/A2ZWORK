@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
+// import { connect } from 'react-redux'
 import Swal from 'sweetalert2'
 import { headerAuthorization } from '../axios'
-import { editFreelancerProfile } from '../redux/actions/dataAction'
+// import { editFreelancerProfile } from '../redux/actions/dataAction'
 import pre_loader from '../img/pre_loader.svg';
-import '../styles/EditFreelancerProfilePage.css'
+import '../styles/MultipleAddFormPage.css'
+
 
 const initialState = {
     pre_loader: "none",
@@ -39,8 +40,7 @@ const initialState = {
 
 }
 
-
-class EditFreelancerProfilePage extends Component {
+class MultipleAddFormPage extends Component {
     state = initialState
     componentDidMount() {
         headerAuthorization()
@@ -104,14 +104,6 @@ class EditFreelancerProfilePage extends Component {
     componentWillUnmount() {
         this.setState(initialState)
     }
-
-
-
-
-
-
-
-
     render() {
         return (
             <div className="container">
@@ -123,16 +115,16 @@ class EditFreelancerProfilePage extends Component {
                         <div className="file-upload-container">
                             <div className="img-upload mb-3">
                                 <label htmlFor="img-file">Your profile photo* : </label>
-                                <input onChange={this.handleChangeProfileImg} type="file" id="img-file" name="profileImage" className="freelancer-file-upload-input" required />
+                                <input onChange={this.handleChangeProfileImg} type="file" id="img-file" name="profileImage" className="file-upload-input" required />
                             </div>
                             <div className="cv-upload mb-3">
                                 <label htmlFor="cv-file">Your cv/resume* : </label>
-                                <input onChange={this.handleChangeCvFile} type="file" id="cv-file" name="resume" className="freelancer-file-upload-input" required />
+                                <input onChange={this.handleChangeCvFile} type="file" id="cv-file" name="resume" className="file-upload-input" required />
                             </div>
                         </div>
                         <div className="profile-title-container">
                             <label htmlFor="title">Your Title* : </label>
-                            <input onChange={this.handleChangeProfileInput} type="text" id="title" name="title" className="freelancer-input-title" placeholder="Enter a single sentence description of your professional skills/experience(e.g Web Designer)" value={this.state.title} required />
+                            <input onChange={this.handleChangeProfileInput} type="text" id="title" name="title" className="input-title" placeholder="Enter a single sentence description of your professional skills/experience(e.g Web Designer)" value={this.state.title} required />
                             <div className="row mt-3">
                                 <label htmlFor="description" className="ml-3">Overview* : </label>
                                 <textarea onChange={this.handleChangeProfileInput} id="description" name="freelancerDescription" className="input-description" placeholder="Use this space to show clients you have the skills and experience they're looking for.Keep it short and make sure it's error-free." value={this.state.freelancerDescription} required></textarea>
@@ -284,7 +276,7 @@ class EditFreelancerProfilePage extends Component {
                         <div className="pre-loader">
                             <img src={pre_loader} alt="loading" width="75" height="75" style={{ display: this.state.pre_loader }} />
                         </div>
-                        <div className="submit-profile-info" style={{ display: this.state.submit_button }}>
+                        <div className="submit-profile-info">
                             <input type="submit" className="profile-info-submit-btn" value="Save" />
                         </div>
                     </form>
@@ -294,4 +286,4 @@ class EditFreelancerProfilePage extends Component {
     }
 }
 
-export default connect(null, { editFreelancerProfile })(EditFreelancerProfilePage)
+export default MultipleAddFormPage

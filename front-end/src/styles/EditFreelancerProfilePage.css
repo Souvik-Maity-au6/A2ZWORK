@@ -4,6 +4,7 @@
     margin-bottom: 50px;
 }
 
+
 .edit-profile-container {
     margin-top: 30px;
     font-style: italic;
@@ -25,7 +26,7 @@ label {
 }
 
 
-.file-upload-input {
+.freelancer-file-upload-input {
     margin-left: 30px;
     font-size: 16px;
     background-color: azure;
@@ -47,7 +48,7 @@ label {
 .cv-upload {
     margin-right: 25px;
 }
-.input-title {
+.freelancer-input-title {
     margin-left: 120px;
     width: 75%;
     padding: 10px 20px;

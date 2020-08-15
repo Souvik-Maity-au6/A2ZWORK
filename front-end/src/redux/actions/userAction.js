@@ -37,7 +37,7 @@ export const userLogin = currentUser => async dispatch => {
 			);
 			// console.log(response.data);
 			dispatch({ type: SET_USER, payload: response.data });
-			resolve(response.data.msg);
+			resolve(response.data);
 		} catch (err) {
 			console.error(err.response.data);
 			reject(err.response.data.msg);

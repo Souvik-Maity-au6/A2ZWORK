@@ -57,10 +57,14 @@ class LoginPage extends Component {
             const response = await this.props.userLogin(currentUser)
             Swal.fire({
                 icon: 'success',
-                title: `${response}`,
+                title: `${response.msg}`,
             })
 
-            this.props.history.push("/jobFeed")
+            if (response.isClient) {
+                this.props.history.push("/clientProfile")
+            } else if (response.isFreelancer) {
+                this.props.history.push("/freelancerProfile")
+            }
         } catch (err) {
             console.log(err)
             Swal.fire({

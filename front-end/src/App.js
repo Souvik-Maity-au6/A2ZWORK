@@ -20,6 +20,7 @@ import FreelancerProfilePage from "./pages/FreelancerProfilePage";
 import EditFreelancerProfilePage from "./pages/EditFreelancerProfilePage";
 import ClientProfilePage from "./pages/ClientProfilePage";
 import FreelancerProfileViewPage from "./pages/FreelancerProfileViewPage";
+import EditClientProfilePage from "./pages/EditClientProfilePage";
 
 function App() {
 	return (
@@ -32,8 +33,13 @@ function App() {
 					component={FreelancerProfileViewPage}
 				/>
 				<Route exact path="/clientProfile" component={ClientProfilePage} />
+				<Route
+					exact
+					path="/editClientProfile"
+					component={EditClientProfilePage}
+				/>
 				<Route path="/freelancerProfile" component={FreelancerProfilePage} />
-				<RouteProtection
+				<Route
 					path="/editFreelancerProfile"
 					component={EditFreelancerProfilePage}
 				/>

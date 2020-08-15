@@ -18,6 +18,37 @@
     font-style: italic;
 
 }
+.profile-img-edit-pencil {
+    height: 30px;
+    width: 30px;
+    text-align: center;
+    border-radius: 50%;
+    background-color:#E2D60F;
+    cursor: pointer;
+    box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.75);
+    margin: 5px 0px 0 -10px;
+}
+.edit-pencil {
+    padding: 5px;
+    font-size: 16px;
+    text-align: center;
+    border-radius: 50%;
+    background-color:#E2D60F;
+    cursor: pointer;
+    box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.75);
+    margin: 0 0 0 20px;
+}
+
+.delete-box {
+   padding: 5px;
+    font-size: 16px;
+    text-align: center;
+    border-radius: 50%;
+    background-color:#E2D60F;
+    cursor: pointer;
+    box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.75);
+    margin: 0 0 0 20px; 
+}
 .profile-img {
     border-radius: 50%;
 }
@@ -48,6 +79,14 @@
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
+}
+.work-history-container {
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+
 }
 
 .password-security {

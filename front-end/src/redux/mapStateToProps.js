@@ -3,3 +3,9 @@ export const mapToPropsUser = reduxStore => {
 		userObj: { ...reduxStore.userState },
 	};
 };
+
+export const mapToPropsData = reduxStore => {
+	return {
+		dataObj: { ...reduxStore.dataState },
+	};
+};
