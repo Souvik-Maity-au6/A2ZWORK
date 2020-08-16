@@ -403,42 +403,48 @@ module.exports = {
 		}
 	},
 	async postEditClientProfile(req, res) {
+		console.log(req.file)
 		try {
-			const imageContentProfileImage = convert(
-				req.file.originalname,
-				req.file.buffer,
-			);
-			const profileImage = await cloudinary.uploader.upload(
-				imageContentProfileImage,
-			);
-			const copiedBody = {
-				profileImage,
-				tagLine: req.body.companyTagline,
-				acceptTermsCondition: req.body.acceptTermsCondition,
-				companyContactDetails: {
-					pinNo: req.body.pinNo,
-					city: req.body.city,
-					country: req.body.country,
-					state: req.body.state,
-				},
-				companyDescription: req.body.companyDescription,
-				phoneNo: req.body.phoneNo,
-				vatId: req.body.vatId,
-				panNo: req.body.panNo,
-				GSTIN: req.body.GSTIN,
-				companyOwnerName: req.body.companyOwner,
-				companyLink: req.body.companyWebsite,
-				companyName: req.body.companyName,
-			};
+			if (req.file) {
+				const imageContentProfileImage = convert(
+					req.file.originalname,
+					req.file.buffer,
+				);
+				const profileImage = await cloudinary.uploader.upload(
+					imageContentProfileImage,
+				);
+				const copiedBody = {
+					profileImage:profileImage.secure_url,
+					tagLine: req.body.companyTagline,
+					acceptTermsCondition: req.body.acceptTermsCondition,
+					companyContactDetails: {
+						pinNo: req.body.pinNo,
+						city: req.body.city,
+						country: req.body.country,
+						state: req.body.state,
+					},
+					companyDescription: req.body.companyDescription,
+					phoneNo: req.body.phoneNo,
+					vatId: req.body.vatId,
+					panNo: req.body.panNo,
+					GSTIN: req.body.GSTIN,
+					companyOwnerName: req.body.companyOwner,
+					companyLink: req.body.companyWebsite,
+					companyName: req.body.companyName,
+				};
 
-			const clientUpdatedProfile = await userModel.findByIdAndUpdate(
-				req.userId,
-				{ ...copiedBody },
-				{ new: true },
-			);
-			return res.status(200).send({
-				clientUser: clientUpdatedProfile,
-			});
+				const clientUpdatedProfile = await userModel.findByIdAndUpdate(
+					req.userId,
+					{ ...copiedBody },
+					{ new: true },
+				);
+				return res.status(200).send({
+					clientUser: clientUpdatedProfile,
+				});
+		}
+		else{
+			throw new Error("Please provide the profile Image")
+		}
 		} catch (err) {
 			return res.status(500).send({
 				msg: err.message,
