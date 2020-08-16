@@ -7,7 +7,7 @@ const databaseConnection = async () => {
 			useNewUrlParser: true,
 			useUnifiedTopology: true,
 			useCreateIndex: true,
-			useFindAndModify: true,
+			useFindAndModify: false,
 		},
 	);
 	if (connect) {

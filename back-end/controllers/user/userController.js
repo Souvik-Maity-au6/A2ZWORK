@@ -403,7 +403,7 @@ module.exports = {
 		}
 	},
 	async postEditClientProfile(req, res) {
-		console.log(req.file)
+		console.log(req.file);
 		try {
 			if (req.file) {
 				const imageContentProfileImage = convert(
@@ -414,7 +414,7 @@ module.exports = {
 					imageContentProfileImage,
 				);
 				const copiedBody = {
-					profileImage:profileImage.secure_url,
+					profileImage: profileImage.secure_url,
 					tagLine: req.body.companyTagline,
 					acceptTermsCondition: req.body.acceptTermsCondition,
 					companyContactDetails: {
@@ -439,12 +439,12 @@ module.exports = {
 					{ new: true },
 				);
 				return res.status(200).send({
+					msg: "Your profile has been updated successfully !!!",
 					clientUser: clientUpdatedProfile,
 				});
-		}
-		else{
-			throw new Error("Please provide the profile Image")
-		}
+			} else {
+				throw new Error("Please provide the profile Image");
+			}
 		} catch (err) {
 			return res.status(500).send({
 				msg: err.message,

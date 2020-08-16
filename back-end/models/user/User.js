@@ -123,23 +123,23 @@ const userSchema = Schema({
 	GSTIN: {
 		type: String,
 	},
-	totalEarning:{
-		type:Number
+	totalEarning: {
+		type: Number,
 	},
-	totalSpending:{
-		type:Number
+	totalSpending: {
+		type: Number,
 	},
-	clientCurrentBalance:{
-		type:Number
+	clientCurrentBalance: {
+		type: Number,
 	},
-	freelancerCurrentBalance:{
-		type:Number
+	freelancerCurrentBalance: {
+		type: Number,
 	},
-	clientTotalJobHours:{
-		type:Number
+	clientTotalJobHours: {
+		type: Number,
 	},
-	freelancerTotalJobHours:{
-		type:Number
+	freelancerTotalJobHours: {
+		type: Number,
 	},
 	projectPreference: {
 		type: String,
@@ -205,29 +205,28 @@ const userSchema = Schema({
 	companyLink: {
 		type: String,
 	},
-	companyOwnerName:{
-		type:String,
+	companyOwnerName: {
+		type: String,
 	},
 	companyDescription: {
 		type: String,
 	},
-	companyContactDetails:
-		{
-			pinNo: {
-				type: String,
-			},
-			city: {
-				type: String,
-			},
-			country: {
-				type: String,
-			},
-			state: {
-				type: String,
-			},
+	companyContactDetails: {
+		pinNo: {
+			type: String,
 		},
-	tagLine:{
-		type:String
+		city: {
+			type: String,
+		},
+		country: {
+			type: String,
+		},
+		state: {
+			type: String,
+		},
+	},
+	tagLine: {
+		type: String,
 	},
 	acceptTermsCondition: {
 		type: Boolean,
@@ -264,7 +263,7 @@ userSchema.statics.findByEmailAndPassword = async function(email, password) {
 
 userSchema.methods.generateToken = async function() {
 	this.token = await sign({ id: this._id }, process.env.PRIVATE_KEY, {
-		expiresIn: 60 * 30,
+		expiresIn: 60 * 1,
 	});
 };
 userSchema.methods.generateRefreshToken = async function() {
@@ -272,7 +271,7 @@ userSchema.methods.generateRefreshToken = async function() {
 		{ id: this._id },
 		process.env.PRIVATE_KEY_REFRESH_TOKEN,
 		{
-			expiresIn: 60 * 60,
+			expiresIn: 60 * 1,
 		},
 	);
 };

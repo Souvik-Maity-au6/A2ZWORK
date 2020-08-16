@@ -1,6 +1,14 @@
 import axios from "../../axios";
-import { FETCH_USER_PROFILE_DATA, TOGGLE_FETCHING } from "../actionTypes";
-export const editFreelancerProfile = mainProfileData => async () => {
+import {
+	FETCH_USER_PROFILE_DATA,
+	TOGGLE_FETCHING,
+	SET_USER,
+} from "../actionTypes";
+export const editFreelancerProfile = mainProfileData => async (
+	dispatch,
+	getState,
+) => {
+	const user = getState().userState.user;
 	return new Promise(async (resolve, reject) => {
 		try {
 			const response = await axios.post(
@@ -21,7 +29,11 @@ export const editFreelancerProfile = mainProfileData => async () => {
 	});
 };
 
-export const editClientProfile = mainProfileData => async () => {
+export const editClientProfile = mainProfileData => async (
+	dispatch,
+	getState,
+) => {
+	const user = getState().userState.user;
 	return new Promise(async (resolve, reject) => {
 		try {
 			const response = await axios.post(

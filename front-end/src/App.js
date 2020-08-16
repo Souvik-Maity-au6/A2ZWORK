@@ -21,12 +21,18 @@ import EditFreelancerProfilePage from "./pages/EditFreelancerProfilePage";
 import ClientProfilePage from "./pages/ClientProfilePage";
 import FreelancerProfileViewPage from "./pages/FreelancerProfileViewPage";
 import EditClientProfilePage from "./pages/EditClientProfilePage";
+import MultipleAddFormPage from "./pages/MultipleAddFormPage";
 
 function App() {
 	return (
 		<div className="App">
 			<Navbar />
 			<Switch>
+				<Route
+					exact
+					path="/editFreelancerMultipleProfileData"
+					component={MultipleAddFormPage}
+				/>
 				<Route
 					exact
 					path="/FreelancerProfileViewPage"
