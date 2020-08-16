@@ -414,7 +414,7 @@ module.exports = {
 			);
 			const copiedBody = {
 				profileImage,
-				tagLine:req.body.tagLine,
+				tagLine:req.body.companyTagline,
 				acceptTermsCondition:req.body.acceptTermsCondition,
 				companyContactDetails:{
 					pinNo: req.body.pinNo,
@@ -424,7 +424,11 @@ module.exports = {
 
 				},
 				companyDescription:req.body.companyDescription,
-				companyOwnerName:req.body.companyOwnerName,
+				phoneNo= req.body.phoneNo,
+				vatId= req.body.vatId,
+				panNo=req.body.panNo,
+				GSTIN: req.body.GSTIN,
+				companyOwnerName:req.body.companyOwner,
 				companyLink:req.body.companyLink,
 				companyName:req.body.companyName
 
