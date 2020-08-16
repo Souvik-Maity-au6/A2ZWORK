@@ -75,6 +75,8 @@ module.exports = {
 					refreshToken: user[0].refreshToken,
 					isClient: user[0].isClient,
 					isFreelancer: user[0].isFreelancer,
+					profileImage:user[0].profileImage,
+					acceptTermsCondition:user[0].acceptTermsCondition
 				});
 			} else {
 				return res.status(401).send({
@@ -399,6 +401,50 @@ module.exports = {
 				msg: err.message,
 			});
 		}
+	},
+	async postEditClientProfile(req,res){
+
+		try{
+			const imageContentProfileImage = convert(
+				req.files[0].originalname,
+				req.files[0].buffer,
+			);
+			const profileImage = await cloudinary.uploader.upload(
+				imageContentProfileImage,
+			);
+			const copiedBody = {
+				profileImage,
+				tagLine:req.body.tagLine,
+				acceptTermsCondition:req.body.acceptTermsCondition,
+				companyContactDetails:{
+					pinNo: req.body.pinNo,
+					city: req.body.city,
+					country: req.body.country,
+					state: req.body.state,
+
+				},
+				companyDescription:req.body.companyDescription,
+				companyOwnerName:req.body.companyOwnerName,
+				companyLink:req.body.companyLink,
+				companyName:req.body.companyName
+
+			}
+
+			const clientUser  = new userModel({...copiedBody})
+			const clientUpdatedProfile = await clientUser.save({validateBeforeSave:false})
+			return res.status(200).send({
+				clientUser:clientUpdatedProfile
+			})
+
+		}
+		catch(err){
+
+			return res.status(500).send({
+				msg: err.message,
+			});
+
+		}
+
 	},
 	async getUserProfile(req, res) {
 		try {

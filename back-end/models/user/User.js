@@ -123,16 +123,24 @@ const userSchema = Schema({
 	GSTIN: {
 		type: String,
 	},
-	moneyBalance: [
-		{
-			earning: {
-				type: Number,
-			},
-			spending: {
-				type: Number,
-			},
-		},
-	],
+	totalEarning:{
+		type:Number
+	},
+	totalSpending:{
+		type:Number
+	},
+	clientCurrentBalance:{
+		type:Number
+	},
+	freelancerCurrentBalance:{
+		type:Number
+	},
+	clientTotalJobHours:{
+		type:Number
+	},
+	freelancerTotalJobHours:{
+		type:Number
+	},
 	projectPreference: {
 		type: String,
 	},
@@ -197,10 +205,13 @@ const userSchema = Schema({
 	companyLink: {
 		type: String,
 	},
+	companyOwnerName:{
+		type:String,
+	},
 	companyDescription: {
 		type: String,
 	},
-	companyContactDetails: [
+	companyContactDetails:
 		{
 			pinNo: {
 				type: String,
@@ -215,7 +226,9 @@ const userSchema = Schema({
 				type: String,
 			},
 		},
-	],
+	tagLine:{
+		type:String
+	},
 	acceptTermsCondition: {
 		type: Boolean,
 	},

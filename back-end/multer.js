@@ -22,7 +22,7 @@ const multerConfig = {
         }
     }),
     limits:{
-        fileSize: 1024*2
+        fileSize: 1024**1024*2
     
     },
     fileFilter: function(req,file,cb){
