@@ -16,7 +16,7 @@ class ClientProfilePage extends Component {
     }
     handleLogout = async () => {
         try {
-            const response = await this.props.handleLogout()
+            const response = await this.props.userLogout()
             Swal.fire({
                 icon: 'success',
                 title: `${response}`

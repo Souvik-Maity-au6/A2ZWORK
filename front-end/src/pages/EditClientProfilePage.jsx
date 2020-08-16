@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-// import { connect } from 'react-redux'
+import { connect } from 'react-redux'
 import Swal from 'sweetalert2'
 import { headerAuthorization } from '../axios'
-// import { editFreelancerProfile } from '../redux/actions/dataAction'
+import { editClientProfile } from '../redux/actions/dataAction'
 import pre_loader from '../img/pre_loader.svg';
 import '../styles/EditClientProfilePage.css'
 
@@ -51,13 +51,14 @@ class EditClientProfilePage extends Component {
             formData.append("companyDescription", this.state.companyDescription)
             formData.append("companyName", this.state.companyName)
             formData.append("companyTagline", this.state.companyTagline)
-            formData.append("companyOwner", this.state.companyDescription)
+            formData.append("companyWebsite", this.state.companyWebsite)
+            formData.append("companyOwner", this.state.companyOwner)
             formData.append("phoneNo", this.state.phNo)
             formData.append("vatId", this.state.vatId)
             formData.append("panNo", this.state.panCardNo)
             formData.append("GSTIN", this.state.gstIn)
             formData.append("acceptTermsCondition", this.state.acceptTermsCondition)
-            const response = await this.props.editFreelancerProfile(formData)
+            const response = await this.props.editClientProfile(formData)
             Swal.fire({
                 icon: 'success',
                 title: `${response}`,
@@ -140,7 +141,7 @@ class EditClientProfilePage extends Component {
                         <div className="pre-loader">
                             <img src={pre_loader} alt="loading" width="75" height="75" style={{ display: this.state.pre_loader }} />
                         </div>
-                        <div className="submit-profile-info">
+                        <div className="submit-profile-info" style={{ display: this.state.submit_button }}>
                             <input type="submit" className="profile-info-submit-btn" value="Save" />
                         </div>
                     </form>
@@ -150,4 +151,4 @@ class EditClientProfilePage extends Component {
     }
 }
 
-export default EditClientProfilePage
+export default connect(null, { editClientProfile })(EditClientProfilePage)

@@ -41,7 +41,7 @@ const Navbar = (props) => {
                                 </ul>
                                 <Link to="/freelancerProfile">
                                     <div className="nav-bar-profile mx-sm-3">
-                                        <img src="" alt="profile" onError={(e) => { e.target.onerror = null; e.target.src = `${person_icon}`; }} width="50"
+                                        <img src={props.userObj.user.profileImage ? props.userObj.user.profileImage : ""} alt="profile" onError={(e) => { e.target.onerror = null; e.target.src = `${person_icon}`; }} width="50"
                                             height="50" />
                                     </div>
                                 </Link>

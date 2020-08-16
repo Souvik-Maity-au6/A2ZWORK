@@ -75,8 +75,8 @@ module.exports = {
 					refreshToken: user[0].refreshToken,
 					isClient: user[0].isClient,
 					isFreelancer: user[0].isFreelancer,
-					profileImage:user[0].profileImage,
-					acceptTermsCondition:user[0].acceptTermsCondition
+					profileImage: user[0].profileImage,
+					acceptTermsCondition: user[0].acceptTermsCondition,
 				});
 			} else {
 				return res.status(401).send({
@@ -402,53 +402,48 @@ module.exports = {
 			});
 		}
 	},
-	async postEditClientProfile(req,res){
-
-		try{
+	async postEditClientProfile(req, res) {
+		try {
 			const imageContentProfileImage = convert(
-				req.files[0].originalname,
-				req.files[0].buffer,
+				req.file.originalname,
+				req.file.buffer,
 			);
 			const profileImage = await cloudinary.uploader.upload(
 				imageContentProfileImage,
 			);
 			const copiedBody = {
 				profileImage,
-				tagLine:req.body.companyTagline,
-				acceptTermsCondition:req.body.acceptTermsCondition,
-				companyContactDetails:{
+				tagLine: req.body.companyTagline,
+				acceptTermsCondition: req.body.acceptTermsCondition,
+				companyContactDetails: {
 					pinNo: req.body.pinNo,
 					city: req.body.city,
 					country: req.body.country,
 					state: req.body.state,
-
 				},
-				companyDescription:req.body.companyDescription,
-				phoneNo= req.body.phoneNo,
-				vatId= req.body.vatId,
-				panNo=req.body.panNo,
+				companyDescription: req.body.companyDescription,
+				phoneNo: req.body.phoneNo,
+				vatId: req.body.vatId,
+				panNo: req.body.panNo,
 				GSTIN: req.body.GSTIN,
-				companyOwnerName:req.body.companyOwner,
-				companyLink:req.body.companyLink,
-				companyName:req.body.companyName
+				companyOwnerName: req.body.companyOwner,
+				companyLink: req.body.companyWebsite,
+				companyName: req.body.companyName,
+			};
 
-			}
-
-			const clientUser  = new userModel({...copiedBody})
-			const clientUpdatedProfile = await clientUser.save({validateBeforeSave:false})
+			const clientUpdatedProfile = await userModel.findByIdAndUpdate(
+				req.userId,
+				{ ...copiedBody },
+				{ new: true },
+			);
 			return res.status(200).send({
-				clientUser:clientUpdatedProfile
-			})
-
-		}
-		catch(err){
-
+				clientUser: clientUpdatedProfile,
+			});
+		} catch (err) {
 			return res.status(500).send({
 				msg: err.message,
 			});
-
 		}
-
 	},
 	async getUserProfile(req, res) {
 		try {

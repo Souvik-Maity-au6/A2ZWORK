@@ -1,4 +1,4 @@
-const upload = require("../../multer")
+const upload = require("../../multer");
 const { Router } = require("express");
 const {
 	register,
@@ -13,7 +13,7 @@ const {
 	resendEmail,
 	postEditUserProfile,
 	getUserProfile,
-	postEditClientProfile
+	postEditClientProfile,
 } = require("../../controllers/user/userController");
 const { generateNewAccessToken } = require("../../middlewares/Auth");
 // const {
@@ -39,9 +39,18 @@ router.post("/sendForgotPasswordEmail", sendForgotPasswordEmail);
 router.post("/changePassword/:token", changePassword);
 router.get("/resendEmail", resendEmail);
 router.get("/generateNewAccessToken/:refreshToken", generateNewAccessToken);
-router.post("/postEditUserProfile",authentication,upload.any(),postEditUserProfile)
-router.post("/postEditClientProfile",authentication,upload.any(),postEditClientProfile)
-router.get("/getUserProfile",authentication,getUserProfile)
+router.post(
+	"/postEditUserProfile",
+	authentication,
+	upload.any(),
+	postEditUserProfile,
+);
+router.post(
+	"/postEditClientProfile",
+	authentication,
+	upload.single("profileImage"),
+	postEditClientProfile,
+);
+router.get("/getUserProfile", authentication, getUserProfile);
 
 module.exports = router;
-
