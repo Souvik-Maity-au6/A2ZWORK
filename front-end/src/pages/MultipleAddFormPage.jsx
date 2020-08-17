@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Swal from 'sweetalert2'
 import { headerAuthorization } from '../axios'
-import { addFreelancerPortfolioData } from '../redux/actions/dataAction'
+import { addFreelancerPortfolioData, addFreelancerEmploymentHistory } from '../redux/actions/dataAction'
 import pre_loader from '../img/pre_loader.svg';
 import '../styles/MultipleAddFormPage.css'
 
@@ -101,7 +101,7 @@ class MultipleAddFormPage extends Component {
             experienceDetails: this.state.experienceDetails,
         }
         try {
-            const response = await this.props.addFreelancerOtherExperiences(otherExperiences)
+            const response = await this.props.addFreelancerEmploymentHistory(otherExperiences)
             Swal.fire({
                 icon: 'success',
                 title: `${response}`,
@@ -203,4 +203,4 @@ class MultipleAddFormPage extends Component {
     }
 }
 
-export default connect(null, { addFreelancerPortfolioData })(MultipleAddFormPage)
+export default connect(null, { addFreelancerPortfolioData, addFreelancerEmploymentHistory })(MultipleAddFormPage)

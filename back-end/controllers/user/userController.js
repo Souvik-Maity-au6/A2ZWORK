@@ -1,6 +1,6 @@
 const userModel = require("../../models/user/User");
 const portfolioModel = require("../../models/portfolio/Portfolio");
-const empHistoryModel = require("../../models/employmentHistory/employmentHistory")
+const empHistoryModel = require("../../models/employmentHistory/employmentHistory");
 const path = require("path");
 const { verify } = require("jsonwebtoken");
 const mail = require("../../sendMail");
@@ -516,57 +516,52 @@ module.exports = {
 			});
 		}
 	},
-	async updateEmpHistory(req,res){
-
-		try{
-
-			
-			if (!await empHistoryModel.find({})){
-				if(req.body.hasOwnProperty("experienceTitle") && req.body.hasOwnProperty("experienceDetails")){
-					const body={
-						title:req.body.experienceTitle,
-						description:req.body.experienceDetails,
-						user:req.userId
-					}
+	async updateEmpHistory(req, res) {
+		try {
+			if (!await (await empHistoryModel.find({ _id: req.userId })).length) {
+				if (
+					req.body.hasOwnProperty("experienceTitle") &&
+					req.body.hasOwnProperty("experienceDetails")
+				) {
 					const experience = empHistoryModel({
-						...body
-					})
-					await experience.save()
-				}
-				else{
-					req.body.user= req.userId
+						...req.body,
+					});
+					await experience.save();
+				} else {
+					req.body.user = req.userId;
 					const otherDetails = empHistoryModel({
-						...req.body
-					})
-					await otherDetails.save()
+						...req.body,
+					});
+					await otherDetails.save();
 				}
-				
+			} else {
+				if (
+					req.body.hasOwnProperty("experienceTitle") &&
+					req.body.hasOwnProperty("experienceDetails")
+				) {
+					await empHistoryModel.findByIdAndUpdate(
+						req.userid,
+						{ ...req.body },
+						{ new: true },
+					);
+				} else {
+					await empHistoryModel.findByIdAndUpdate(
+						req.userid,
+						{ ...req.body },
+						{ new: true },
+					);
+				}
 			}
-			else{
-				if(req.body.hasOwnProperty("experienceTitle") && req.body.hasOwnProperty("experienceDetails")){
-					const body={
-						title:req.body.experienceTitle,
-						description:req.body.experienceDetails,
-						user:req.userId
-					}
-					await empHistoryModel.findByIdAndUpdate(req.userid,{...body},{new:true})
-				}
-				else{
-					await empHistoryModel.findByIdAndUpdate(req.userid,{...req.body},{new:true})
-				}
-			}
-	
-			const empHistory = await empHistoryModel.findOne(req.userId)
+
+			const empHistory = await empHistoryModel.findOne({ user: req.userId });
 			return res.status(200).send({
-	
-				empHistorty
-			})
-		}
-		catch(err){
+				msg: "Your data has been updated successfully !!!",
+				empHistory,
+			});
+		} catch (err) {
 			return res.status(500).send({
 				msg: err.message,
 			});
 		}
-		
-	}
+	},
 };
