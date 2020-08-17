@@ -41,5 +41,5 @@ const empHistorySchema = Schema({
     }
 })
 
-const empHistoryModel = model("user", empHistorySchema);
+const empHistoryModel = model("empHistory", empHistorySchema);
 module.exports = empHistoryModel;
