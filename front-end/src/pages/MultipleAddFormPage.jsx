@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-// import { connect } from 'react-redux'
+import { connect } from 'react-redux'
 import Swal from 'sweetalert2'
 import { headerAuthorization } from '../axios'
-// import { editFreelancerProfile } from '../redux/actions/dataAction'
+import { addFreelancerPortfolioData } from '../redux/actions/dataAction'
 import pre_loader from '../img/pre_loader.svg';
 import '../styles/MultipleAddFormPage.css'
 
@@ -10,33 +10,19 @@ import '../styles/MultipleAddFormPage.css'
 const initialState = {
     pre_loader: "none",
     submit_button: "block",
-    profileImage: "",
-    resume: "",
-    title: "",
-    freelancerDescription: "",
-    availability: "",
-    hourlyRate: "",
-    projectPreference: "",
-    experienceLevel: "",
-    languages: "",
-    languageProficiency: "",
-    category: "",
-    skills: "",
-    college: "",
-    collegeDegree: "",
+    portfolioImage: "",
+    portfolioTitle: "",
+    portfolioDescription: "",
+    portfolioLink: "",
+    companyName: "",
+    jobTitle: "",
+    companyWebsite: "",
+    jobDescription: "",
     startingYear: "",
-    passoutYear: "",
-    specializationTitle: "",
-    specializationSkills: "",
-    cityName: "",
-    stateName: "",
-    countryName: "",
-    pinCode: "",
-    phNo: "",
-    panCardNo: "",
-    adharCardNo: "",
-    gstIn: "",
-    acceptTermsCondition: false,
+    endingYear: "",
+    experienceTitle: "",
+    experienceDetails: "",
+
 
 }
 
@@ -45,54 +31,28 @@ class MultipleAddFormPage extends Component {
     componentDidMount() {
         headerAuthorization()
     }
-    handleChangeProfileInput = (event) => {
+    handleChangePortfolioInput = (event) => {
         this.setState({ [event.target.name]: event.target.value })
     }
-    handleChangeProfileImg = (event) => {
-        this.setState({ profileImage: event.target.files[0] });
+    handleChangePortfolioImg = (event) => {
+        this.setState({ portfolioImage: event.target.files[0] });
     }
-    handleChangeCvFile = (event) => {
-        this.setState({ resume: event.target.files[0] })
-    }
-    handleSubmitProfileData = async (event) => {
+
+    handleSubmitPortfolioData = async (event) => {
         event.preventDefault()
         this.setState({ pre_loader: !this.state.pre_loader, submit_button: "none" })
         const formData = new FormData();
         try {
-            formData.append("profileImage", this.state.profileImage);
-            formData.append("resume", this.state.resume);
-            formData.append("city", this.state.cityName);
-            formData.append("state", this.state.stateName);
-            formData.append("country", this.state.countryName);
-            formData.append("pinNo", this.state.pinCode);
-            formData.append("category", this.state.category);
-            formData.append("collegeName", this.state.college);
-            formData.append("degree", this.state.collegeDegree);
-            formData.append("startingYear", this.state.startingYear);
-            formData.append("passoutYear", this.state.passoutYear);
-            formData.append("skills", this.state.skills);
-            formData.append("medium", this.state.languages);
-            formData.append("fluency", this.state.languageProficiency);
-            formData.append("specializationTitle", this.state.specializationTitle)
-            formData.append("specializationSkills", this.state.specializationSkills)
-            formData.append("title", this.state.title)
-            formData.append("availability", this.state.availability)
-            formData.append("freelancerDescription", this.state.freelancerDescription)
-            formData.append("phoneNo", this.state.phNo)
-            formData.append("addharNo", this.state.adharCardNo)
-            formData.append("panNo", this.state.panCardNo)
-            formData.append("GSTIN", this.state.gstIn)
-            formData.append("projectPreference", this.state.projectPreference)
-            formData.append("experienceLevel", this.state.experienceLevel)
-            formData.append("hourlyRate", this.state.hourlyRate)
-            formData.append("acceptTermsCondition", this.state.acceptTermsCondition)
-            const response = await this.props.editFreelancerProfile(formData)
+            formData.append("portfolioImage", this.state.portfolioImage);
+            formData.append("portfolioTitle", this.state.portfolioTitle)
+            formData.append("portfolioDescription", this.state.portfolioDescription)
+            formData.append("portfolioLink", this.state.portfolioLink)
+            const response = await this.props.addFreelancerPortfolioData(formData)
             Swal.fire({
                 icon: 'success',
                 title: `${response}`,
             })
-            this.props.history.push("/freelancerProfile")
-
+            this.setState(initialState)
         } catch (err) {
             Swal.fire({
                 icon: 'error',
@@ -101,9 +61,61 @@ class MultipleAddFormPage extends Component {
             this.setState(initialState)
         }
     }
-    componentWillUnmount() {
-        this.setState(initialState)
+    handleChangeEmploymentHistory = (event) => {
+        this.setState({ [event.target.name]: event.target.value })
     }
+    handleSubmitEmploymentHistory = async (event) => {
+        event.preventDefault()
+        this.setState({ pre_loader: !this.state.pre_loader, submit_button: "none" })
+        const employmentHistory = {
+            companyName: this.state.companyName,
+            jobTitle: this.state.jobTitle,
+            companyWebsite: this.state.companyWebsite,
+            jobDescription: this.state.jobDescription,
+            startingYear: this.state.startingYear,
+            endingYear: this.state.endingYear,
+        }
+        try {
+            const response = await this.props.addFreelancerEmploymentHistory(employmentHistory)
+            Swal.fire({
+                icon: 'success',
+                title: `${response}`,
+            })
+            this.setState(initialState)
+        } catch (err) {
+            Swal.fire({
+                icon: 'error',
+                title: `${err}`,
+            })
+            this.setState(initialState)
+        }
+    }
+    handleChangeOtherExperiences = (event) => {
+        this.setState({ [event.target.name]: event.target.value })
+    }
+    handleSubmitOtherExperiences = async (event) => {
+        event.preventDefault()
+        this.setState({ pre_loader: !this.state.pre_loader, submit_button: "none" })
+        const otherExperiences = {
+            experienceTitle: this.state.experienceTitle,
+            experienceDetails: this.state.experienceDetails,
+        }
+        try {
+            const response = await this.props.addFreelancerOtherExperiences(otherExperiences)
+            Swal.fire({
+                icon: 'success',
+                title: `${response}`,
+            })
+            this.setState(initialState)
+        } catch (err) {
+            Swal.fire({
+                icon: 'error',
+                title: `${err}`,
+            })
+            this.setState(initialState)
+        }
+    }
+
     render() {
         return (
             <div className="container">
@@ -113,7 +125,7 @@ class MultipleAddFormPage extends Component {
                     </div>
                     <div className="form-category-container">
                         <h2 className="form-category-header">Portfolio</h2>
-                        <form>
+                        <form onSubmit={this.handleSubmitPortfolioData}>
                             <div className="file-upload-container">
                                 <div className="img-upload mb-3">
                                     <label htmlFor="img-file">Portfolio Image* : </label>
@@ -122,12 +134,12 @@ class MultipleAddFormPage extends Component {
                             </div>
                             <div className="profile-title-container">
                                 <label htmlFor="title">Portfolio Title* : </label>
-                                <input onChange={this.handleChangeProfileInput} type="text" id="title" name="companyName" className="input-title" placeholder="Enter your company name..." value={this.state.companyName} required />
+                                <input onChange={this.handleChangePortfolioInput} type="text" id="title" name="portfolioTitle" className="input-title" placeholder="Enter your portfolio title..." value={this.state.portfolioTitle} required />
                                 <label htmlFor="website">Portfolio Link* : </label>
-                                <input onChange={this.handleChangeProfileInput} type="url" id="website" name="portfolioLink" className="input-portfolio-link" placeholder="Enter your portfolio related link..." value={this.state.portfolioLink} required />
+                                <input onChange={this.handleChangePortfolioInput} type="url" id="website" name="portfolioLink" className="input-portfolio-link" placeholder="Enter your portfolio related link..." value={this.state.portfolioLink} required />
                                 <div className="row mt-3">
                                     <label htmlFor="description" className="ml-3">Overview* : </label>
-                                    <textarea onChange={this.handleChangeProfileInput} id="description" name="portfolioDescription" className="input-portfolio-description" placeholder="Enter a short description about your portfolio..." value={this.state.portfolioDescription} required></textarea>
+                                    <textarea onChange={this.handleChangePortfolioInput} id="description" name="portfolioDescription" className="input-portfolio-description" placeholder="Enter a short description about your portfolio..." value={this.state.portfolioDescription} required></textarea>
                                 </div>
                             </div>
                             <div className="pre-loader">
@@ -140,23 +152,23 @@ class MultipleAddFormPage extends Component {
                     </div>
                     <div className="form-category-container">
                         <h2 className="form-category-header">Employment History</h2>
-                        <form>
+                        <form onSubmit={this.handleSubmitEmploymentHistory}>
                             <div className="profile-title-container">
-                                <label htmlFor="title">Company Name* : </label>
-                                <input onChange={this.handleChangeProfileInput} type="text" id="title" name="companyName" className="input-title" placeholder="Enter your company name..." value={this.state.companyName} required />
+                                <label htmlFor="companyName">Company Name* : </label>
+                                <input onChange={this.handleChangeEmploymentHistory} type="text" id="companyName" name="companyName" className="input-title" placeholder="Enter your company name..." value={this.state.companyName} required />
                                 <label htmlFor="owner">Job Title* : </label>
-                                <input onChange={this.handleChangeProfileInput} type="text" id="owner" name="companyOwner" className="input-job-title" placeholder="Enter your job position..." value={this.state.companyOwner} required />
-                                <label htmlFor="website">Website* : </label>
-                                <input onChange={this.handleChangeProfileInput} type="url" id="website" name="companyWebsite" className="input-website" placeholder="Enter your company website link..." value={this.state.companyWebsite} required />
+                                <input onChange={this.handleChangeEmploymentHistory} type="text" id="owner" name="jobTitle" className="input-job-title" placeholder="Enter your job position..." value={this.state.jobTitle} required />
+                                <label htmlFor="companyWebsite">Website* : </label>
+                                <input onChange={this.handleChangeEmploymentHistory} type="url" id="companyWebsite" name="companyWebsite" className="input-website" placeholder="Enter your company website link..." value={this.state.companyWebsite} required />
                                 <div className="row mt-3">
-                                    <label htmlFor="description" className="ml-3">Overview* : </label>
-                                    <textarea onChange={this.handleChangeProfileInput} id="description" name="companyDescription" className="input-description mb-3" placeholder="Enter a short description about your job..." value={this.state.companyDescription} required></textarea>
+                                    <label htmlFor="jobDescription" className="ml-3">Overview* : </label>
+                                    <textarea onChange={this.handleChangeEmploymentHistory} id="jobDescription" name="jobDescription" className="input-description mb-3" placeholder="Enter a short description about your job..." value={this.state.jobDescription} required></textarea>
                                 </div>
                                 <label htmlFor="date-attended">Employment Date* : </label>
-                                <input onChange={this.handleChangeProfileInput} type="date" id="date-attended" className="date-input-from" name="startingYear" max="2019-12-31" value={this.state.startingYear} />
+                                <input onChange={this.handleChangeEmploymentHistory} type="date" id="date-attended" className="date-input-from" name="startingYear" max="2019-12-31" value={this.state.startingYear} />
                                 <label style={{ fontSize: "18px" }} htmlFor="date-ended">to</label>
-                                <input onChange={this.handleChangeProfileInput} type="date" id="date-ended"
-                                    className="date-input-to" name="passoutYear" max="2024-12-31" value={this.state.passoutYear} />
+                                <input onChange={this.handleChangeEmploymentHistory} type="date" id="date-ended"
+                                    className="date-input-to" name="endingYear" max="2024-12-31" value={this.state.endingYear} />
                             </div>
                             <div className="pre-loader">
                                 <img src={pre_loader} alt="loading" width="75" height="75" style={{ display: this.state.pre_loader }} />
@@ -166,10 +178,29 @@ class MultipleAddFormPage extends Component {
                             </div>
                         </form>
                     </div>
+                    <div className="form-category-container">
+                        <h2 className="form-category-header">Other Experience</h2>
+                        <form onSubmit={this.handleSubmitOtherExperiences}>
+                            <div className="profile-title-container">
+                                <label htmlFor="experienceTitle">Title* : </label>
+                                <input onChange={this.handleChangeOtherExperiences} type="text" id="experienceTitle" name="experienceTitle" className="input-job-title" placeholder="Enter your experience title..." value={this.state.experienceTitle} required />
+                                <div className="row mt-3">
+                                    <label htmlFor="experienceDetails" className="ml-3">Overview* : </label>
+                                    <textarea onChange={this.handleChangeOtherExperiences} id="experienceDetails" name="experienceDetails" className="input-experience-description mb-3" placeholder="Enter a brief about your experience..." value={this.state.experienceDetails} required></textarea>
+                                </div>
+                            </div>
+                            <div className="pre-loader">
+                                <img src={pre_loader} alt="loading" width="75" height="75" style={{ display: this.state.pre_loader }} />
+                            </div>
+                            <div className="submit-profile-info" style={{ display: this.state.submit_button }}>
+                                <input type="submit" className="profile-info-submit-btn" value="Add Other Experience Details" />
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         )
     }
 }
 
-export default MultipleAddFormPage
+export default connect(null, { addFreelancerPortfolioData })(MultipleAddFormPage)

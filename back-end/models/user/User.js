@@ -60,9 +60,9 @@ const userSchema = Schema({
 			],
 		},
 	],
-	jobDone:{
-		type:Schema.Types.ObjectId,
-		ref:"job"
+	jobDone: {
+		type: Schema.Types.ObjectId,
+		ref: "job",
 	},
 	availability: {
 		type: String,
@@ -252,7 +252,7 @@ userSchema.statics.findByEmailAndPassword = async function(email, password) {
 
 userSchema.methods.generateToken = async function() {
 	this.token = await sign({ id: this._id }, process.env.PRIVATE_KEY, {
-		expiresIn: 60 * 1,
+		expiresIn: 60 * 30,
 	});
 };
 userSchema.methods.generateRefreshToken = async function() {
@@ -260,7 +260,7 @@ userSchema.methods.generateRefreshToken = async function() {
 		{ id: this._id },
 		process.env.PRIVATE_KEY_REFRESH_TOKEN,
 		{
-			expiresIn: 60 * 1,
+			expiresIn: 60 * 60,
 		},
 	);
 };

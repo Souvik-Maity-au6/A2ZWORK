@@ -33,3 +33,12 @@
     outline: none;
     border-radius: 10px;
 }
+
+.input-experience-description {
+    margin-left: 80px;
+    padding: 10px 20px;
+    height: 150px;
+    width: 73%;
+    outline: none;
+    border-radius: 10px;
+}

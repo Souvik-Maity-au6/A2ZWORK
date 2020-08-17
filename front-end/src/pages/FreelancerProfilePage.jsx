@@ -46,6 +46,10 @@ class FreelancerProfilePage extends Component {
     handleCLickEditProfile = () => {
         this.props.history.push("/editFreelancerProfile")
     }
+    handleClickAddPortfolio = () => {
+        this.props.history.push("/editFreelancerMultipleProfileData")
+    }
+
     render() {
         return (
             <div className="container">
@@ -93,8 +97,8 @@ class FreelancerProfilePage extends Component {
                                     </div>
                                     <div className="money-balance-container">
                                         <h6>Balance : </h6>
-                                        <p className="px-3 mr-auto">Your balance is <b>${this.props.dataObj.userProfile.currentBalance ? this.props.dataObj.userProfile.currentBalance : "00.00"}</b></p>
-                                        {this.props.dataObj.userProfile.currentBalance ? <button className="btn btn-success">Get Paid Now</button> : null}
+                                        <p className="px-3 mr-auto">Your balance is <b>${this.props.dataObj.userProfile.freelancerCurrentBalance ? this.props.dataObj.userProfile.freelancerCurrentBalance : "00.00"}</b></p>
+                                        {this.props.dataObj.userProfile.freelancerCurrentBalance ? <button className="btn btn-success">Get Paid Now</button> : null}
                                     </div>
                                     <div className="work-details-container">
                                         <div className="text-center">
@@ -106,7 +110,7 @@ class FreelancerProfilePage extends Component {
                                             <p>Total Jobs</p>
                                         </div>
                                         <div className="text-center">
-                                            <h6>{this.props.dataObj.userProfile.totalJobHours ? this.props.dataObj.userProfile.totalJobHours : "00"}</h6>
+                                            <h6>{this.props.dataObj.userProfile.freelancerTotalJobHours ? this.props.dataObj.userProfile.freelancerTotalJobHours : "00"}</h6>
                                             <p>Total Hours</p></div>
                                     </div>
                                 </div>
@@ -230,7 +234,7 @@ class FreelancerProfilePage extends Component {
                                     {this.props.dataObj.userProfile.address ?
                                         <>
                                             <div className="language mt-3">
-                                                <h6>Addresses : </h6>
+                                                <h6>Address : </h6>
                                                 <p className="px-3">{this.props.dataObj.userProfile.address.city}, {this.props.dataObj.userProfile.address.state},{this.props.dataObj.userProfile.address.country}, {this.props.dataObj.userProfile.address.pinNo} </p>
                                             </div>
                                             {this.props.dataObj.userProfile.phoneNo && <div className="language">
@@ -255,7 +259,7 @@ class FreelancerProfilePage extends Component {
                                 <div className="col">
                                     <div className="language-title">
                                         <h4>Portfolio : </h4>
-                                        <button className="btn btn-success btn-sm">Add</button>
+                                        <button onClick={this.handleClickAddPortfolio} className="btn btn-success btn-sm">Add</button>
                                     </div>
                                     <div className="portfolio-container">
                                         <h6>Showcase your work to win more projects</h6>
@@ -267,7 +271,7 @@ class FreelancerProfilePage extends Component {
                                 <div className="col">
                                     <div className="language-title">
                                         <h4>Employment history : </h4>
-                                        <button className="btn btn-success btn-sm">Add</button>
+                                        <button onClick={this.handleClickAddPortfolio} className="btn btn-success btn-sm">Add</button>
                                     </div>
                                     <div className="employment-history-container">
                                         <h6>No content available</h6>
@@ -278,7 +282,7 @@ class FreelancerProfilePage extends Component {
                                 <div className="col">
                                     <div className="language-title">
                                         <h4>Other Experiences : </h4>
-                                        <button className="btn btn-success btn-sm">Add</button>
+                                        <button onClick={this.handleClickAddPortfolio} className="btn btn-success btn-sm">Add</button>
                                     </div>
                                     <div className="employment-history-container">
                                         <h6>No content available</h6>

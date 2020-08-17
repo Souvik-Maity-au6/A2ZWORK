@@ -14,7 +14,7 @@ const {
 	postEditUserProfile,
 	getUserProfile,
 	postEditClientProfile,
-	portfolioUpdate
+	portfolioUpdate,
 } = require("../../controllers/user/userController");
 const { generateNewAccessToken } = require("../../middlewares/Auth");
 // const {
@@ -53,6 +53,11 @@ router.post(
 	postEditClientProfile,
 );
 router.get("/getUserProfile", authentication, getUserProfile);
-router.get("/portfolioUpdate,",authentication,upload.single("portfolioImage"),portfolioUpdate)
+router.post(
+	"/portfolioUpdate",
+	authentication,
+	upload.single("portfolioImage"),
+	portfolioUpdate,
+);
 
 module.exports = router;
