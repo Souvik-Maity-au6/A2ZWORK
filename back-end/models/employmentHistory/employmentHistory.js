@@ -26,7 +26,7 @@ const empHistorySchema = Schema({
     otherExperience:[
 
         {
-            subject:{
+            title:{
                 type:String
             },
             description:{

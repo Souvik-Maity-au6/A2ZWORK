@@ -1,5 +1,6 @@
 const userModel = require("../../models/user/User");
 const portfolioModel = require("../../models/portfolio/Portfolio");
+const empHistoryModel = require("../../models/employmentHistory/employmentHistory")
 const path = require("path");
 const { verify } = require("jsonwebtoken");
 const mail = require("../../sendMail");
@@ -515,4 +516,57 @@ module.exports = {
 			});
 		}
 	},
+	async updateEmpHistory(req,res){
+
+		try{
+
+			
+			if (!await empHistoryModel.find({})){
+				if(req.body.hasOwnProperty("experienceTitle") && req.body.hasOwnProperty("experienceDetails")){
+					const body={
+						title:req.body.experienceTitle,
+						description:req.body.experienceDetails,
+						user:req.userId
+					}
+					const experience = empHistoryModel({
+						...body
+					})
+					await experience.save()
+				}
+				else{
+					req.body.user= req.userId
+					const otherDetails = empHistoryModel({
+						...req.body
+					})
+					await otherDetails.save()
+				}
+				
+			}
+			else{
+				if(req.body.hasOwnProperty("experienceTitle") && req.body.hasOwnProperty("experienceDetails")){
+					const body={
+						title:req.body.experienceTitle,
+						description:req.body.experienceDetails,
+						user:req.userId
+					}
+					await empHistoryModel.findByIdAndUpdate(req.userid,{...body},{new:true})
+				}
+				else{
+					await empHistoryModel.findByIdAndUpdate(req.userid,{...req.body},{new:true})
+				}
+			}
+	
+			const empHistory = await empHistoryModel.findOne(req.userId)
+			return res.status(200).send({
+	
+				empHistorty
+			})
+		}
+		catch(err){
+			return res.status(500).send({
+				msg: err.message,
+			});
+		}
+		
+	}
 };

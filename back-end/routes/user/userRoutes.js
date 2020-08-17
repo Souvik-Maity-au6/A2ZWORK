@@ -15,6 +15,7 @@ const {
 	getUserProfile,
 	postEditClientProfile,
 	portfolioUpdate,
+	updateEmpHistory
 } = require("../../controllers/user/userController");
 const { generateNewAccessToken } = require("../../middlewares/Auth");
 // const {
@@ -60,4 +61,5 @@ router.post(
 	portfolioUpdate,
 );
 
+router.post("postEmpHistory",authentication,updateEmpHistory)
 module.exports = router;
