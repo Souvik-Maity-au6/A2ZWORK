@@ -19,16 +19,10 @@ const empHistorySchema = Schema({
 	jobDescription: {
 		type: String,
 	},
-	otherExperience: [
-		{
-			title: {
-				type: String,
-			},
-			description: {
-				type: String,
-			},
-		},
-	],
+	otherExperience:{
+		type:Schema.Types.ObjectId,
+		ref:"otherExperience"
+	} ,
 	user: {
 		type: Schema.Types.ObjectId,
 		ref: "user",

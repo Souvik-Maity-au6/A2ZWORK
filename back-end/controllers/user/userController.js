@@ -1,6 +1,7 @@
 const userModel = require("../../models/user/User");
 const portfolioModel = require("../../models/portfolio/Portfolio");
 const empHistoryModel = require("../../models/employmentHistory/employmentHistory");
+const empExpModel = require("../../models/employmentHistory/otherExperience")
 const path = require("path");
 const { verify } = require("jsonwebtoken");
 const mail = require("../../sendMail");
@@ -11,6 +12,9 @@ const { setTimeout } = require("timers");
 const { sign } = require("jsonwebtoken");
 const convert = require("../../converter");
 const cloudinary = require("../../cloudinary");
+
+const { ESTALE } = require("constants");
+const empOtherExpModel = require("../../models/employmentHistory/otherExperience");
 
 module.exports = {
 	// --------- User Registration ---------------- //
@@ -517,48 +521,51 @@ module.exports = {
 		}
 	},
 	async updateEmpHistory(req, res) {
-		try {
-			if (!await (await empHistoryModel.find({ _id: req.userId })).length) {
-				if (
-					req.body.hasOwnProperty("experienceTitle") &&
-					req.body.hasOwnProperty("experienceDetails")
-				) {
-					const experience = empHistoryModel({
-						...req.body,
-					});
-					await experience.save();
-				} else {
-					req.body.user = req.userId;
-					const otherDetails = empHistoryModel({
-						...req.body,
-					});
-					await otherDetails.save();
-				}
-			} else {
-				if (
-					req.body.hasOwnProperty("experienceTitle") &&
-					req.body.hasOwnProperty("experienceDetails")
-				) {
-					await empHistoryModel.findByIdAndUpdate(
-						req.userid,
-						{ ...req.body },
-						{ new: true },
-					);
-				} else {
-					await empHistoryModel.findByIdAndUpdate(
-						req.userid,
-						{ ...req.body },
-						{ new: true },
-					);
-				}
+		let expId;
+		try{
+			if(req.body.hasOwnProperty("experienceTitle") && req.body.hasOwnProperty("experienceDetails")){
+				const empHistory = await empHistoryModel.findOne({user:req.userId})
+				const experience = await empOtherExpModel.find({_id:empHistory.otherExperience})
+				experience[0].otherExperience.push({
+					title:req.body.experienceTitle,
+					description:req.body.experienceDetails
+				})
+				const exp = await experience[0].save() 
+				return res.status(200).send({
+					msg:"Sucessfull",
+					otherExperience:exp
+				})
 			}
+			else{
+				if(!(await empOtherExpModel.find({user:req.userId})).length){
 
-			const empHistory = await empHistoryModel.findOne({ user: req.userId });
+					const otherExperience = new empOtherExpModel({user:req.userId})
+					const otherExp = await otherExperience.save()
+					req.body.otherExperience=otherExp._id
+					req.body.user = req.userId
+					const empHistory = new empHistoryModel({
+						...req.body
+					})
+					const emp=await empHistory.save()
+				}
+				else{
+					const otherExp = await empOtherExpModel.findOne({user:req.userId})
+					req.body.otherExperience=otherExp._id
+					req.body.user = req.userId
+					const empHistory = new empHistoryModel({
+						...req.body
+					})
+					const emp=await empHistory.save()
+				}
+
+			}
+			const employeeHistory = await empHistoryModel.find({user:req.userId})
 			return res.status(200).send({
-				msg: "Your data has been updated successfully !!!",
-				empHistory,
-			});
-		} catch (err) {
+				msg:"Succesfully Updated !!!",
+				employeeHistory
+			})
+		}
+		catch(err){
 			return res.status(500).send({
 				msg: err.message,
 			});
