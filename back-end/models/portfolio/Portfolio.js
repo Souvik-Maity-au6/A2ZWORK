@@ -8,19 +8,12 @@ const portfolioSchema = Schema({
     portfolioLink:{
         type:String
     },
-    projectName:{
+    portfolioTitle:{
         type:String
     },
-    certification:[
-        {
-            title:{
-                type:String
-            },
-            certifiationLink:{
-                type:String
-            }
-        }
-    ],
+    overview:{
+        type:String
+    },
     user:{
         type:Schema.Types.ObjectId,
         ref:"user"
@@ -28,5 +21,5 @@ const portfolioSchema = Schema({
         
 })
 
-const portfolioModel = model("user", portfolioSchema);
+const portfolioModel = model("portfolio", portfolioSchema);
 module.exports = portfolioModel;

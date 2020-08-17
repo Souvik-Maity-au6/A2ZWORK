@@ -34,9 +34,12 @@ const jobSchema = Schema({
     },
     clientReview:{
         type:Number
+    },
+    jobStatus:{
+        type:String,
     }
 })
 
 
-const jobModel = model("user", jobSchema);
+const jobModel = model("job", jobSchema);
 module.exports = jobModel;

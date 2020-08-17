@@ -60,7 +60,10 @@ const userSchema = Schema({
 			],
 		},
 	],
-
+	jobDone:{
+		type:Schema.Types.ObjectId,
+		ref:"job"
+	},
 	availability: {
 		type: String,
 	},
@@ -185,20 +188,6 @@ const userSchema = Schema({
 	companyName: {
 		type: String,
 	},
-	jobApplied: [
-		{
-			type: Schema.Types.ObjectId,
-			ref: "jobs",
-			default: null,
-		},
-	],
-	jobPosted: [
-		{
-			type: Schema.Types.ObjectId,
-			ref: "jobs",
-			default: null,
-		},
-	],
 	vatId: {
 		type: String,
 	},
