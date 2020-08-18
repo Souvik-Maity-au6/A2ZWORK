@@ -1,1 +1,10 @@
-const jobModel = require("../../models/job/job")
+const jobPostModel = require("../../models/job/job")
+
+
+module.exports={
+
+    async jobPost(req,res){
+
+
+    }
+}

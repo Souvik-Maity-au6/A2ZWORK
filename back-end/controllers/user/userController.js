@@ -78,6 +78,7 @@ module.exports = {
 					userName: user[0].userName,
 					userEmail: user[0].userEmail,
 					accessToken: user[0].token,
+					companyName:user[0].companyName,
 					refreshToken: user[0].refreshToken,
 					isClient: user[0].isClient,
 					isFreelancer: user[0].isFreelancer,
@@ -403,6 +404,7 @@ module.exports = {
 					isClient: updatedProfile.isClient,
 					isFreelancer: updatedProfile.isFreelancer,
 					profileImage: updatedProfile.profileImage,
+					comapanyName:updatedProfile.companyName,
 					acceptTermsCondition: updatedProfile.acceptTermsCondition,
 				});
 			} else {
@@ -463,6 +465,7 @@ module.exports = {
 					isFreelancer: clientUpdatedProfile.isFreelancer,
 					profileImage: clientUpdatedProfile.profileImage,
 					acceptTermsCondition: clientUpdatedProfile.acceptTermsCondition,
+					companyName:clientUpdatedProfile.comapanyName,
 				});
 			} else {
 				throw new Error("Please provide the profile Image");

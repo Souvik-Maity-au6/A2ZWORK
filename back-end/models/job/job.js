@@ -3,43 +3,41 @@ const { Schema, model } = require("mongoose");
 
 const jobSchema = Schema({
 
+    projectFile:[{
+        type:String
+    }],
+    category:{
+        type:String
+    },
+    skills:[{
+        type:String
+    }],
     jobTitle:{
         type:String
     },
-    description:{
+    projectDuration:{
         type:String
     },
-    typeOfProject:{
+    jobDescription:{
         type:String
     },
-    jobCategory:{
+    projectType:{
         type:String
     },
-    expertise:{
+    expertiseLevel:{
         type:String
     },
-    budget:[{
-        hourly:{
-            type:Number
-        },
-        weekly:{
-            type:Number
-        }  
-    }],
-    projectDetailFile:{
+    budgetType:{
         type:String
     },
-    freelancerReview:{
+    budgetAmount:{
         type:Number
     },
-    clientReview:{
+    freelancerNo:{
         type:Number
-    },
-    jobStatus:{
-        type:String,
     }
 })
 
 
-const jobModel = model("job", jobSchema);
+const jobModel = model("jobPost", jobSchema);
 module.exports = jobModel;

@@ -37,6 +37,7 @@ module.exports = {
 				userId: newUser.id,
 				userName: newUser.userName,
 				userEmail: newUser.userEmail,
+				companyName:newUser.companyName,
 				accessToken: newUser.token,
 				refreshToken: newUser.refreshToken,
 				profileImage: newUser.profileImage,
