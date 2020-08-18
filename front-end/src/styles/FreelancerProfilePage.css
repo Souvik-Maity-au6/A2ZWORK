@@ -137,10 +137,12 @@
     text-align: center;
 }
 
-.portfolio-container > a {
-    color: #28A745;
+.portfolio-data-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
 }
-
 .employment-history-container {
     min-height: 150px;
     display: flex;

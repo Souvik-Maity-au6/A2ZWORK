@@ -39,6 +39,7 @@ class ClientProfilePage extends Component {
                 icon: 'success',
                 title: `${response}`
             })
+            this.props.history.push("/login")
         } catch (err) {
             Swal.fire({
                 icon: 'error',
@@ -98,7 +99,7 @@ class ClientProfilePage extends Component {
                                             <p>Total Spendings</p>
                                         </div>
                                         <div className="text-center px-5">
-                                            <h6>{this.props.dataObj.userProfile.jobPosted.length ? this.props.dataObj.userProfile.jobPosted.length : "00"}</h6>
+                                            <h6>{this.props.dataObj.userProfile.jobPosted ? this.props.dataObj.userProfile.jobPosted.length : "00"}</h6>
                                             <p>Total Jobs</p>
                                         </div>
                                         <div className="text-center">
@@ -125,13 +126,13 @@ class ClientProfilePage extends Component {
                                 </div>
                                 <div className="col-7">
                                     <h4>Company contact : <span className="edit-pencil"><i className="fa fa-pencil" aria-hidden="true"></i></span></h4>
-                                    <div className="language">
+                                    <div className="language mt-3">
                                         <h6>Owner : </h6>
-                                        <p className="px-3">{this.props.dataObj.userProfile.companyOwner && this.props.dataObj.userProfile.companyOwner}</p>
+                                        <p className="px-3">{this.props.dataObj.userProfile.companyOwnerName && this.props.dataObj.userProfile.companyOwnerName}</p>
                                     </div>
                                     {this.props.dataObj.userProfile.companyContactDetails ?
                                         <>
-                                            <div className="language mt-3">
+                                            <div className="language">
                                                 <h6>Address : </h6>
                                                 <p className="px-3">{this.props.dataObj.userProfile.companyContactDetails.city}, {this.props.dataObj.userProfile.companyContactDetails.state},{this.props.dataObj.userProfile.companyContactDetails.country}, {this.props.dataObj.userProfile.companyContactDetails.pinNo} </p>
                                             </div>

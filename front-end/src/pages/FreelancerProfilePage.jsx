@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
-// import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import Swal from 'sweetalert2'
 import { mapToPropsData } from "../redux/mapStateToProps"
 import { userLogout } from '../redux/actions/userAction'
-import { getUserProfileData, downloadResume } from '../redux/actions/dataAction'
+import { getUserProfileData, downloadResume, getUserPortfolio, getEmploymentHistory } from '../redux/actions/dataAction'
 import { headerAuthorization } from '../axios'
 import person_icon from '../img/person_icon.png'
 import Spinner from '../components/common/Spinner'
@@ -19,6 +18,8 @@ class FreelancerProfilePage extends Component {
         headerAuthorization()
         try {
             const response = await this.props.getUserProfileData()
+            this.props.getUserPortfolio()
+            this.props.getEmploymentHistory()
             this.setState({ userProfileMsg: response })
         } catch (err) {
             Swal.fire({
@@ -178,7 +179,7 @@ class FreelancerProfilePage extends Component {
                                                     </div>
                                                     <div className="education-details">
                                                         <h6>Course year : </h6>
-                                                        <p className="px-3">{education.startingYear}-{education.passoutYear}</p>
+                                                        <p className="px-3">{education.startingYear} to {education.passoutYear}</p>
                                                     </div>
                                                 </>)}
                                         </div>
@@ -261,10 +262,22 @@ class FreelancerProfilePage extends Component {
                                         <h4>Portfolio : </h4>
                                         <button onClick={this.handleClickAddPortfolio} className="btn btn-success btn-sm">Add</button>
                                     </div>
-                                    <div className="portfolio-container">
-                                        <h6>Showcase your work to win more projects</h6>
-                                        <p>Add items to impress clients</p>
-                                    </div>
+                                    {this.props.dataObj.userProfile.userPortfolio ?
+                                        <div className="portfolio-data-container m-3">
+                                            {this.props.dataObj.userProfile.userPortfolio.map(portfolio =>
+                                                <div key={portfolio._id} className="card" style={{ width: "18rem", marginRight: "10px" }}>
+                                                    <a href={portfolio.portfolioLink} target="_blank" rel="noopener noreferrer"><img className="card-img-top" src={portfolio.image} alt="portfolio" height="200" width="100%" /></a>
+                                                    <div className="card-body">
+                                                        <h5 className="card-title">{portfolio.portfolioTitle} <span className="edit-pencil"><i className="fa fa-pencil" aria-hidden="true"></i></span><span className="delete-box"><i className="fa fa-trash" aria-hidden="true"></i>
+                                                        </span></h5>
+                                                        <p className="card-text">{portfolio.overview}</p>
+                                                    </div>
+                                                </div>)}
+                                        </div> :
+                                        <div className="portfolio-container">
+                                            <h6>Showcase your work to win more projects</h6>
+                                            <p>Add items to impress clients</p>
+                                        </div>}
                                 </div>
                             </div>
                             <div className="row profile-view-container mt-3">
@@ -273,9 +286,19 @@ class FreelancerProfilePage extends Component {
                                         <h4>Employment history : </h4>
                                         <button onClick={this.handleClickAddPortfolio} className="btn btn-success btn-sm">Add</button>
                                     </div>
-                                    <div className="employment-history-container">
-                                        <h6>No content available</h6>
-                                    </div>
+                                    {this.props.dataObj.userProfile.empHistory ?
+                                        <div className="employment-history-data-container my-3">
+                                            {this.props.dataObj.userProfile.empHistory.map((empHistory, index) =>
+                                                <div key={empHistory._id} className="employment-history-data">
+                                                    <h6>{index + 1}. {empHistory.jobTitle} | <a href={empHistory.companyWebsite}>{empHistory.companyName}</a> <span className="edit-pencil"><i className="fa fa-pencil" aria-hidden="true"></i></span><span className="delete-box"><i className="fa fa-trash" aria-hidden="true"></i>
+                                                    </span></h6>
+                                                    <p className="ml-4">{empHistory.jobDescription}</p>
+                                                    <p className="ml-3"><b>Duration :  </b> {empHistory.startingYear} to {empHistory.endingYear}</p>
+                                                </div>)}
+                                        </div>
+                                        : <div className="employment-history-container">
+                                            <h6>No content available</h6>
+                                        </div>}
                                 </div>
                             </div>
                             <div className="row profile-view-container mt-3">
@@ -284,9 +307,22 @@ class FreelancerProfilePage extends Component {
                                         <h4>Other Experiences : </h4>
                                         <button onClick={this.handleClickAddPortfolio} className="btn btn-success btn-sm">Add</button>
                                     </div>
-                                    <div className="employment-history-container">
-                                        <h6>No content available</h6>
+                                    {this.props.dataObj.userProfile.empHistory && <div className="other-experience-container my-2">
+                                        {this.props.dataObj.userProfile.empHistory[0].otherExperience ?
+
+                                            this.props.dataObj.userProfile.empHistory[0].otherExperience.otherExperience.map((experience, index) =>
+                                                <div className="other-experience-data">
+                                                    <h5>{index + 1}. {experience.title} <span className="edit-pencil"><i className="fa fa-pencil" aria-hidden="true"></i></span><span className="delete-box"><i className="fa fa-trash" aria-hidden="true"></i>
+                                                    </span></h5>
+                                                    <p className="ml-4">{experience.description}</p>
+                                                </div>
+                                            )
+
+                                            : <div className="employment-history-container">
+                                                <h6>No content available</h6>
+                                            </div>}
                                     </div>
+                                    }
                                 </div>
                             </div>
                             <div className="row profile-view-container mt-3">
@@ -316,4 +352,4 @@ class FreelancerProfilePage extends Component {
     }
 }
 
-export default connect(mapToPropsData, { userLogout, getUserProfileData })(FreelancerProfilePage)
+export default connect(mapToPropsData, { userLogout, getUserProfileData, getUserPortfolio, getEmploymentHistory })(FreelancerProfilePage)

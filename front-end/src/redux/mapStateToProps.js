@@ -9,3 +9,10 @@ export const mapToPropsData = reduxStore => {
 		dataObj: { ...reduxStore.dataState },
 	};
 };
+
+export const mergeStateToProps = reduxStore => {
+	return {
+		userObj: { ...reduxStore.userState },
+		dataObj: { ...reduxStore.dataState },
+	};
+};

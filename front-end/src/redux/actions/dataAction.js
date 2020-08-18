@@ -4,11 +4,7 @@ import {
 	TOGGLE_FETCHING,
 	SET_USER,
 } from "../actionTypes";
-export const editFreelancerProfile = mainProfileData => async (
-	dispatch,
-	getState,
-) => {
-	const user = getState().userState.user;
+export const editFreelancerProfile = mainProfileData => async dispatch => {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const response = await axios.post(
@@ -17,6 +13,7 @@ export const editFreelancerProfile = mainProfileData => async (
 				mainProfileData,
 			);
 			console.log(response.data);
+			dispatch({ type: SET_USER, payload: response.data });
 			resolve(response.data.msg);
 		} catch (err) {
 			console.error(err.response.data);
@@ -72,11 +69,7 @@ export const addFreelancerEmploymentHistory = employmentHistory => async () => {
 	});
 };
 
-export const editClientProfile = mainProfileData => async (
-	dispatch,
-	getState,
-) => {
-	const user = getState().userState.user;
+export const editClientProfile = mainProfileData => async dispatch => {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const response = await axios.post(
@@ -85,6 +78,7 @@ export const editClientProfile = mainProfileData => async (
 				mainProfileData,
 			);
 			console.log(response.data);
+			dispatch({ type: SET_USER, payload: response.data });
 			resolve(response.data.msg);
 		} catch (err) {
 			console.error(err.response.data);
@@ -135,4 +129,54 @@ export const downloadResume = async url => {
 	a.href = newUrl;
 	a.download = "freelancer_resume.pdf";
 	a.click();
+};
+
+export const getUserPortfolio = () => async (dispatch, getState) => {
+	const userProfile = getState().dataState.userProfile;
+	return new Promise(async (resolve, reject) => {
+		try {
+			dispatch({ type: TOGGLE_FETCHING });
+			const response = await axios.get(`${process.env
+				.REACT_APP_BASE_URL}/getUserPortfolio
+`);
+			console.log(response.data);
+			userProfile.userPortfolio = response.data.userPortfolio;
+			dispatch({ type: FETCH_USER_PROFILE_DATA, payload: userProfile });
+			resolve(response.data.msg);
+		} catch (err) {
+			console.log(err);
+			if (err.response.status === 401) {
+				reject("Your session has been expired...pls login again");
+			} else {
+				reject(err.response.data.msg);
+			}
+		} finally {
+			dispatch({ type: TOGGLE_FETCHING });
+		}
+	});
+};
+
+export const getEmploymentHistory = () => async (dispatch, getState) => {
+	const userProfile = getState().dataState.userProfile;
+	return new Promise(async (resolve, reject) => {
+		try {
+			dispatch({ type: TOGGLE_FETCHING });
+			const response = await axios.get(`${process.env
+				.REACT_APP_BASE_URL}/getEmpHistory
+`);
+			console.log(response.data);
+			userProfile.empHistory = response.data.empHistory;
+			dispatch({ type: FETCH_USER_PROFILE_DATA, payload: userProfile });
+			resolve(response.data.msg);
+		} catch (err) {
+			console.log(err);
+			if (err.response.status === 401) {
+				reject("Your session has been expired...pls login again");
+			} else {
+				reject(err.response.data.msg);
+			}
+		} finally {
+			dispatch({ type: TOGGLE_FETCHING });
+		}
+	});
 };

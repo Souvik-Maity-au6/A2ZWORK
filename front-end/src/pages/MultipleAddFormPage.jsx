@@ -8,8 +8,12 @@ import '../styles/MultipleAddFormPage.css'
 
 
 const initialState = {
-    pre_loader: "none",
-    submit_button: "block",
+    pre_loader_1: "none",
+    submit_button_1: "block",
+    pre_loader_2: "none",
+    submit_button_2: "block",
+    pre_loader_3: "none",
+    submit_button_3: "block",
     portfolioImage: "",
     portfolioTitle: "",
     portfolioDescription: "",
@@ -40,7 +44,7 @@ class MultipleAddFormPage extends Component {
 
     handleSubmitPortfolioData = async (event) => {
         event.preventDefault()
-        this.setState({ pre_loader: !this.state.pre_loader, submit_button: "none" })
+        this.setState({ pre_loader_1: !this.state.pre_loader, submit_button_1: "none" })
         const formData = new FormData();
         try {
             formData.append("portfolioImage", this.state.portfolioImage);
@@ -66,7 +70,7 @@ class MultipleAddFormPage extends Component {
     }
     handleSubmitEmploymentHistory = async (event) => {
         event.preventDefault()
-        this.setState({ pre_loader: !this.state.pre_loader, submit_button: "none" })
+        this.setState({ pre_loader_2: !this.state.pre_loader, submit_button_2: "none" })
         const employmentHistory = {
             companyName: this.state.companyName,
             jobTitle: this.state.jobTitle,
@@ -95,7 +99,7 @@ class MultipleAddFormPage extends Component {
     }
     handleSubmitOtherExperiences = async (event) => {
         event.preventDefault()
-        this.setState({ pre_loader: !this.state.pre_loader, submit_button: "none" })
+        this.setState({ pre_loader_3: !this.state.pre_loader, submit_button_3: "none" })
         const otherExperiences = {
             experienceTitle: this.state.experienceTitle,
             experienceDetails: this.state.experienceDetails,
@@ -143,9 +147,9 @@ class MultipleAddFormPage extends Component {
                                 </div>
                             </div>
                             <div className="pre-loader">
-                                <img src={pre_loader} alt="loading" width="75" height="75" style={{ display: this.state.pre_loader }} />
+                                <img src={pre_loader} alt="loading" width="75" height="75" style={{ display: this.state.pre_loader_1 }} />
                             </div>
-                            <div className="submit-profile-info" style={{ display: this.state.submit_button }}>
+                            <div className="submit-profile-info" style={{ display: this.state.submit_button_1 }}>
                                 <input type="submit" className="profile-info-submit-btn" value="Add Portfolio" />
                             </div>
                         </form>
@@ -171,9 +175,9 @@ class MultipleAddFormPage extends Component {
                                     className="date-input-to" name="endingYear" max="2024-12-31" value={this.state.endingYear} />
                             </div>
                             <div className="pre-loader">
-                                <img src={pre_loader} alt="loading" width="75" height="75" style={{ display: this.state.pre_loader }} />
+                                <img src={pre_loader} alt="loading" width="75" height="75" style={{ display: this.state.pre_loader_2 }} />
                             </div>
-                            <div className="submit-profile-info" style={{ display: this.state.submit_button }}>
+                            <div className="submit-profile-info" style={{ display: this.state.submit_button_2 }}>
                                 <input type="submit" className="profile-info-submit-btn" value="Add Employment History" />
                             </div>
                         </form>
@@ -190,9 +194,9 @@ class MultipleAddFormPage extends Component {
                                 </div>
                             </div>
                             <div className="pre-loader">
-                                <img src={pre_loader} alt="loading" width="75" height="75" style={{ display: this.state.pre_loader }} />
+                                <img src={pre_loader} alt="loading" width="75" height="75" style={{ display: this.state.pre_loader_3 }} />
                             </div>
-                            <div className="submit-profile-info" style={{ display: this.state.submit_button }}>
+                            <div className="submit-profile-info" style={{ display: this.state.submit_button_3 }}>
                                 <input type="submit" className="profile-info-submit-btn" value="Add Other Experience Details" />
                             </div>
                         </form>
