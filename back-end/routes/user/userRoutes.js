@@ -17,6 +17,8 @@ const {
 	portfolioUpdate,
 	updateEmpHistory,
 } = require("../../controllers/user/userController");
+
+const {getEmpHistory,getUserPortfolio} = require("../../controllers/data/dataController")
 const { generateNewAccessToken } = require("../../middlewares/Auth");
 // const {
 // 	authentication,
@@ -60,6 +62,9 @@ router.post(
 	upload.single("portfolioImage"),
 	portfolioUpdate,
 );
+
+router.get("/getEmpHistory",authentication,getEmpHistory)
+router.get("/getUserPortfolio",authentication,getUserPortfolio)
 
 router.post("/postEmpHistory", authentication, updateEmpHistory);
 module.exports = router;

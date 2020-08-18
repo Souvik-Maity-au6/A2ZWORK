@@ -39,6 +39,7 @@ module.exports = {
 				userEmail: newUser.userEmail,
 				accessToken: newUser.token,
 				refreshToken: newUser.refreshToken,
+				profileImage: newUser.profileImage,
 				isClient: newUser.isClient,
 				isFreelancer: newUser.isFreelancer,
 			});
