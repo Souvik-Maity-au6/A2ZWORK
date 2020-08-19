@@ -40,7 +40,8 @@ module.exports = {
         expertiseLevel,
         budgetType,
         budgetAmount,
-        freelancerNo
+        freelancerNo,
+        category
         
     })
     const jobPost = await newJob.save()
