@@ -25,12 +25,14 @@ import MultipleAddFormPage from "./pages/MultipleAddFormPage";
 import ClientMyJobPage from "./pages/ClientMyJobPage";
 import FreelancerMyJobPage from "./pages/FreelancerMyJobPage";
 import JobPostPage from "./pages/JobPostPage";
+import JobDetailsPage from "./pages/JobDetailsPage";
 
 function App() {
 	return (
 		<div className="App">
 			<Navbar />
 			<Switch>
+				<Route exact path="/jobDetailsPage" component={JobDetailsPage} />
 				<RouteProtection exact path="/jobPost" component={JobPostPage} />
 				<RouteProtection
 					exact
