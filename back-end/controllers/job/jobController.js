@@ -4,55 +4,65 @@ const cloudinary = require("../../cloudinary");
 const jobModel = require("../../models/job/job");
 
 module.exports = {
-  async jobPost(req, res) {
-    // console.log(req.files);
-    const {category,skills,jobTitle,projectDuration,jobDescription,projectType,expertiseLevel,budgetType,budgetAmount,freelancerNo}= req.body
-    const modifiedSkills=skills.split(",")
-    let imageContentProfileImage=[]
-    let jobFile=[]
-   
-    
-    req.files.forEach(file=>{
+	async jobPost(req, res) {
+		// console.log(req.files);
+		const {
+			category,
+			skills,
+			jobTitle,
+			projectDuration,
+			jobDescription,
+			projectType,
+			expertiseLevel,
+			budgetType,
+			budgetAmount,
+			freelancerNo,
+		} = req.body;
+		const modifiedSkills = skills.split(",");
+		let imageContentProfileImage = [];
+		let jobFile = [];
 
-        imageContentProfileImage.push( convert(
-            file.originalname,
-            file.buffer,
-        ))
-    })
-    console.log(imageContentProfileImage.length)
-    jobFile = await Promise.all(imageContentProfileImage.map(async image=>{
+		try {
+			req.files.forEach(file => {
+				imageContentProfileImage.push(convert(file.originalname, file.buffer));
+			});
+			console.log(imageContentProfileImage.length);
+			jobFile = await Promise.all(
+				imageContentProfileImage.map(async image => {
+					return await cloudinary.uploader.upload(image);
+				}),
+			);
 
-        return await cloudinary.uploader.upload(image);
-        
-    }))
+			let jobPostFile = jobFile.map(job => {
+				return job.secure_url;
+			});
 
-    let jobPostFile = jobFile.map(job=>{
-        return job.secure_url
-    })
+			const newJob = new jobModel({
+				user: req.userId,
+				projectFile: jobPostFile,
+				skills: modifiedSkills,
+				jobTitle,
+				projectDuration,
+				jobDescription,
+				projectType,
+				expertiseLevel,
+				budgetType,
+				budgetAmount,
+				freelancerNo,
+				category,
+			});
+			const jobPost = await newJob.save();
 
-    const newJob = new jobModel({
-        projectFile:jobPostFile,
-        skills:modifiedSkills,
-        jobTitle,
-        projectDuration,
-        jobDescription,
-        projectType,
-        expertiseLevel,
-        budgetType,
-        budgetAmount,
-        freelancerNo,
-        category
-        
-    })
-    const jobPost = await newJob.save()
-    
-    // console.log(jobPostFile.secure_url)
+			// console.log(jobPostFile.secure_url)
 
-    // console.log(jobPostFile.length)
+			// console.log(jobPostFile.length)
 
-    return res.send({
-        jobPost
-    })
-    
-  }
-}
+			return res.status(200).send({
+				msg: "Your job has been posted successfully !!!",
+				jobPost,
+			});
+		} catch (err) {
+			return res.status(500).send({ msg: err.message });
+		}
+	},
+};

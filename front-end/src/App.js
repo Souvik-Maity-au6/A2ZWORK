@@ -22,7 +22,8 @@ import ClientProfilePage from "./pages/ClientProfilePage";
 import FreelancerProfileViewPage from "./pages/FreelancerProfileViewPage";
 import EditClientProfilePage from "./pages/EditClientProfilePage";
 import MultipleAddFormPage from "./pages/MultipleAddFormPage";
-import MyJobPage from "./pages/MyJobPage";
+import ClientMyJobPage from "./pages/ClientMyJobPage";
+import FreelancerMyJobPage from "./pages/FreelancerMyJobPage";
 import JobPostPage from "./pages/JobPostPage";
 
 function App() {
@@ -31,7 +32,16 @@ function App() {
 			<Navbar />
 			<Switch>
 				<RouteProtection exact path="/jobPost" component={JobPostPage} />
-				<RouteProtection exact path="/myJobsPage" component={MyJobPage} />
+				<RouteProtection
+					exact
+					path="/myJobsPageClient"
+					component={ClientMyJobPage}
+				/>
+				<RouteProtection
+					exact
+					path="/myJobsPageFreeLancer"
+					component={FreelancerMyJobPage}
+				/>
 				<RouteProtection
 					exact
 					path="/editFreelancerMultipleProfileData"

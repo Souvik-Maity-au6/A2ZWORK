@@ -33,7 +33,7 @@ const Navbar = (props) => {
                             <>
                                 <ul className="navbar-nav">
                                     <li className="nav-item">
-                                        <Link to="/myJobsPage" className="nav-link">My Jobs</Link>
+                                        <Link to={props.userObj.user.isFreelancer ? "/myJobsPageFreeLancer" : "/myJobsPageClient"} className="nav-link">My Jobs</Link>
                                     </li>
                                     <li className="nav-item ml-sm-3">
                                         <Link to="/messages" className="nav-link"><i className="fa fa-envelope pr-2" aria-hidden="true"></i>Messages</Link>

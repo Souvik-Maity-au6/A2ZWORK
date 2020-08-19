@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-// import { connect } from 'react-redux'
+import { connect } from 'react-redux'
 import Swal from 'sweetalert2'
 import { headerAuthorization } from '../axios'
-// import { clientJobPost } from '../redux/actions/dataAction'
+import { clientJobPost } from '../redux/actions/dataAction'
 import pre_loader from '../img/pre_loader.svg';
 import '../styles/JobPostPage.css'
 
@@ -33,14 +33,17 @@ class JobPostPage extends Component {
         this.setState({ [event.target.name]: event.target.value })
     }
     handleChangeProjectFile = (event) => {
-        this.setState({ projectFile: event.target.files[0] });
+        this.setState({ projectFile: event.target.files });
     }
     handleSubmitJobPostData = async (event) => {
         event.preventDefault()
+        console.log(this.state)
         this.setState({ pre_loader: !this.state.pre_loader, submit_button: "none" })
         const formData = new FormData();
         try {
-            formData.append("projectFile", this.state.projectFile);
+            for (let i = 0; i < this.state.projectFile.length; i++) {
+                formData.append("projectFile", this.state.projectFile[i]);
+            }
             formData.append("category", this.state.category);
             formData.append("skills", this.state.skills);
             formData.append("jobTitle", this.state.jobTitle)
@@ -56,7 +59,7 @@ class JobPostPage extends Component {
                 icon: 'success',
                 title: `${response}`,
             })
-            this.props.history.push("/myjobsPage")
+            this.props.history.push("/myJobsPageClient")
 
         } catch (err) {
             Swal.fire({
@@ -88,7 +91,7 @@ class JobPostPage extends Component {
                         <div className="file-upload-container">
                             <div className="img-upload mb-3">
                                 <label htmlFor="img-file">Project files* : </label>
-                                <input onChange={this.handleChangeProjectFile} type="file" id="img-file" name="projectFile" className="project-file-upload-input" required />
+                                <input onChange={this.handleChangeProjectFile} type="file" id="img-file" name="projectFile" className="project-file-upload-input" multiple required />
                             </div>
                         </div>
                         <div className="profile-title-container">
@@ -111,7 +114,7 @@ class JobPostPage extends Component {
                             </div>
                             <div className="freelancer-required-container mt-3">
                                 <label htmlFor="freelancer-no">Freelancer no : </label>
-                                <input type="text" id="freelancer-no" name="freelancerNo" className="freelancer-no-input" placeholder="Enter no of freelancers required for this project..." value={this.state.freelancerNo} required />
+                                <input onChange={this.handleChangeJobPostData} type="text" id="freelancer-no" name="freelancerNo" className="freelancer-no-input" placeholder="Enter no of freelancers required for this project..." value={this.state.freelancerNo} required />
                             </div>
                             <div className=" row hourly-rate-container">
                                 <div className="col-2">
@@ -120,7 +123,7 @@ class JobPostPage extends Component {
                                 <div className="col-10">
                                     <div className="budget-container">
                                         <label htmlFor="budget-type" style={{ fontSize: "20px" }}> Type : </label>
-                                        <select id="budget-type" className="select-budget-type" name="budgetType" value={this.props.budgetType}>
+                                        <select onChange={this.handleChangeJobPostData} id="budget-type" className="select-budget-type" name="budgetType" value={this.props.budgetType}>
                                             <option value="">Choose one</option>
                                             <option value="Hourly">Hourly</option>
                                             <option value="Fixed price">Fixed price</option>
@@ -197,6 +200,6 @@ class JobPostPage extends Component {
     }
 }
 
-export default JobPostPage
+export default connect(null, { clientJobPost })(JobPostPage)
 
 
