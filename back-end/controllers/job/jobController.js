@@ -50,6 +50,7 @@ module.exports = {
 				budgetAmount,
 				freelancerNo,
 				category,
+				jobStatus:"open"
 			});
 			const jobPost = await newJob.save();
 
@@ -65,4 +66,19 @@ module.exports = {
 			return res.status(500).send({ msg: err.message });
 		}
 	},
+	async getAllOpenJobs(req,res){
+
+		try{
+			
+			const openJob = await jobModel.find({jobStatus:"open"})
+			return res.status(200).send({
+				msg:"All opened jobs",
+				openJob
+		
+			})
+		}
+		catch(err){
+			return res.status(500).send({ msg: err.message });
+		}
+	}
 };

@@ -574,4 +574,22 @@ module.exports = {
 			});
 		}
 	},
+
+	async getSpecificUserPortfolio(req,res){
+
+		try{
+
+			const {freelancerId} = req.params
+			const user = await portfolioModel.findOne({user:freelancerId}).populate("user")
+			return res.status(200).send({
+				msg:"User Profile",
+				user
+			})
+		}
+		catch(err){
+			return res.status(500).send({
+				msg: err.message,
+			});
+		}
+	}
 };

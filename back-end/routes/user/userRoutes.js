@@ -16,6 +16,7 @@ const {
 	postEditClientProfile,
 	portfolioUpdate,
 	updateEmpHistory,
+	getSpecificUserPortfolio
 } = require("../../controllers/user/userController");
 
 const {getEmpHistory,getUserPortfolio} = require("../../controllers/data/dataController")
@@ -67,4 +68,6 @@ router.get("/getEmpHistory",authentication,getEmpHistory)
 router.get("/getUserPortfolio",authentication,getUserPortfolio)
 
 router.post("/postEmpHistory", authentication, updateEmpHistory);
+
+router.get("/getSpecificUserDetails/:freelancerId",authentication,getSpecificUserPortfolio)
 module.exports = router;

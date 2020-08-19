@@ -14,6 +14,18 @@ const jobAppliedSchema = Schema({
     jobStatus:{
         type:String
     },
+    clientReview:{
+        clientId:{
+            type:Schema.Types.ObjectId,
+            ref:"user"
+        },
+        feedbBack:{
+            type:String,
+        },
+        ratings:{
+            type:Number
+        }
+    },
     coverLetter:{
         type:String
     },

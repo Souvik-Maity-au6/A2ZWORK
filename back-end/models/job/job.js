@@ -36,6 +36,21 @@ const jobSchema = Schema({
     freelancerNo:{
         type:Number
     },
+    jobStatus:{
+        type:String
+    },
+    freelancerReview:{
+        freelancerId:{
+            type:Schema.Types.ObjectId,
+            ref:"user",
+        },
+        ratings:{
+            type:Number
+        },
+        feedBack:{
+            type:String
+        }
+    },
     user:{
         type:Schema.Types.ObjectId,
         ref:"user"
