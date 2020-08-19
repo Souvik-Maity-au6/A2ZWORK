@@ -35,6 +35,10 @@ const jobSchema = Schema({
     },
     freelancerNo:{
         type:Number
+    },
+    user:{
+        type:Schema.Types.ObjectId,
+        ref:"user"
     }
 })
 

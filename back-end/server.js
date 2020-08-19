@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const path = require("path")
 const cors = require("cors");
 const userRoutes = require("./routes/user/userRoutes");
+const jobRoutes = require("./routes/job/jobRoutes")
 dotenv.config();
 
 require("./db");
@@ -15,6 +16,7 @@ app.use(express.static(path.join(__dirname, 'static')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(userRoutes);
+app.use(jobRoutes)
 
 app.get("/", (req, res) => {
 	return res.send({ message: "Welcome To project testing" });
