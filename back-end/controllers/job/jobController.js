@@ -86,7 +86,7 @@ module.exports = {
 		const {jobId}= req.params;
 		try{
 
-			const getOneJob = await jobModel.findOne({_id:jobId})
+			const getOneJob = await (await jobModel.findOne({_id:jobId})).populated("user")
 
 			return res.status(200).send({
 				msg:"particular job",
@@ -99,11 +99,11 @@ module.exports = {
 	},
 	async getClientPostedJobs(req,res){
 
-		const {userId}=req.params
+		// const {userId}=req.params
 
 		try{
 
-			const jobsPosted = await jobModel.find({user:userId,jobStatus:{$ne:"closed"}})
+			const jobsPosted = await jobModel.find({user:req.userId,jobStatus:{$ne:"closed"}})
 			return res.status(200).send({
 				msg:"posted job by client",
 				job:jobsPosted
