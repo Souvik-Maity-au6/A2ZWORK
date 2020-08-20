@@ -4,6 +4,7 @@ import {
 	TOGGLE_FETCHING,
 	SET_USER,
 	FETCH_ALL_OPEN_JOBS,
+	FETCH_JOB_DETAILS,
 } from "../actionTypes";
 export const editFreelancerProfile = mainProfileData => async dispatch => {
 	return new Promise(async (resolve, reject) => {
@@ -128,7 +129,7 @@ export const downloadResume = async url => {
 	let newUrl = window.URL.createObjectURL(responseBlob);
 	let a = document.createElement("a");
 	a.href = newUrl;
-	a.download = "freelancer_resume.pdf";
+	a.download = "file";
 	a.click();
 };
 
@@ -243,6 +244,27 @@ export const getAllOpenJobs = () => async dispatch => {
 			);
 			console.log(response.data);
 			dispatch({ type: FETCH_ALL_OPEN_JOBS, payload: response.data.openJob });
+			resolve(response.data.msg);
+		} catch (err) {
+			console.log(err);
+			reject(err.response.data.msg);
+		} finally {
+			dispatch({ type: TOGGLE_FETCHING });
+		}
+	});
+};
+
+export const getJobDetails = jobId => async dispatch => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			dispatch({ type: FETCH_JOB_DETAILS, payload: null });
+			dispatch({ type: TOGGLE_FETCHING });
+			const response = await axios.get(
+				`${process.env.REACT_APP_BASE_URL}/getParticularJob/${jobId}`,
+			);
+
+			console.log(response.data);
+			dispatch({ type: FETCH_JOB_DETAILS, payload: response.data.job });
 			resolve(response.data.msg);
 		} catch (err) {
 			console.log(err);

@@ -29,13 +29,18 @@ const Navbar = (props) => {
                         <input className="btn btn-success nav-search-button" type="submit" value="Search" />
                     </form>
                     <>
+                        {!props.userObj.user || props.userObj.user.isFreelancer ? <ul className="navbar-nav">
+                            <li className="nav-item">
+                                <Link to="/jobFeed" className="nav-link">Find job</Link>
+                            </li>
+                        </ul> : null}
                         {props.userObj.user ?
                             <>
                                 <ul className="navbar-nav">
                                     <li className="nav-item">
-                                        <Link to={props.userObj.user.isFreelancer ? "/myJobsPageFreeLancer" : "/myJobsPageClient"} className="nav-link">My Jobs</Link>
+                                        <Link to={props.userObj.user.isFreelancer ? "/myJobsPageFreeLancer" : "/myJobsPageClient"} className="nav-link mx-sm-3">My Jobs</Link>
                                     </li>
-                                    <li className="nav-item ml-sm-3">
+                                    <li className="nav-item mx-sm-3">
                                         <Link to="/messages" className="nav-link"><i className="fa fa-envelope pr-2" aria-hidden="true"></i>Messages</Link>
                                     </li>
                                 </ul>
@@ -47,10 +52,10 @@ const Navbar = (props) => {
                                 </Link>
                             </>
                             : <ul className="navbar-nav">
-                                <li className="nav-item">
+                                <li className="nav-item mx-sm-3">
                                     <Link to="/login" className="nav-link">Login</Link>
                                 </li>
-                                <li className="nav-item ml-sm-3">
+                                <li className="nav-item">
                                     <Link to="/register" className="nav-link">Signup</Link>
                                 </li>
                             </ul>}

@@ -1,4 +1,5 @@
 import React from 'react'
+import { withRouter } from 'react-router-dom'
 import '../styles/JobFeedPage.css'
 
 const jobDescription = (description, letterCount) => {
@@ -9,12 +10,19 @@ const jobDescription = (description, letterCount) => {
     }
 }
 
-const JobFeed = ({ job }) => {
+const JobFeed = ({ job, history }) => {
+    const handleClickJobDetails = (event) => {
+        if (localStorage.getItem("user")) {
+            history.push(`/jobDetailsPage/${event.target.value}`)
+        } else {
+            history.push("/login")
+        }
+    }
     return (
         <div className="job-feed-container">
             <div className="job-title">
                 <h4 className="mr-auto">{job.jobTitle}</h4>
-                <button className="btn btn-success mx-3" value={job._id}>View details</button>
+                <button onClick={handleClickJobDetails} className="btn btn-success mx-3" value={job._id}>View details</button>
                 <button className="btn btn-warning"><i className="fas fa-heart"></i></button>
             </div>
             <div className="job-budget-container mx-3 my-3">
@@ -27,4 +35,4 @@ const JobFeed = ({ job }) => {
     )
 }
 
-export default JobFeed
+export default withRouter(JobFeed)

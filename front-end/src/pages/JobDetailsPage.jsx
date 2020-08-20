@@ -1,24 +1,44 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import Swal from 'sweetalert2'
 import JobApplyForm from '../components/JobApplyForm'
+import { getJobDetails, downloadResume } from '../redux/actions/dataAction'
+import { mergeStateToProps } from '../redux/mapStateToProps'
+import Spinner from '../components/common/Spinner'
 import '../styles/JobDetailsPage.css'
 
 const initialState = {
     starRating: "",
-    jobApply: "none"
+    jobApply: "none",
+    jobDetails: "",
 }
 
 class JobDetailsPage extends Component {
     state = initialState
-    componentDidMount() {
-        (() => {
-            const starPercentage = (3.5 / 5) * 100;
+    async componentDidMount() {
+        try {
+            const response = await this.props.getJobDetails(this.props.match.params.jobId)
+            this.setState({ jobDetails: response })
+        } catch (err) {
+            Swal.fire({
+                icon: 'error',
+                title: `${err}`
+            })
+        }
+    }
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.jobDetails !== this.state.jobDetails) {
+            (() => {
+                const clientRatings = this.props.dataObj.jobDetails.user.avarageClientRatings || 0
+                const starPercentage = (clientRatings / 5) * 100;
 
-            // Round to nearest 10
-            const starPercentageRounded = `${Math.round(starPercentage / 10) * 10}%`;
+                // Round to nearest 10
+                const starPercentageRounded = `${Math.round(starPercentage / 10) * 10}%`;
 
-            // Set width of stars-inner to percentage
-            this.setState({ starRating: starPercentageRounded })
-        })()
+                // Set width of stars-inner to percentage
+                this.setState({ starRating: starPercentageRounded })
+            })()
+        }
     }
     handleClickSubmitProposal = () => {
         this.setState({ jobApply: "block" })
@@ -29,71 +49,73 @@ class JobDetailsPage extends Component {
     render() {
         return (
             <div className="container mt-5">
-                <div className="job-details-container">
-                    <div className="row">
-                        <div className="col-9 border-right">
-                            <h4>Part-time Senior Developer needed</h4>
-                            <h6>Category : Full Stack Development</h6>
-                            <p>Our company has just grown and we have 2 in-house programmers that are working on developing our website and our internal business management system. Website is built on Wordpress, but has lots of custom functionality made. For BMS, we are using Open-Source program called ERP Next.
-                            Are we are looking for consultant that would:
+                {this.state.jobDetails ?
+                    <>
+                        <div className="job-details-container">
+                            <div className="row">
+                                <div className="col-9 border-right">
+                                    <h4>{this.props.dataObj.jobDetails.jobTitle}</h4>
+                                    <h6>Category : {this.props.dataObj.jobDetails.category}</h6>
+                                    <p>{this.props.dataObj.jobDetails.jobDescription}</p>
+                                    <h6>Project type : {this.props.dataObj.jobDetails.projectType}</h6>
+                                    <h6>Project duration : {this.props.dataObj.jobDetails.projectDuration}</h6>
+                                    <h6>Budget : {this.props.dataObj.jobDetails.budgetType}, ${this.props.dataObj.jobDetails.budgetAmount}.00</h6>
+                                    <h6>Expert required : {this.props.dataObj.jobDetails.expertiseLevel}</h6>
+                                    <h6>No of freelabcer required : {this.props.dataObj.jobDetails.freelancerNo}</h6>
+                                    <h6>Project files : {this.props.dataObj.jobDetails.projectFile.map((file, index) =>
+                                        <span key={index + 1} onClick={(event) => { downloadResume(file) }} className="project-file">File {index + 1}</span>
+                                    )}
+                                    </h6>
+                                    <h6>Skills required : </h6>
+                                    {this.props.dataObj.jobDetails.skills.map((skill, index) => <span key={index + 1} className="skill-text">{skill}</span>)}
 
-                            -help our ideas transform into technical tasks for programmers
-                            -be responsible for planning and building architecture of complex projects
-                            -check the quality of programmers coding
-                            -help improve our systems and identify various bugs
-                            -manage tasks through programmers
-                            -help them solve various difficult problems
-
-
-                            So, what we are looking is not a person who will have to do the programming but someone that would lead our IT team and be an expert on our systems.
-                            </p>
-                            <h6>Project type : Ongoing project</h6>
-                            <h6>Project duration : More than 6 months</h6>
-                            <h6>Budget : Fixed price, $2000.00</h6>
-                            <h6>Expert required : Intermediate Level</h6>
-                            <h6>No of freelabcer required : 1</h6>
-                            <h6>Project files : <span className="project-file">File 1</span> <span className="project-file">File 2</span> <span className="project-file">File 3</span></h6>
-                            <h6>Skills required : </h6>
-                            <span className="skill-text">API</span>
-                            <span className="skill-text">Database Architecture</span>
-                            <span className="skill-text">API Integration</span>
-                            <span className="skill-text">CRM eCommerce Website</span>
-                            <span className="skill-text">Website Optimization</span>
-                            <span className="skill-text">WordPress Plugin</span>
-                        </div>
-                        <div className="col-3">
-                            <div className="job-client-details-container">
-                                <div className="project-button-container border-bottom pb-3">
-                                    <button onClick={this.handleClickSubmitProposal} className="btn btn-success">Submit a Proposal</button>
-                                    <button className="btn btn-warning"><i className="fa fa-heart px-3" aria-hidden="true"></i>Save Job</button>
-                                    <button className="btn btn-success">Post a Job like this</button>
                                 </div>
-                                <div className="client-details mt-3">
-                                    <h5>About the client</h5>
-                                    <h6>Company : mTube</h6>
-                                    <h6 className="mt-3"><i style={{ color: "#DDD110" }} className="fas fa-check-circle r-3"></i> Payment verified</h6>
-                                    <div className="stars-outer">
-                                        <div className="stars-inner" style={{ width: this.state.starRating }}></div>
+                                <div className="col-3">
+                                    <div className="job-client-details-container">
+                                        <div className="project-button-container border-bottom pb-3">
+                                            {this.props.userObj.user.isFreelancer ? <>
+                                                <button onClick={this.handleClickSubmitProposal} className="btn btn-success mb-4">Submit a Proposal</button>
+                                                <button className="btn btn-warning"><i className="fa fa-heart px-3" aria-hidden="true"></i>Save Job</button>
+                                            </> :
+                                                <button className="btn btn-success">Post a Job like this</button>}
+
+                                        </div>
+                                        <div className="client-details mt-3">
+                                            <h5>About the client</h5>
+                                            <h6>Company : {this.props.dataObj.jobDetails.user.companyName}</h6>
+                                            <h6 className="mt-3">{this.props.dataObj.jobDetails.user.clientCurrentBalance ?
+                                                <>
+                                                    <i style={{ color: "#DDD110" }} className="fas fa-check-circle mr-3"></i> Payment verified
+                                                </> : <>
+                                                    <i className="fas fa-check-circle mr-3"></i> Payment unverified
+                                                </>}</h6>
+                                            <div className="stars-outer">
+                                                <div className="stars-inner" style={{ width: this.state.starRating }}></div>
+                                            </div>
+                                            {this.props.dataObj.jobDetails.user.available ? <span className="number-rating px-3">{this.props.dataObj.jobDetails.user.avarageClientRatings} of {this.props.dataObj.jobDetails.user.jobDone.length} reviews</span> : <span className="number-rating px-3"> 0 of 0 reviews</span>}
+                                            <h6 className="mt-3">Location : {this.props.dataObj.jobDetails.user.companyContactDetails.state}, {this.props.dataObj.jobDetails.user.companyContactDetails.country}</h6>
+                                            <h6 className="mt-3">0 Job posted</h6>
+                                            <h6 className="mt-3">Total $00.00 spent</h6>
+                                        </div>
                                     </div>
-                                    <span className="number-rating px-3">3.5 of 10 reviews</span>
-                                    <h6 className="mt-3">Location : India, Punjab</h6>
-                                    <h6 className="mt-3">5 Job posted</h6>
-                                    <h6 className="mt-3">Total $300+ spent</h6>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div className="job-details-container mt-4" style={{ display: this.state.jobApply }}>
-                    <JobApplyForm jobApply={this.cancelJobApply} />
-                </div>
-                <div className="job-details-container mt-4">
-                    <h4>Client's Job history(5)</h4>
-                </div>
+                        <div className="job-details-container mt-4" style={{ display: this.state.jobApply }}>
+                            <JobApplyForm jobApply={this.cancelJobApply} />
+                        </div>
+                        <div className="job-details-container mt-4">
+                            <h4>Client's Job history(0)</h4>
+                            <div className="client-job-history-container">
+                                <h6>No history available</h6>
+                            </div>
+                        </div>
+                    </>
+                    : <Spinner />}
             </div>
         )
     }
 }
 
-export default JobDetailsPage
+export default connect(mergeStateToProps, { getJobDetails, downloadResume })(JobDetailsPage)
 

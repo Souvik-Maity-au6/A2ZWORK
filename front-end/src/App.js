@@ -32,7 +32,7 @@ function App() {
 		<div className="App">
 			<Navbar />
 			<Switch>
-				<Route exact path="/jobDetailsPage" component={JobDetailsPage} />
+				<Route exact path="/jobDetailsPage/:jobId" component={JobDetailsPage} />
 				<RouteProtection exact path="/jobPost" component={JobPostPage} />
 				<RouteProtection
 					exact
@@ -84,7 +84,7 @@ function App() {
 					path="/forgotPassword"
 					component={ForgotPasswordPage}
 				/>
-				<RouteUnprotection path="/jobFeed" component={JobFeedPage} />
+				<Route path="/jobFeed" component={JobFeedPage} />
 				<Route
 					exact
 					path="/changePassword/:forgotPasswordToken"

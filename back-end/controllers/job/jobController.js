@@ -51,7 +51,7 @@ module.exports = {
 				budgetAmount,
 				freelancerNo,
 				category,
-				jobStatus:"open"
+				jobStatus: "open",
 			});
 			const jobPost = await newJob.save();
 
@@ -67,50 +67,49 @@ module.exports = {
 			return res.status(500).send({ msg: err.message });
 		}
 	},
-	async getAllOpenJobs(req,res){
-
-		try{
-			
-			const openJob = await jobModel.find({jobStatus:"open"})
+	async getAllOpenJobs(req, res) {
+		try {
+			const openJob = await jobModel.find({ jobStatus: "open" });
 			return res.status(200).send({
-				msg:"All opened jobs",
-				openJob
-		
-			})
-		}
-		catch(err){
+				msg: "All opened jobs",
+				openJob,
+			});
+		} catch (err) {
 			return res.status(500).send({ msg: err.message });
 		}
 	},
-	async getParticularJob(req,res){
-		const {jobId}= req.params;
-		try{
-
-			const getOneJob = await (await jobModel.findOne({_id:jobId})).populated("user")
+	async getParticularJob(req, res) {
+		const { jobId } = req.params;
+		console.log(jobId);
+		try {
+			const getOneJob = await jobModel
+				.findOne({
+					_id: jobId,
+				})
+				.populate("user");
 
 			return res.status(200).send({
-				msg:"particular job",
-				job:getOneJob
-			})
-		}
-		catch(err){
+				msg: "particular job",
+				job: getOneJob,
+			});
+		} catch (err) {
 			return res.status(500).send({ msg: err.message });
 		}
 	},
-	async getClientPostedJobs(req,res){
-
+	async getClientPostedJobs(req, res) {
 		// const {userId}=req.params
 
-		try{
-
-			const jobsPosted = await jobModel.find({user:req.userId,jobStatus:{$ne:"closed"}})
+		try {
+			const jobsPosted = await jobModel.find({
+				user: req.userId,
+				jobStatus: { $ne: "closed" },
+			});
 			return res.status(200).send({
-				msg:"posted job by client",
-				job:jobsPosted
-			})
-		}
-		catch(err){
+				msg: "posted job by client",
+				job: jobsPosted,
+			});
+		} catch (err) {
 			return res.status(500).send({ msg: err.message });
 		}
-	}
+	},
 };
