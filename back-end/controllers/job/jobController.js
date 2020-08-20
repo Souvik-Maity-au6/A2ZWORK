@@ -108,8 +108,6 @@ module.exports = {
 				msg:"posted job by client",
 				job:jobsPosted
 			})
-			
-
 		}
 		catch(err){
 			return res.status(500).send({ msg: err.message });
