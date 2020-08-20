@@ -3,6 +3,7 @@ import {
 	FETCH_USER_PROFILE_DATA,
 	TOGGLE_FETCHING,
 	SET_USER,
+	FETCH_ALL_OPEN_JOBS,
 } from "../actionTypes";
 export const editFreelancerProfile = mainProfileData => async dispatch => {
 	return new Promise(async (resolve, reject) => {
@@ -198,6 +199,56 @@ export const clientJobPost = jobPostData => async () => {
 			} else {
 				reject(err.response.data.msg);
 			}
+		}
+	});
+};
+
+export const getFreelancerProgileData = freelancerId => dispatch => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			dispatch({
+				type: FETCH_USER_PROFILE_DATA,
+				payload: null,
+			});
+			dispatch({ type: TOGGLE_FETCHING });
+			const response = await axios.get(`${process.env
+				.REACT_APP_BASE_URL}/getSpecificUserDetails/${freelancerId}
+`);
+			console.log(response.data.userProfile);
+			dispatch({
+				type: FETCH_USER_PROFILE_DATA,
+				payload: response.data.userProfile,
+			});
+			resolve(response.data.msg);
+		} catch (err) {
+			console.log(err);
+			if (err.response.status === 401) {
+				reject("Your session has been expired...pls login again");
+			} else {
+				reject(err.response.data.msg);
+			}
+		} finally {
+			dispatch({ type: TOGGLE_FETCHING });
+		}
+	});
+};
+
+export const getAllOpenJobs = () => async dispatch => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			dispatch({ type: FETCH_ALL_OPEN_JOBS, payload: null });
+			dispatch({ type: TOGGLE_FETCHING });
+			const response = await axios.get(
+				`${process.env.REACT_APP_BASE_URL}/getOpenJobs`,
+			);
+			console.log(response.data);
+			dispatch({ type: FETCH_ALL_OPEN_JOBS, payload: response.data.openJob });
+			resolve(response.data.msg);
+		} catch (err) {
+			console.log(err);
+			reject(err.response.data.msg);
+		} finally {
+			dispatch({ type: TOGGLE_FETCHING });
 		}
 	});
 };

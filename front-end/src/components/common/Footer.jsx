@@ -33,11 +33,11 @@ const Footer = () => {
                         <Link to="/"><img src={google_playstore} alt="Google-store" width="100" height="100" /></Link>
                     </div>
                     <div className="social-media-container">
-                        <Link to="/"><i className="fa fa-facebook" aria-hidden="true"></i></Link>
-                        <Link to="/"><i className="fa fa-youtube" aria-hidden="true"></i></Link>
-                        <Link to="/"><i className="fa fa-linkedin" aria-hidden="true"></i></Link>
-                        <Link to="/"><i className="fa fa-instagram" aria-hidden="true"></i></Link>
-                        <Link to="/"><i className="fa fa-twitter-square" aria-hidden="true"></i></Link>
+                        <Link to="/"><i className="fab fa-facebook-square fa-2x"></i></Link>
+                        <Link to="/"><i className="fab fa-youtube-square fa-2x"></i></Link>
+                        <Link to="/"><i className="fab fa-linkedin fa-2x"></i></Link>
+                        <Link to="/"><i className="fab fa-instagram fa-2x"></i></Link>
+                        <Link to="/"><i className="fab fa-twitter-square fa-2x"></i></Link>
                     </div>
                 </div>
             </div>

@@ -84,13 +84,12 @@ function App() {
 					path="/forgotPassword"
 					component={ForgotPasswordPage}
 				/>
-				<RouteProtection path="/jobFeed" component={JobFeedPage} />
+				<RouteUnprotection path="/jobFeed" component={JobFeedPage} />
 				<Route
 					exact
 					path="/changePassword/:forgotPasswordToken"
 					component={changePasswordPage}
 				/>
-
 				<RouteUnprotection path="/" component={HomePage} />
 				{localStorage.getItem("user") ? (
 					<Redirect to="/jobFeed" />

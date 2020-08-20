@@ -1,0 +1,27 @@
+.job-search-box {
+    width: 100%;
+    margin: 50px 0 50px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.job-search-input {
+    width: 700px;
+    padding: 5px 10px;
+    outline: none;
+}
+
+.job-feed-container {
+    margin-bottom: 30px;
+    padding: 10px;
+    min-height: 150px;
+    box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.75);
+    font-style: italic;
+}
+
+.job-title {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}

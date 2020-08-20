@@ -150,7 +150,7 @@ class EditFreelancerProfilePage extends Component {
                             </div>
                             <div className="hourly-rate-container">
                                 <label htmlFor="hourlyRate">Hourly Rate* : </label>
-                                <i className="fa fa-usd dolar-icon" aria-hidden="true"></i>
+                                <i className="fas fa-dollar-sign dolar-icon"></i>
                                 <input onChange={this.handleChangeProfileInput} type="text" id="hourlyRate" name="hourlyRate" placeholder="Your profile rate" className="hourly-rate-input" value={this.state.hourlyRate} required />
                             </div>
                             <div className="project-preference-container mt-3">

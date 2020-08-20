@@ -129,7 +129,7 @@ class JobPostPage extends Component {
                                             <option value="Fixed price">Fixed price</option>
                                         </select>
                                         <label htmlFor="budgetAmount" style={{ fontSize: "20px" }}>Amount* : </label>
-                                        <i className="fa fa-usd dolar-icon-amount" aria-hidden="true"></i>
+                                        <i className="fas fa-dollar-sign dolar-icon-amount"></i>
                                         <input onChange={this.handleChangeJobPostData} type="text" id="budgetAmount" name="budgetAmount" placeholder="Your profile rate" className="budget-amount-input" value={this.state.budgetAmount} required />
                                     </div>
                                 </div>
@@ -140,8 +140,8 @@ class JobPostPage extends Component {
                                     <option value="" disabled>Choose...one</option>
                                     <option value="More than 6 months">More than 6 months</option>
                                     <option value="More than 3 months">More than 3 months</option>
-                                    <option value="More than 1 month)">More than 1 month)</option>
-                                    <option value="Less than 1 month)">Less than 1 month)</option>
+                                    <option value="More than 1 month">More than 1 month</option>
+                                    <option value="Less than 1 month">Less than 1 month</option>
                                 </select>
                             </div>
                             <div className="experience-level-container mt-3">

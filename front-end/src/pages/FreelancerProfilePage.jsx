@@ -61,18 +61,18 @@ class FreelancerProfilePage extends Component {
                                 <div className="col-5">
                                     <div className="profile-main-container">
                                         <div className="profile-img-container">
-                                            <div className="profile-img-edit-pencil"><i className="fa fa-pencil" aria-hidden="true"></i>
+                                            <div className="profile-img-edit-pencil"><i className="fas fa-pencil-alt"></i>
                                             </div>
                                             <img src={this.props.dataObj.userProfile.profileImage ? this.props.dataObj.userProfile.profileImage : ""} alt="profile" onError={(e) => { e.target.onerror = null; e.target.src = `${person_icon}`; }} className="profile-img" width="100" height="100" />
                                         </div>
                                         <div className="profile-description">
                                             <h2>{this.props.dataObj.userProfile.userName} {this.props.dataObj.userProfile.resume ?
                                                 <span className="resume-download" onClick={(event) => { downloadResume(this.props.dataObj.userProfile.resume) }} target="_blank" rel="noopener noreferrer">
-                                                    <i className="fa fa-check-square-o" style={{ color: "#28A745" }} aria-hidden="true"></i>
+                                                    <i className="fas fa-user-check" style={{ color: "#28A745" }}></i>
                                                 </span>
                                                 : null}</h2>
                                             {this.props.dataObj.userProfile.title ?
-                                                <h4>{this.props.dataObj.userProfile.title} <span className="edit-pencil"><i className="fa fa-pencil" aria-hidden="true"></i></span></h4>
+                                                <h4>{this.props.dataObj.userProfile.title} <span className="edit-pencil"><i className="fas fa-pencil-alt"></i></span></h4>
                                                 : null}
                                             <h6>Hourly Rate : ${this.props.dataObj.userProfile.hourlyRate ? this.props.dataObj.userProfile.hourlyRate + ".00" : '00.00'}</h6>
                                             <h6>
@@ -125,7 +125,7 @@ class FreelancerProfilePage extends Component {
                                     {this.props.dataObj.userProfile.specialization.length ?
                                         this.props.dataObj.userProfile.specialization.map((specialization, index) =>
                                             <>
-                                                <h6 key={specialization._id} className="mt-3">{index + 1}. {specialization.specializationTitle} : <span className="edit-pencil"><i className="fa fa-pencil" aria-hidden="true"></i></span><span className="delete-box"><i className="fa fa-trash" aria-hidden="true"></i>
+                                                <h6 key={specialization._id} className="mt-3">{index + 1}. {specialization.specializationTitle} : <span className="edit-pencil"><i className="fas fa-pencil-alt"></i></span><span className="delete-box"><i className="fas fa-trash-alt"></i>
                                                 </span></h6>
 
                                                 <div className="specialization-skill-container mt-3">
@@ -143,7 +143,7 @@ class FreelancerProfilePage extends Component {
                             <div className="row profile-view-container mt-3">
                                 <div className="col-5">
                                     <div className="language-title">
-                                        <h4>Languages : <span className="edit-pencil"><i className="fa fa-pencil" aria-hidden="true"></i></span></h4>
+                                        <h4>Languages : <span className="edit-pencil"><i className="fas fa-pencil-alt"></i></span></h4>
                                         <button className="btn btn-success btn-sm">Add</button>
                                     </div>
                                     {this.props.dataObj.userProfile.languages.length ?
@@ -170,7 +170,7 @@ class FreelancerProfilePage extends Component {
                                                 <>
                                                     <div className="education">
                                                         <h6>{index + 1}. College or University : </h6>
-                                                        <p className="px-3">{education.collegeName} <span className="edit-pencil"><i className="fa fa-pencil" aria-hidden="true"></i></span><span className="delete-box"><i className="fa fa-trash" aria-hidden="true"></i>
+                                                        <p className="px-3">{education.collegeName} <span className="edit-pencil"><i className="fas fa-pencil-alt"></i></span><span className="delete-box"><i className="fas fa-trash-alt"></i>
                                                         </span></p>
                                                     </div>
                                                     <div className="education-details">
@@ -192,19 +192,19 @@ class FreelancerProfilePage extends Component {
                                 <div className="col-6">
                                     <div className="project-details">
                                         <h6>Project preferences : </h6>
-                                        <p className="px-3">{this.props.dataObj.userProfile.projectPreference ? this.props.dataObj.userProfile.projectPreference : null}<span className="edit-pencil"><i className="fa fa-pencil" aria-hidden="true"></i></span></p>
+                                        <p className="px-3">{this.props.dataObj.userProfile.projectPreference ? this.props.dataObj.userProfile.projectPreference : null}<span className="edit-pencil"><i className="fas fa-pencil-alt"></i></span></p>
                                     </div>
                                     <div className="project-details">
                                         <h6>Experience Level : </h6>
-                                        <p className="pl-3">{this.props.dataObj.userProfile.experienceLevel ? this.props.dataObj.userProfile.experienceLevel : null}<span className="edit-pencil"><i className="fa fa-pencil" aria-hidden="true"></i></span></p>
+                                        <p className="pl-3">{this.props.dataObj.userProfile.experienceLevel ? this.props.dataObj.userProfile.experienceLevel : null}<span className="edit-pencil"><i className="fas fa-pencil-alt"></i></span></p>
                                     </div>
                                     <div className="project-details">
                                         <h6>Category : </h6>
-                                        <p className="pl-3">{this.props.dataObj.userProfile.category ? this.props.dataObj.userProfile.category : null} <span className="edit-pencil"><i className="fa fa-pencil" aria-hidden="true"></i></span></p>
+                                        <p className="pl-3">{this.props.dataObj.userProfile.category ? this.props.dataObj.userProfile.category : null} <span className="edit-pencil"><i className="fas fa-pencil-alt"></i></span></p>
                                     </div>
                                 </div>
                                 <div className="col-6">
-                                    <h4>Skills : <span className="edit-pencil"><i className="fa fa-pencil" aria-hidden="true"></i></span></h4>
+                                    <h4>Skills : <span className="edit-pencil"><i className="fas fa-pencil-alt"></i></span></h4>
                                     {this.props.dataObj.userProfile.skills.length ?
                                         <div className="specialization-skill-container mt-3 mb-3">
                                             {this.props.dataObj.userProfile.skills.map((skill, index) =>
@@ -231,7 +231,7 @@ class FreelancerProfilePage extends Component {
                                     </div>
                                 </div>
                                 <div className="col-7">
-                                    <h4>Contact Info : <span className="edit-pencil"><i className="fa fa-pencil" aria-hidden="true"></i></span></h4>
+                                    <h4>Contact Info : <span className="edit-pencil"><i className="fas fa-pencil-alt"></i></span></h4>
                                     {this.props.dataObj.userProfile.address ?
                                         <>
                                             <div className="language mt-3">
@@ -268,7 +268,7 @@ class FreelancerProfilePage extends Component {
                                                 <div key={portfolio._id} className="card" style={{ width: "18rem", marginRight: "10px" }}>
                                                     <a href={portfolio.portfolioLink} target="_blank" rel="noopener noreferrer"><img className="card-img-top" src={portfolio.image} alt="portfolio" height="200" width="100%" /></a>
                                                     <div className="card-body">
-                                                        <h5 className="card-title">{portfolio.portfolioTitle} <span className="edit-pencil"><i className="fa fa-pencil" aria-hidden="true"></i></span><span className="delete-box"><i className="fa fa-trash" aria-hidden="true"></i>
+                                                        <h5 className="card-title">{portfolio.portfolioTitle} <span className="edit-pencil"><i className="fas fa-pencil-alt"></i></span><span className="delete-box"><i className="fas fa-trash-alt"></i>
                                                         </span></h5>
                                                         <p className="card-text">{portfolio.overview}</p>
                                                     </div>
@@ -290,7 +290,7 @@ class FreelancerProfilePage extends Component {
                                         <div className="employment-history-data-container my-3">
                                             {this.props.dataObj.userProfile.empHistory.map((empHistory, index) =>
                                                 <div key={empHistory._id} className="employment-history-data">
-                                                    <h6>{index + 1}. {empHistory.jobTitle} | <a href={empHistory.companyWebsite}>{empHistory.companyName}</a> <span className="edit-pencil"><i className="fa fa-pencil" aria-hidden="true"></i></span><span className="delete-box"><i className="fa fa-trash" aria-hidden="true"></i>
+                                                    <h6>{index + 1}. {empHistory.jobTitle} | <a href={empHistory.companyWebsite}>{empHistory.companyName}</a> <span className="edit-pencil"><i className="fas fa-pencil-alt"></i></span><span className="delete-box"><i className="fas fa-trash-alt"></i>
                                                     </span></h6>
                                                     <p className="ml-4">{empHistory.jobDescription}</p>
                                                     <p className="ml-3"><b>Duration :  </b> {empHistory.startingYear} to {empHistory.endingYear}</p>
@@ -312,7 +312,7 @@ class FreelancerProfilePage extends Component {
 
                                             this.props.dataObj.userProfile.empHistory[0].otherExperience.otherExperience.map((experience, index) =>
                                                 <div className="other-experience-data">
-                                                    <h5>{index + 1}. {experience.title} <span className="edit-pencil"><i className="fa fa-pencil" aria-hidden="true"></i></span><span className="delete-box"><i className="fa fa-trash" aria-hidden="true"></i>
+                                                    <h5>{index + 1}. {experience.title} <span className="edit-pencil"><i className="fas fa-pencil-alt"></i></span><span className="delete-box"><i className="fas fa-trash-alt"></i>
                                                     </span></h5>
                                                     <p className="ml-4">{experience.description}</p>
                                                 </div>

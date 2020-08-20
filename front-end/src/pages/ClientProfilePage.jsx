@@ -57,17 +57,17 @@ class ClientProfilePage extends Component {
                                 <div className="col-5">
                                     <div className="profile-main-container">
                                         <div className="profile-img-container">
-                                            <div className="profile-img-edit-pencil"><i className="fa fa-pencil" aria-hidden="true"></i>
+                                            <div className="profile-img-edit-pencil"><i className="fas fa-pencil-alt"></i>
                                             </div>
                                             <img src={this.props.dataObj.userProfile.profileImage ? this.props.dataObj.userProfile.profileImage : ""} alt="profile" onError={(e) => { e.target.onerror = null; e.target.src = `${person_icon}`; }} className="profile-img" width="100" height="100" />
                                         </div>
                                         <div className="profile-description">
                                             <h2>{this.props.dataObj.userProfile.userName} {this.props.dataObj.userProfile.companyLink ?
                                                 <a href={this.props.dataObj.userProfile.companyLink} target="_blank" rel="noopener noreferrer">
-                                                    <i className="fa fa-check-square-o" style={{ color: "#28A745" }} aria-hidden="true"></i>
+                                                    <i className="fas fa-user-check" style={{ color: "#28A745" }}></i>
                                                 </a>
                                                 : null}</h2>
-                                            <h4>Company : {this.props.dataObj.userProfile.companyName && this.props.dataObj.userProfile.companyName} <span className="edit-pencil"><i className="fa fa-pencil" aria-hidden="true"></i></span></h4>
+                                            <h4>Company : {this.props.dataObj.userProfile.companyName && this.props.dataObj.userProfile.companyName} <span className="edit-pencil"><i className="fas fa-pencil-alt"></i></span></h4>
                                             <h6>Website : {this.props.dataObj.userProfile.companyLink && <a href={this.props.dataObj.userProfile.companyLink} target="_blank" rel="noopener noreferrer">{this.props.dataObj.userProfile.companyLink}</a>}</h6>
                                             <h6>Tagline : {this.props.dataObj.userProfile.tagLine && this.props.dataObj.userProfile.tagLine}</h6>
                                             <p>{this.props.dataObj.userProfile.companyDescription && this.props.dataObj.userProfile.companyDescription}</p>
@@ -125,7 +125,7 @@ class ClientProfilePage extends Component {
                                     </div>
                                 </div>
                                 <div className="col-7">
-                                    <h4>Company contact : <span className="edit-pencil"><i className="fa fa-pencil" aria-hidden="true"></i></span></h4>
+                                    <h4>Company contact : <span className="edit-pencil"><i className="fas fa-pencil-alt"></i></span></h4>
                                     <div className="language mt-3">
                                         <h6>Owner : </h6>
                                         <p className="px-3">{this.props.dataObj.userProfile.companyOwnerName && this.props.dataObj.userProfile.companyOwnerName}</p>

@@ -17,6 +17,12 @@ class ClientMyJobPage extends Component {
                     {this.props.userObj.user.isClient && <button className="btn btn-success">Client profile jobs</button>}
                 </div>
                 <div className="Posted-job-Container">
+                    <h4>Saved jobs : </h4>
+                    <div className="job-content-container">
+                        <h6>No job saved yet</h6>
+                    </div>
+                </div>
+                <div className="Posted-job-Container">
                     <h4>Current applied jobs : </h4>
                     <div className="job-content-container">
                         <h6>No job applied yet</h6>
