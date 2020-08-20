@@ -581,9 +581,11 @@ module.exports = {
 
 			const {freelancerId} = req.params
 			const user = await portfolioModel.findOne({user:freelancerId}).populate("user")
+			const employmentHistory = await empHistoryModel.find({user:req.userId}).populate("otherExperience")
 			return res.status(200).send({
 				msg:"User Profile",
-				user
+				user,
+				employmentHistory
 			})
 		}
 		catch(err){

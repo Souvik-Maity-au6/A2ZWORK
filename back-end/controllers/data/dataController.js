@@ -27,9 +27,11 @@ module.exports = {
 		try{
 
 				const userPortfolio = await portfolioModel.find({user:req.userId})
+				
 				return res.status(200).send({
 					msg:"Portfolio of user",
-					userPortfolio
+					userPortfolio,
+					
 				})
 
 		}

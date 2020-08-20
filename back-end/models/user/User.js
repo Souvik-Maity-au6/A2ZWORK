@@ -11,6 +11,10 @@ const userSchema = Schema({
 		type: String,
 		default: null,
 	},
+	saveJob:{
+		type:Schema.Types.ObjectId,
+		ref:"job",
+	},
 	userName: {
 		type: String,
 		trim: true,

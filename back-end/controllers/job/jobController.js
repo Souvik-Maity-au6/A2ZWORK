@@ -2,6 +2,7 @@ const jobPostModel = require("../../models/job/job");
 const convert = require("../../converter");
 const cloudinary = require("../../cloudinary");
 const jobModel = require("../../models/job/job");
+const { notify } = require("../../routes/job/jobRoutes");
 
 module.exports = {
 	async jobPost(req, res) {
@@ -76,6 +77,39 @@ module.exports = {
 				openJob
 		
 			})
+		}
+		catch(err){
+			return res.status(500).send({ msg: err.message });
+		}
+	},
+	async getParticularJob(req,res){
+		const {jobId}= req.params;
+		try{
+
+			const getOneJob = await jobModel.findOne({_id:jobId})
+
+			return res.status(200).send({
+				msg:"particular job",
+				job:getOneJob
+			})
+		}
+		catch(err){
+			return res.status(500).send({ msg: err.message });
+		}
+	},
+	async getClientPostedJobs(req,res){
+
+		const {userId}=req.params
+
+		try{
+
+			const jobsPosted = await jobModel.find({user:userId,jobStatus:{$ne:"closed"}})
+			return res.status(200).send({
+				msg:"posted job by client",
+				job:jobsPosted
+			})
+			
+
 		}
 		catch(err){
 			return res.status(500).send({ msg: err.message });
