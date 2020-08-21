@@ -116,7 +116,8 @@ module.exports = {
 	async jobApplied(req, res) {
 		try {
 			req.body.userId = req.userId;
-
+			req.body.jobId=req.params.jobId
+			req.body.jobStatus="applied"
 			const jonApplied = await new applyJobModel({ ...req.body }).save();
 			return res.status(200).send({
 				msg: "Applied job",
