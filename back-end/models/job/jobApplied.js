@@ -23,7 +23,9 @@ const jobAppliedSchema = Schema({
             type:String,
         },
         ratings:{
-            type:Number
+            type:Number,
+            default:0
+            
         }
     },
     coverLetter:{
