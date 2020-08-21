@@ -1,5 +1,5 @@
 const jobPostModel = require("../../models/job/job");
-const applyJobModel = require("../../models/job/jobApplied")
+const applyJobModel = require("../../models/job/jobApplied");
 const convert = require("../../converter");
 const cloudinary = require("../../cloudinary");
 const jobModel = require("../../models/job/job");
@@ -101,34 +101,29 @@ module.exports = {
 		// const {userId}=req.params
 
 		try {
-
-			const query = jobModel.find({user:req.userId})
-
+			const query = jobModel.find({ user: req.userId });
 
 			return res.status(200).send({
 				msg: "posted job by client",
-				openJob: await query.select({jobStatus:"open"}),
-				onGoiingJob:await query.select({jobStatus:"ongoing"}),
-				onClosed: await query.select({jobStatus:"closed"})
+				openJob: await query.select({ jobStatus: "open" }),
+				onGoiingJob: await query.select({ jobStatus: "ongoing" }),
+				onClosed: await query.select({ jobStatus: "closed" }),
 			});
 		} catch (err) {
 			return res.status(500).send({ msg: err.message });
 		}
 	},
-	async jobApplied(req,res){
-		try{
+	async jobApplied(req, res) {
+		try {
+			req.body.userId = req.userId;
 
-			req.body.userId=req.userId
-
-			const jonApplied = await new applyJobModel({...req.body}).save()
+			const jonApplied = await new applyJobModel({ ...req.body }).save();
 			return res.status(200).send({
-				msg:"Applied job",
-				jobApplied
-			})
-		
-		}
-		catch(err){
+				msg: "Applied job",
+				jobApplied,
+			});
+		} catch (err) {
 			return res.status(500).send({ msg: err.message });
 		}
-	}
+	},
 };

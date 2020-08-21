@@ -3,6 +3,7 @@ import {
 	TOGGLE_FETCHING,
 	FETCH_ALL_OPEN_JOBS,
 	FETCH_JOB_DETAILS,
+	FETCH_CLIENT_ALL_JOBS,
 } from "../actionTypes";
 
 const initialState = {
@@ -10,6 +11,7 @@ const initialState = {
 	isFetching: false,
 	allOpenJobs: null,
 	jobDetails: null,
+	allClientJobs: null,
 };
 
 const dataReducer = (state = initialState, action) => {
@@ -24,6 +26,8 @@ const dataReducer = (state = initialState, action) => {
 			return { ...state, allOpenJobs: payload };
 		case FETCH_JOB_DETAILS:
 			return { ...state, jobDetails: payload };
+		case FETCH_CLIENT_ALL_JOBS:
+			return { ...state, allClientJobs: payload };
 		default:
 			return state;
 	}
