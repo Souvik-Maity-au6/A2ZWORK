@@ -491,6 +491,7 @@ module.exports = {
 	},
 	async portfolioUpdate(req, res) {
 		try {
+			console.log("File",req.file)
 			if (req.file) {
 				const imageContentPortfolioImage = convert(
 					req.file.originalname,
