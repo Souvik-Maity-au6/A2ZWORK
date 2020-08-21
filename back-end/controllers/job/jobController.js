@@ -101,13 +101,15 @@ module.exports = {
 		// const {userId}=req.params
 
 		try {
-			const jobsPosted = await jobModel.find({
-				user: req.userId,
-				jobStatus: { $ne: "closed" },
-			});
+
+			const query = jobModel.find({user:req.userId})
+
+
 			return res.status(200).send({
 				msg: "posted job by client",
-				job: jobsPosted,
+				openJob: await query.select({jobStatus:"open"}),
+				onGoiingJob:await query.select({jobStatus:"ongoing"}),
+				onClosed: await query.select({jobStatus:"closed"})
 			});
 		} catch (err) {
 			return res.status(500).send({ msg: err.message });
