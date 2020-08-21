@@ -6,6 +6,7 @@ import {
 	FETCH_ALL_OPEN_JOBS,
 	FETCH_JOB_DETAILS,
 	FETCH_CLIENT_ALL_JOBS,
+	FETCH_ALL_JOB_APPLICATIONS,
 } from "../actionTypes";
 export const editFreelancerProfile = mainProfileData => async dispatch => {
 	return new Promise(async (resolve, reject) => {
@@ -300,11 +301,12 @@ export const getClientAllPostedJobs = () => async dispatch => {
 	});
 };
 
-export const applyJob = jobId => async () => {
+export const applyJob = (jobId, coverLetter) => async () => {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const response = await axios.post(
 				`${process.env.REACT_APP_BASE_URL}/applyJob/${jobId}`,
+				coverLetter,
 			);
 			console.log(response.data);
 			resolve(response.data.msg);
@@ -315,6 +317,26 @@ export const applyJob = jobId => async () => {
 			} else {
 				reject(err.response.data.msg);
 			}
+		}
+	});
+};
+
+export const getAllJobApplications = jobId => async dispatch => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			dispatch({ type: FETCH_ALL_JOB_APPLICATIONS, payload: null });
+			dispatch({ type: TOGGLE_FETCHING });
+			const response = await axios.get(
+				`${process.env.REACT_APP_BASE_URL}/getUserAppliedJob/${jobId}`,
+			);
+			console.log(response.data);
+			// dispatch({ type: FETCH_ALL_JOB_APPLICATIONS, payload: response.data.appliedJobs });  });
+			resolve(response.data.msg);
+		} catch (err) {
+			console.log(err);
+			reject(err.response.data.msg);
+		} finally {
+			dispatch({ type: TOGGLE_FETCHING });
 		}
 	});
 };

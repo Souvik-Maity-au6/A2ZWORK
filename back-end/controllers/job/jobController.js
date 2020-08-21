@@ -115,8 +115,7 @@ module.exports = {
 	},
 	async jobApplied(req, res) {
 		try {
-			if(!(await jobApplied.find({userId:req.userId})).length){
-
+			if (!(await applyJobModel.find({ userId: req.userId })).length) {
 				req.body.userId = req.userId;
 				req.body.jobId = req.params.jobId;
 				req.body.jobStatus = "applied";
@@ -126,7 +125,7 @@ module.exports = {
 					jobApplied,
 				});
 			}
-			throw new Error("you have already applied for the job !!!")
+			throw new Error("you have already applied for this job !!!");
 		} catch (err) {
 			return res.status(500).send({ msg: err.message });
 		}

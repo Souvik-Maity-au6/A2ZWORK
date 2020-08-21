@@ -37,12 +37,13 @@ module.exports = {
 				userId: newUser.id,
 				userName: newUser.userName,
 				userEmail: newUser.userEmail,
-				companyName:newUser.companyName,
+				companyName: newUser.companyName,
 				accessToken: newUser.token,
 				refreshToken: newUser.refreshToken,
 				profileImage: newUser.profileImage,
 				isClient: newUser.isClient,
 				isFreelancer: newUser.isFreelancer,
+				acceptTermsCondition: newUser.acceptTermsCondition,
 			});
 		} catch (err) {
 			console.log(err.message);

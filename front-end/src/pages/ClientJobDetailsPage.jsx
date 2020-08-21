@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Swal from 'sweetalert2'
-import { getJobDetails, downloadResume } from '../redux/actions/dataAction'
+import { getJobDetails, downloadResume, getAllJobApplications } from '../redux/actions/dataAction'
 import { mergeStateToProps } from '../redux/mapStateToProps'
-import JobApplication from '../components/JobApplication'
 import { headerAuthorization } from '../axios'
 import Spinner from '../components/common/Spinner'
 import '../styles/JobDetailsPage.css'
@@ -12,14 +11,18 @@ const initialState = {
     starRating: "",
     jobApply: "none",
     jobDetails: "",
+    jobApplications: "",
 }
 
 class JobDetailsPage extends Component {
     state = initialState
     async componentDidMount() {
         headerAuthorization()
+
         try {
             const response = await this.props.getJobDetails(this.props.match.params.jobId)
+            const applicationResponse = await this.props.getAllJobApplications(this.props.match.params.jobId)
+            this.setState({ jobApplications: applicationResponse })
             this.setState({ jobDetails: response })
         } catch (err) {
             Swal.fire({
@@ -88,5 +91,5 @@ class JobDetailsPage extends Component {
     }
 }
 
-export default connect(mergeStateToProps, { getJobDetails, downloadResume })(JobDetailsPage)
+export default connect(mergeStateToProps, { getJobDetails, downloadResume, getAllJobApplications })(JobDetailsPage)
 

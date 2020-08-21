@@ -19,8 +19,11 @@ class JobApplyForm extends Component {
     }
     handleSubmitJobApply = async (event) => {
         event.preventDefault()
+        const coverLetter = {
+            coverLetter: this.state.coverLetter,
+        }
         try {
-            const response = await this.props.applyJob(this.props.jobId)
+            const response = await this.props.applyJob(this.props.jobId, coverLetter)
             this.setState({ jobApplied: response })
             Swal.fire({
                 icon: 'success',
