@@ -120,11 +120,27 @@ module.exports = {
 			req.body.jobStatus="applied"
 			const jonApplied = await new applyJobModel({ ...req.body }).save();
 			return res.status(200).send({
-				msg: "Applied job",
+				msg: "Job Applied Sucessfully",
 				jobApplied,
 			});
 		} catch (err) {
 			return res.status(500).send({ msg: err.message });
 		}
 	},
+	async getAppliedJobFreelancer(req,res){
+
+		try{
+			const {jobId} = req.params
+			const appliedJobs = await applyJobModel.find({jobId}).populate({path:"userId",select:"userName"})
+			return res.status(200).send({
+				msg:"Applied Jobs",
+				appliedJobs
+			})
+		}
+		catch(err){
+			return res.status(500).send({ msg: err.message });
+
+		}
+
+	}
 };
