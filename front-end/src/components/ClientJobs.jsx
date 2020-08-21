@@ -10,25 +10,21 @@ const jobDescription = (description, letterCount) => {
     }
 }
 
-const JobFeed = ({ job, history }) => {
+const JobFeed = ({ job, history, index }) => {
     const handleClickJobDetails = (event) => {
-        if (localStorage.getItem("user")) {
-            history.push(`/jobDetailsPage/${event.target.value}`)
-        } else {
-            history.push("/login")
-        }
+        history.push(`/clientJobDetailsPage/${event.target.value}`)
     }
     return (
-        <div className="client-job-data">
+        <div className="client-job-data border-bottom py-3" >
             <div className="job-title">
-                <h4 className="mr-auto">{job.jobTitle}</h4>
+                <h5 className="mr-auto">{index + 1}. {job.jobTitle}</h5>
                 <button onClick={handleClickJobDetails} className="btn btn-success mx-3" value={job._id}>View details</button>
-                {job.status === "open" &&
+                {job.jobStatus === "open" &&
                     <>
-                        <button className="btn btn-warning"><i className="fas fa-pencil-alt"></i></button>
+                        <button className="btn btn-warning mx-3"><i className="fas fa-pencil-alt"></i></button>
                         <button className="btn btn-warning"><i className="fas fa-trash-alt"></i></button>
                     </>}
-                {job.status === "ongoing" && <button className="btn btn-warning">Completed</button>}
+                {job.jobStatus === "ongoing" && <button className="btn btn-warning">Completed</button>}
             </div>
             <div className="job-budget-container mx-3 my-3">
                 <span><b>Est-Budget : </b></span>

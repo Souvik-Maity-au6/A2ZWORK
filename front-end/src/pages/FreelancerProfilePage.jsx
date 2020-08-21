@@ -18,8 +18,8 @@ class FreelancerProfilePage extends Component {
         headerAuthorization()
         try {
             const response = await this.props.getUserProfileData()
-            this.props.getUserPortfolio()
-            this.props.getEmploymentHistory()
+            await this.props.getUserPortfolio()
+            await this.props.getEmploymentHistory()
             this.setState({ userProfileMsg: response })
         } catch (err) {
             Swal.fire({
@@ -262,7 +262,7 @@ class FreelancerProfilePage extends Component {
                                         <h4>Portfolio : </h4>
                                         <button onClick={this.handleClickAddPortfolio} className="btn btn-success btn-sm">Add</button>
                                     </div>
-                                    {this.props.dataObj.userProfile.userPortfolio ?
+                                    {this.props.dataObj.userProfile.userPortfolio.length ?
                                         <div className="portfolio-data-container m-3">
                                             {this.props.dataObj.userProfile.userPortfolio.map(portfolio =>
                                                 <div key={portfolio._id} className="card" style={{ width: "18rem", marginRight: "10px" }}>
@@ -286,7 +286,7 @@ class FreelancerProfilePage extends Component {
                                         <h4>Employment history : </h4>
                                         <button onClick={this.handleClickAddPortfolio} className="btn btn-success btn-sm">Add</button>
                                     </div>
-                                    {this.props.dataObj.userProfile.empHistory ?
+                                    {this.props.dataObj.userProfile.empHistory.length ?
                                         <div className="employment-history-data-container my-3">
                                             {this.props.dataObj.userProfile.empHistory.map((empHistory, index) =>
                                                 <div key={empHistory._id} className="employment-history-data">
@@ -307,7 +307,7 @@ class FreelancerProfilePage extends Component {
                                         <h4>Other Experiences : </h4>
                                         <button onClick={this.handleClickAddPortfolio} className="btn btn-success btn-sm">Add</button>
                                     </div>
-                                    {this.props.dataObj.userProfile.empHistory && <div className="other-experience-container my-2">
+                                    {this.props.dataObj.userProfile.empHistory.length ? <div className="other-experience-container my-2">
                                         {this.props.dataObj.userProfile.empHistory[0].otherExperience ?
 
                                             this.props.dataObj.userProfile.empHistory[0].otherExperience.otherExperience.map((experience, index) =>
@@ -322,7 +322,9 @@ class FreelancerProfilePage extends Component {
                                                 <h6>No content available</h6>
                                             </div>}
                                     </div>
-                                    }
+                                        : <div className="employment-history-container">
+                                            <h6>No content available</h6>
+                                        </div>}
                                 </div>
                             </div>
                             <div className="row profile-view-container mt-3">

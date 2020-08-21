@@ -26,13 +26,23 @@ import ClientMyJobPage from "./pages/ClientMyJobPage";
 import FreelancerMyJobPage from "./pages/FreelancerMyJobPage";
 import JobPostPage from "./pages/JobPostPage";
 import JobDetailsPage from "./pages/JobDetailsPage";
+import ClientJobDetailsPage from "./pages/ClientJobDetailsPage";
 
 function App() {
 	return (
 		<div className="App">
 			<Navbar />
 			<Switch>
-				<Route exact path="/jobDetailsPage/:jobId" component={JobDetailsPage} />
+				<RouteProtection
+					exact
+					path="/clientJobDetailsPage/:jobId"
+					component={ClientJobDetailsPage}
+				/>
+				<RouteProtection
+					exact
+					path="/jobDetailsPage/:jobId"
+					component={JobDetailsPage}
+				/>
 				<RouteProtection exact path="/jobPost" component={JobPostPage} />
 				<RouteProtection
 					exact

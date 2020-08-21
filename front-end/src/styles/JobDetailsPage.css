@@ -73,3 +73,16 @@
   justify-content: center;
   align-items: center;
 }
+
+.job-application-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 150px;
+}
+
+.job-application-title {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}

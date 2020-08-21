@@ -4,6 +4,7 @@ import Swal from 'sweetalert2'
 import { mergeStateToProps } from '../redux/mapStateToProps'
 import { getClientAllPostedJobs } from '../redux/actions/dataAction'
 import ClientJobs from '../components/ClientJobs'
+import { headerAuthorization } from '../axios'
 import Spinner from '../components/common/Spinner'
 import '../styles/MyJobPage.css'
 
@@ -14,10 +15,12 @@ const initialState = {
 class ClientMyJobPage extends Component {
     state = initialState
     async componentDidMount() {
+        headerAuthorization()
         try {
             const response = await this.props.getClientAllPostedJobs()
             this.setState({ allClientJobs: response })
         } catch (err) {
+            this.setState({ allClientJobs: err })
             Swal.fire({
                 icon: 'error',
                 title: `${err}`
@@ -45,24 +48,29 @@ class ClientMyJobPage extends Component {
                     <>
                         <div className="Posted-job-Container">
                             <h4>Current posted jobs : </h4>
-                            {/* {this.props.dataObj.allClientJobs.openJob.length ? 
-                                this.props.dataObj.allClientJobs.openJob.map(job => <ClientJobs key={job._id} job={job}/>)
-                            : <div className="job-content-container">
-                                <h6>No job posted yet</h6>
-                            </div>} */}
+                            {this.props.dataObj.allClientJobs.openJob.length ?
+                                this.props.dataObj.allClientJobs.openJob.map((job, index) => <>
+                                    <ClientJobs key={job._id} index={index} job={job} />
+                                </>)
+                                : <div className="job-content-container">
+                                    <h6>No job posted yet</h6>
+                                </div>}
                         </div>
                         <div className="ongoing-project-container">
                             <h4>Ongoing Projects : </h4>
-                            <div className="job-content-container">
-                                <h6>No content available</h6>
-                            </div>
-
+                            {this.props.dataObj.allClientJobs.onGoingJob.length ?
+                                this.props.dataObj.allClientJobs.onGoingJob.map(job => <ClientJobs key={job._id} job={job} />)
+                                : <div className="job-content-container">
+                                    <h6>No content available</h6>
+                                </div>}
                         </div>
                         <div className="job-history-container">
                             <h4>Job history : </h4>
-                            <div className="job-content-container">
-                                <h6>No content available</h6>
-                            </div>
+                            {this.props.dataObj.allClientJobs.closedJob.length ?
+                                this.props.dataObj.allClientJobs.closedJob.map(job => <ClientJobs key={job._id} job={job} />)
+                                : <div className="job-content-container">
+                                    <h6>No content available</h6>
+                                </div>}
                         </div>
                     </>
                     : <Spinner />}

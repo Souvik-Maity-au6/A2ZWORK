@@ -99,7 +99,6 @@ module.exports = {
 	},
 	async getClientPostedJobs(req, res) {
 		// const {userId}=req.params
-
 		try {
 			const query = jobModel.find({ user: req.userId });
 			// console.log(await query.where({jobStatus:"open"}))
@@ -107,8 +106,8 @@ module.exports = {
 			return res.status(200).send({
 				msg: "posted job by client",
 				openJob: await query.where({ jobStatus: "open" }),
-				onGoiingJob: await query.where({ jobStatus: "ongoing" }),
-				onClosed: await query.where({ jobStatus: "closed" }),
+				onGoingJob: await query.where({ jobStatus: "ongoing" }),
+				closedJob: await query.where({ jobStatus: "closed" }),
 			});
 		} catch (err) {
 			return res.status(500).send({ msg: err.message });

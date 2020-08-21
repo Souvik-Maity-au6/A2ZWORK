@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Swal from 'sweetalert2'
-import JobApplyForm from '../components/JobApplyForm'
 import { getJobDetails, downloadResume } from '../redux/actions/dataAction'
 import { mergeStateToProps } from '../redux/mapStateToProps'
+import JobApplication from '../components/JobApplication'
+import { headerAuthorization } from '../axios'
 import Spinner from '../components/common/Spinner'
 import '../styles/JobDetailsPage.css'
 
@@ -16,6 +17,7 @@ const initialState = {
 class JobDetailsPage extends Component {
     state = initialState
     async componentDidMount() {
+        headerAuthorization()
         try {
             const response = await this.props.getJobDetails(this.props.match.params.jobId)
             this.setState({ jobDetails: response })
@@ -53,7 +55,7 @@ class JobDetailsPage extends Component {
                     <>
                         <div className="job-details-container">
                             <div className="row">
-                                <div className="col-9 border-right">
+                                <div className="col">
                                     <h4>{this.props.dataObj.jobDetails.jobTitle}</h4>
                                     <h6>Category : {this.props.dataObj.jobDetails.category}</h6>
                                     <p>{this.props.dataObj.jobDetails.jobDescription}</p>
@@ -68,46 +70,15 @@ class JobDetailsPage extends Component {
                                     </h6>
                                     <h6>Skills required : </h6>
                                     {this.props.dataObj.jobDetails.skills.map((skill, index) => <span key={index + 1} className="skill-text">{skill}</span>)}
-
-                                </div>
-                                <div className="col-3">
-                                    <div className="job-client-details-container">
-                                        <div className="project-button-container border-bottom pb-3">
-                                            {this.props.userObj.user.isFreelancer ? <>
-                                                <button onClick={this.handleClickSubmitProposal} className="btn btn-success mb-4">Submit a Proposal</button>
-                                                <button className="btn btn-warning"><i className="fa fa-heart px-3" aria-hidden="true"></i>Save Job</button>
-                                            </> :
-                                                <button className="btn btn-success">Post a Job like this</button>}
-
-                                        </div>
-                                        <div className="client-details mt-3">
-                                            <h5>About the client</h5>
-                                            <h6>Company : {this.props.dataObj.jobDetails.user.companyName}</h6>
-                                            <h6 className="mt-3">{this.props.dataObj.jobDetails.user.clientCurrentBalance ?
-                                                <>
-                                                    <i style={{ color: "#DDD110" }} className="fas fa-check-circle mr-3"></i> Payment verified
-                                                </> : <>
-                                                    <i className="fas fa-check-circle mr-3"></i> Payment unverified
-                                                </>}</h6>
-                                            <div className="stars-outer">
-                                                <div className="stars-inner" style={{ width: this.state.starRating }}></div>
-                                            </div>
-                                            {this.props.dataObj.jobDetails.user.avarageClientRatings ? <span className="number-rating px-3">{this.props.dataObj.jobDetails.user.avarageClientRatings} of {this.props.dataObj.jobDetails.user.jobDone.length} reviews</span> : <span className="number-rating px-3"> 0 of 0 reviews</span>}
-                                            <h6 className="mt-3">Location : {this.props.dataObj.jobDetails.user.companyContactDetails.state}, {this.props.dataObj.jobDetails.user.companyContactDetails.country}</h6>
-                                            <h6 className="mt-3">0 Job posted</h6>
-                                            <h6 className="mt-3">Total $00.00 spent</h6>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div className="job-details-container mt-4" style={{ display: this.state.jobApply }}>
-                            <JobApplyForm jobApply={this.cancelJobApply} />
-                        </div>
+
                         <div className="job-details-container mt-4">
-                            <h4>Client's Job history(0)</h4>
-                            <div className="client-job-history-container">
-                                <h6>No history available</h6>
+                            <h4>Job Applications(0)</h4>
+                            {/* <JobApplication /> */}
+                            <div className="job-application-container">
+                                <h6>No Application available</h6>
                             </div>
                         </div>
                     </>

@@ -139,7 +139,7 @@
 
 .portfolio-data-container {
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     flex-wrap: wrap;
 }

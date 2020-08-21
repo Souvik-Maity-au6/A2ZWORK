@@ -285,11 +285,15 @@ export const getClientAllPostedJobs = () => async dispatch => {
 				`${process.env.REACT_APP_BASE_URL}/getUserJobPosted`,
 			);
 			console.log(response.data);
-			// dispatch({ type: FETCH_CLIENT_ALL_JOBS, payload: response.data });
+			dispatch({ type: FETCH_CLIENT_ALL_JOBS, payload: response.data });
 			resolve(response.data.msg);
 		} catch (err) {
 			console.log(err);
-			reject(err.response.data.msg);
+			if (err.response.status === 401) {
+				reject("Your session has been expired...pls login again");
+			} else {
+				reject(err.response.data.msg);
+			}
 		} finally {
 			dispatch({ type: TOGGLE_FETCHING });
 		}

@@ -1,7 +1,7 @@
 const userModel = require("../../models/user/User");
 const portfolioModel = require("../../models/portfolio/Portfolio");
 const empHistoryModel = require("../../models/employmentHistory/employmentHistory");
-const empExpModel = require("../../models/employmentHistory/otherExperience")
+const empExpModel = require("../../models/employmentHistory/otherExperience");
 const path = require("path");
 const { verify } = require("jsonwebtoken");
 const mail = require("../../sendMail");
@@ -78,7 +78,7 @@ module.exports = {
 					userName: user[0].userName,
 					userEmail: user[0].userEmail,
 					accessToken: user[0].token,
-					companyName:user[0].companyName,
+					companyName: user[0].companyName,
 					refreshToken: user[0].refreshToken,
 					isClient: user[0].isClient,
 					isFreelancer: user[0].isFreelancer,
@@ -404,7 +404,7 @@ module.exports = {
 					isClient: updatedProfile.isClient,
 					isFreelancer: updatedProfile.isFreelancer,
 					profileImage: updatedProfile.profileImage,
-					comapanyName:updatedProfile.companyName,
+					comapanyName: updatedProfile.companyName,
 					acceptTermsCondition: updatedProfile.acceptTermsCondition,
 				});
 			} else {
@@ -465,7 +465,7 @@ module.exports = {
 					isFreelancer: clientUpdatedProfile.isFreelancer,
 					profileImage: clientUpdatedProfile.profileImage,
 					acceptTermsCondition: clientUpdatedProfile.acceptTermsCondition,
-					companyName:clientUpdatedProfile.comapanyName,
+					companyName: clientUpdatedProfile.comapanyName,
 				});
 			} else {
 				throw new Error("Please provide the profile Image");
@@ -491,7 +491,6 @@ module.exports = {
 	},
 	async portfolioUpdate(req, res) {
 		try {
-			console.log("File",req.file)
 			if (req.file) {
 				const imageContentPortfolioImage = convert(
 					req.file.originalname,
@@ -526,73 +525,74 @@ module.exports = {
 	},
 	async updateEmpHistory(req, res) {
 		let expId;
-		try{
-			if(req.body.hasOwnProperty("experienceTitle") && req.body.hasOwnProperty("experienceDetails")){
-				const empHistory = await empHistoryModel.findOne({user:req.userId})
-				const experience = await empOtherExpModel.find({_id:empHistory.otherExperience})
+		try {
+			if (
+				req.body.hasOwnProperty("experienceTitle") &&
+				req.body.hasOwnProperty("experienceDetails")
+			) {
+				const empHistory = await empHistoryModel.findOne({ user: req.userId });
+				const experience = await empOtherExpModel.find({
+					_id: empHistory.otherExperience,
+				});
 				experience[0].otherExperience.push({
-					title:req.body.experienceTitle,
-					description:req.body.experienceDetails
-				})
-				const exp = await experience[0].save() 
+					title: req.body.experienceTitle,
+					description: req.body.experienceDetails,
+				});
+				const exp = await experience[0].save();
 				return res.status(200).send({
-					msg:"Sucessfull",
-					otherExperience:exp
-				})
-			}
-			else{
-				if(!(await empOtherExpModel.find({user:req.userId})).length){
-
-					const otherExperience = new empOtherExpModel({user:req.userId})
-					const otherExp = await otherExperience.save()
-					req.body.otherExperience=otherExp._id
-					req.body.user = req.userId
+					msg: "Sucessfull",
+					otherExperience: exp,
+				});
+			} else {
+				if (!(await empOtherExpModel.find({ user: req.userId })).length) {
+					const otherExperience = new empOtherExpModel({ user: req.userId });
+					const otherExp = await otherExperience.save();
+					req.body.otherExperience = otherExp._id;
+					req.body.user = req.userId;
 					const empHistory = new empHistoryModel({
-						...req.body
-					})
-					const emp=await empHistory.save()
-				}
-				else{
-					const otherExp = await empOtherExpModel.findOne({user:req.userId})
-					req.body.otherExperience=otherExp._id
-					req.body.user = req.userId
+						...req.body,
+					});
+					const emp = await empHistory.save();
+				} else {
+					const otherExp = await empOtherExpModel.findOne({ user: req.userId });
+					req.body.otherExperience = otherExp._id;
+					req.body.user = req.userId;
 					const empHistory = new empHistoryModel({
-						...req.body
-					})
-					const emp=await empHistory.save()
+						...req.body,
+					});
+					const emp = await empHistory.save();
 				}
-
 			}
-			const employeeHistory = await empHistoryModel.find({user:req.userId})
+			const employeeHistory = await empHistoryModel.find({ user: req.userId });
 			return res.status(200).send({
-				msg:"Succesfully Updated !!!",
-				employeeHistory
-			})
-		}
-		catch(err){
+				msg: "Succesfully Updated !!!",
+				employeeHistory,
+			});
+		} catch (err) {
 			return res.status(500).send({
 				msg: err.message,
 			});
 		}
 	},
 
-	async getSpecificUserPortfolio(req,res){
-
-		try{
-
-			const {freelancerId} = req.params
-			const user = await portfolioModel.findOne({user:freelancerId}).populate("user")
-			const employmentHistory = await empHistoryModel.find({user:req.userId}).populate("otherExperience")
+	async getSpecificUserPortfolio(req, res) {
+		try {
+			const { freelancerId } = req.params;
+			const user = await portfolioModel
+				.findOne({ user: freelancerId })
+				.populate("user");
+			const employmentHistory = await empHistoryModel
+				.find({ user: req.userId })
+				.populate("otherExperience");
 			return res.status(200).send({
-				msg:"User Profile",
+				msg: "User Profile",
 				user,
-				employmentHistory
-			})
-		}
-		catch(err){
+				employmentHistory,
+			});
+		} catch (err) {
 			return res.status(500).send({
 				msg: err.message,
 			});
 		}
-	}
+	},
 };
