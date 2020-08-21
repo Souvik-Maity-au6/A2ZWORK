@@ -115,14 +115,18 @@ module.exports = {
 	},
 	async jobApplied(req, res) {
 		try {
-			req.body.userId = req.userId;
-			req.body.jobId = req.params.jobId;
-			req.body.jobStatus = "applied";
-			const jobApplied = await new applyJobModel({ ...req.body }).save();
-			return res.status(200).send({
-				msg: "Job Applied Sucessfully",
-				jobApplied,
-			});
+			if(!(await jobApplied.find({userId:req.userId})).length){
+
+				req.body.userId = req.userId;
+				req.body.jobId = req.params.jobId;
+				req.body.jobStatus = "applied";
+				const jobApplied = await new applyJobModel({ ...req.body }).save();
+				return res.status(200).send({
+					msg: "Job Applied Sucessfully",
+					jobApplied,
+				});
+			}
+			throw new Error("you have already applied for the job !!!")
 		} catch (err) {
 			return res.status(500).send({ msg: err.message });
 		}
