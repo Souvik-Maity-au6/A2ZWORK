@@ -299,3 +299,22 @@ export const getClientAllPostedJobs = () => async dispatch => {
 		}
 	});
 };
+
+export const applyJob = jobId => async () => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			const response = await axios.post(
+				`${process.env.REACT_APP_BASE_URL}/applyJob/${jobId}`,
+			);
+			console.log(response.data);
+			resolve(response.data.msg);
+		} catch (err) {
+			console.log(err);
+			if (err.response.status === 401) {
+				reject("Your session has been expired...pls login again");
+			} else {
+				reject(err.response.data.msg);
+			}
+		}
+	});
+};

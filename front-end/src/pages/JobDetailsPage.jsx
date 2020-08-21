@@ -4,6 +4,7 @@ import Swal from 'sweetalert2'
 import JobApplyForm from '../components/JobApplyForm'
 import { getJobDetails, downloadResume } from '../redux/actions/dataAction'
 import { mergeStateToProps } from '../redux/mapStateToProps'
+import { headerAuthorization } from '../axios'
 import Spinner from '../components/common/Spinner'
 import '../styles/JobDetailsPage.css'
 
@@ -16,6 +17,7 @@ const initialState = {
 class JobDetailsPage extends Component {
     state = initialState
     async componentDidMount() {
+        headerAuthorization()
         try {
             const response = await this.props.getJobDetails(this.props.match.params.jobId)
             this.setState({ jobDetails: response })
@@ -41,7 +43,12 @@ class JobDetailsPage extends Component {
         }
     }
     handleClickSubmitProposal = () => {
-        this.setState({ jobApply: "block" })
+        if (this.props.userObj.user.acceptTermsCondition) {
+            this.setState({ jobApply: "block" })
+        } else {
+            this.props.history.push("/editFreelancerProfile")
+        }
+
     }
     cancelJobApply = () => {
         this.setState({ jobApply: "none" })
@@ -102,7 +109,7 @@ class JobDetailsPage extends Component {
                             </div>
                         </div>
                         <div className="job-details-container mt-4" style={{ display: this.state.jobApply }}>
-                            <JobApplyForm jobApply={this.cancelJobApply} />
+                            <JobApplyForm jobId={this.props.match.params.jobId} jobApply={this.cancelJobApply} />
                         </div>
                         <div className="job-details-container mt-4">
                             <h4>Client's Job history(0)</h4>

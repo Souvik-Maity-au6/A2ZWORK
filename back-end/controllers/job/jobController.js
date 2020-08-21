@@ -81,7 +81,7 @@ module.exports = {
 	},
 	async getParticularJob(req, res) {
 		const { jobId } = req.params;
-		console.log(jobId);
+		// console.log(jobId);
 		try {
 			const getOneJob = await jobModel
 				.findOne({
@@ -116,9 +116,9 @@ module.exports = {
 	async jobApplied(req, res) {
 		try {
 			req.body.userId = req.userId;
-			req.body.jobId=req.params.jobId
-			req.body.jobStatus="applied"
-			const jonApplied = await new applyJobModel({ ...req.body }).save();
+			req.body.jobId = req.params.jobId;
+			req.body.jobStatus = "applied";
+			const jobApplied = await new applyJobModel({ ...req.body }).save();
 			return res.status(200).send({
 				msg: "Job Applied Sucessfully",
 				jobApplied,
@@ -127,20 +127,18 @@ module.exports = {
 			return res.status(500).send({ msg: err.message });
 		}
 	},
-	async getAppliedJobFreelancer(req,res){
-
-		try{
-			const {jobId} = req.params
-			const appliedJobs = await applyJobModel.find({jobId}).populate({path:"userId",select:"userName"})
+	async getAppliedJobFreelancer(req, res) {
+		try {
+			const { jobId } = req.params;
+			const appliedJobs = await applyJobModel
+				.find({ jobId })
+				.populate({ path: "userId", select: "userName" });
 			return res.status(200).send({
-				msg:"Applied Jobs",
-				appliedJobs
-			})
-		}
-		catch(err){
+				msg: "Applied Jobs",
+				appliedJobs,
+			});
+		} catch (err) {
 			return res.status(500).send({ msg: err.message });
-
 		}
-
-	}
+	},
 };
