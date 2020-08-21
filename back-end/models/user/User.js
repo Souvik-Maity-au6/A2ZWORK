@@ -64,10 +64,10 @@ const userSchema = Schema({
 			],
 		},
 	],
-	jobDone: {
+	jobDone: [{
 		type: Schema.Types.ObjectId,
 		ref: "job",
-	},
+	}],
 	availability: {
 		type: String,
 	},

@@ -1,4 +1,5 @@
 const jobPostModel = require("../../models/job/job");
+const applyJobModel = require("../../models/job/jobApplied")
 const convert = require("../../converter");
 const cloudinary = require("../../cloudinary");
 const jobModel = require("../../models/job/job");
@@ -112,4 +113,20 @@ module.exports = {
 			return res.status(500).send({ msg: err.message });
 		}
 	},
+	async jobApplied(req,res){
+		try{
+
+			req.body.userId=req.userId
+
+			const jonApplied = await new applyJobModel({...req.body}).save()
+			return res.status(200).send({
+				msg:"Applied job",
+				jobApplied
+			})
+		
+		}
+		catch(err){
+			return res.status(500).send({ msg: err.message });
+		}
+	}
 };
