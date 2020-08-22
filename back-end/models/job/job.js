@@ -49,6 +49,16 @@ const jobSchema = Schema({
         },
         feedBack:{
             type:String
+        },
+        sumRatings:{
+            type:Number,
+            default:0,
+            select:false
+        },
+        ratingsCount:{
+            type:Number,
+            default:0,
+            select:false
         }
     },
     user:{

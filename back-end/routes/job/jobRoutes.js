@@ -7,7 +7,10 @@ const {
 	getClientPostedJobs,
 	jobApplied,
 	getAppliedJobFreelancer,
-	clientReview
+	clientReview,
+	getClientReview,
+	addFreelancerReview,
+	getFreelancerReview
 } = require("../../controllers/job/jobController");
 const { authentication } = require("../../middlewares/Auth");
 const router = Router();
@@ -17,6 +20,11 @@ router.get("/getParticularJob/:jobId", getParticularJob);
 router.get("/getUserJobPosted", authentication, getClientPostedJobs);
 router.post("/applyJob/:jobId", authentication, jobApplied); //
 router.get("/getUserAppliedJob/:jobId", getAppliedJobFreelancer); //
-router.get("/addClientReview",)
+router.post("/addClientReview/:jobId",authentication,clientReview)
+router.get("/getClientReview/:jobId",getClientReview)
+router.post("/addFreelancerReview/:jobId",authentication,addFreelancerReview)
+router.get("/getFreelancerReview/:jobId",authentication,getFreelancerReview)
+
+
 
 module.exports = router;

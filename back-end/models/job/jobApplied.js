@@ -26,6 +26,16 @@ const jobAppliedSchema = Schema({
             type:Number,
             default:0
             
+        },
+        sumRatings:{
+            type:Number,
+            default:0,
+            select:false
+        },
+        ratingsCount:{
+            type:Number,
+            default:0,
+            select:false
         }
     },
     coverLetter:{

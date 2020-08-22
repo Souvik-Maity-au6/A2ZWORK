@@ -146,25 +146,78 @@ module.exports = {
 	},
 	async clientReview(req,res){
 		try{
-			// clientReview:{
-			// 	clientId:{
-			// 		type:Schema.Types.ObjectId,
-			// 		ref:"user"
-			// 	},
-			// 	feedbBack:{
-			// 		type:String,
-			// 	},
-			// 	ratings:{
-			// 		type:Number,
-			// 		default:0
-					
-			// 	}
-			// },
-			await applyJobModel 
+			const clientJobReview = await applyJobModel.find({jobId:req.params.jobId}).select("clientReview")
+			let sumRatings = clientJobReview.sumRatings+req.body.ratings
+			let ratingsCount = clientJobReview.ratingsCount++
+			const clientReview = {
+				
+				clientId:req.userId,
+				feedback:req.body.feedback,
+				sumRatings,
+				ratingsCount,
+				ratings:sumRatings/	ratingCount
+			}
+			const clientReviewData = await new applyJobModel.findByIdAndUpdate(req.params.jobId,{...clientReview},{new:true})
+			return res.status(200).send({
+				msg:"Client Review Added",
+				clientReviewData
+			})
 
 		}
 		catch(err){
 			return res.status(500).send({ msg: err.message });
 		}
-	}
+	},
+	async getClientReview(req,res){
+		try{
+
+			const clientReview = await applyJobModel.find({jobId:req.params.jobId}).select("clientReview")
+			return res.status(200).send({
+				clientReview
+			})
+		}
+		catch(err){
+			return res.status(500).send({ msg: err.message });
+		}
+	},
+
+	async addFreelancerReview(req,res){
+
+		try{
+			const freelancerJobReview = await jobPostModel.find({_id:req.params.jobId}).select("freelancerReview")
+			let sumRatings = freelancerJobReview.sumRatings+req.body.ratings
+			let ratingsCount = freelancerJobReview.ratingsCount++
+			const freelancerReview = {
+				
+				clientId:req.userId,
+				feedback:req.body.feedback,
+				sumRatings,
+				ratingsCount,
+				ratings:sumRatings/	ratingCount
+			}
+			const freelancerReviewData = await new jobPostModel.updateOne({_id:req.params.jobId},{...freelancerReview},{new:true})
+			return res.status(200).send({
+				msg:"Client Review Added",
+				freelancerReviewData
+			})
+
+		}
+		catch(err){
+			return res.status(500).send({ msg: err.message });
+		}
+
+	},
+	async getFreelancerReview(req,res){
+		try{
+
+			const freelancerReview = await jobPostModel.find({jobId:req.params.jobId}).select("freelancerReview")
+			return res.status(200).send({
+				freelancerReview
+			})
+		}
+		catch(err){
+			return res.status(500).send({ msg: err.message });
+		}
+	},
+
 };
