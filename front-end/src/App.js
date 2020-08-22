@@ -59,9 +59,9 @@ function App() {
 					path="/editFreelancerMultipleProfileData"
 					component={MultipleAddFormPage}
 				/>
-				<Route
+				<RouteProtection
 					exact
-					path="/FreelancerProfileViewPage"
+					path="/FreelancerProfileViewPage/:freelancerId"
 					component={FreelancerProfileViewPage}
 				/>
 				<RouteProtection

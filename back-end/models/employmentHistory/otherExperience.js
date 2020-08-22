@@ -1,4 +1,3 @@
-
 const { Schema, model } = require("mongoose");
 
 const empOtherExpModelSchema = Schema({
@@ -10,15 +9,13 @@ const empOtherExpModelSchema = Schema({
 			description: {
 				type: String,
 			},
-        },
-        
-    ],
-    user: {
-        type: Schema.Types.ObjectId,
-        ref: "user",
-    },
-    
+		},
+	],
+	user: {
+		type: Schema.Types.ObjectId,
+		ref: "user",
+	},
 });
 
 const empOtherExpModel = model("otherExperience", empOtherExpModelSchema);
-module.exports = empOtherExpModel ;
+module.exports = empOtherExpModel;

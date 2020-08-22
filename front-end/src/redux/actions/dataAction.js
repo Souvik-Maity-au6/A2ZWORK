@@ -206,7 +206,7 @@ export const clientJobPost = jobPostData => async () => {
 	});
 };
 
-export const getFreelancerProgileData = freelancerId => dispatch => {
+export const getFreelancerProfileData = freelancerId => dispatch => {
 	return new Promise(async (resolve, reject) => {
 		try {
 			dispatch({
@@ -217,10 +217,10 @@ export const getFreelancerProgileData = freelancerId => dispatch => {
 			const response = await axios.get(`${process.env
 				.REACT_APP_BASE_URL}/getSpecificUserDetails/${freelancerId}
 `);
-			console.log(response.data.userProfile);
+			console.log(response.data);
 			dispatch({
 				type: FETCH_USER_PROFILE_DATA,
-				payload: response.data.userProfile,
+				payload: response.data,
 			});
 			resolve(response.data.msg);
 		} catch (err) {
@@ -330,7 +330,10 @@ export const getAllJobApplications = jobId => async dispatch => {
 				`${process.env.REACT_APP_BASE_URL}/getUserAppliedJob/${jobId}`,
 			);
 			console.log(response.data);
-			// dispatch({ type: FETCH_ALL_JOB_APPLICATIONS, payload: response.data.appliedJobs });  });
+			dispatch({
+				type: FETCH_ALL_JOB_APPLICATIONS,
+				payload: response.data.appliedJobs,
+			});
 			resolve(response.data.msg);
 		} catch (err) {
 			console.log(err);

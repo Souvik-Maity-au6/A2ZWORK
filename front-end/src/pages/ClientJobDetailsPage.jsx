@@ -6,10 +6,9 @@ import { mergeStateToProps } from '../redux/mapStateToProps'
 import { headerAuthorization } from '../axios'
 import Spinner from '../components/common/Spinner'
 import '../styles/JobDetailsPage.css'
+import JobApplication from "../components/JobApplication"
 
 const initialState = {
-    starRating: "",
-    jobApply: "none",
     jobDetails: "",
     jobApplications: "",
 }
@@ -30,26 +29,6 @@ class JobDetailsPage extends Component {
                 title: `${err}`
             })
         }
-    }
-    componentDidUpdate(prevProps, prevState) {
-        if (prevState.jobDetails !== this.state.jobDetails) {
-            (() => {
-                const clientRatings = this.props.dataObj.jobDetails.user.avarageClientRatings || 0
-                const starPercentage = (clientRatings / 5) * 100;
-
-                // Round to nearest 10
-                const starPercentageRounded = `${Math.round(starPercentage / 10) * 10}%`;
-
-                // Set width of stars-inner to percentage
-                this.setState({ starRating: starPercentageRounded })
-            })()
-        }
-    }
-    handleClickSubmitProposal = () => {
-        this.setState({ jobApply: "block" })
-    }
-    cancelJobApply = () => {
-        this.setState({ jobApply: "none" })
     }
     render() {
         return (
@@ -76,16 +55,21 @@ class JobDetailsPage extends Component {
                                 </div>
                             </div>
                         </div>
-
-                        <div className="job-details-container mt-4">
-                            <h4>Job Applications(0)</h4>
-                            {/* <JobApplication /> */}
-                            <div className="job-application-container">
-                                <h6>No Application available</h6>
-                            </div>
-                        </div>
-                    </>
-                    : <Spinner />}
+                    </> : <Spinner />}
+                <div className="job-details-container mt-4">
+                    {this.state.jobApplications ?
+                        <>
+                            <h4>Job Applications({this.props.dataObj.allJobApplications.length})</h4>
+                            {this.props.dataObj.allJobApplications.length ?
+                                this.props.dataObj.allJobApplications.map((jobApplication, index) =>
+                                    <JobApplication key={jobApplication._id} jobApplication={jobApplication} index={index} />
+                                )
+                                : <div className="job-application-container">
+                                    <h6>No Application available</h6>
+                                </div>}
+                        </>
+                        : <Spinner />}
+                </div>
             </div>
         )
     }

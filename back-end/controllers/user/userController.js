@@ -1,20 +1,15 @@
 const userModel = require("../../models/user/User");
 const portfolioModel = require("../../models/portfolio/Portfolio");
 const empHistoryModel = require("../../models/employmentHistory/employmentHistory");
-const empExpModel = require("../../models/employmentHistory/otherExperience");
-const path = require("path");
+const empOtherExpModel = require("../../models/employmentHistory/otherExperience");
+
 const { verify } = require("jsonwebtoken");
 const mail = require("../../sendMail");
-const ObjectId = require("mongodb").ObjectID;
 const { sendVerifyDesign } = require("../../static/verify.js");
 const { sendForgotPasswordDesign } = require("../../static/forgetPassword");
-const { setTimeout } = require("timers");
 const { sign } = require("jsonwebtoken");
 const convert = require("../../converter");
 const cloudinary = require("../../cloudinary");
-
-const { ESTALE } = require("constants");
-const empOtherExpModel = require("../../models/employmentHistory/otherExperience");
 
 module.exports = {
 	// --------- User Registration ---------------- //
@@ -524,7 +519,6 @@ module.exports = {
 		}
 	},
 	async updateEmpHistory(req, res) {
-		let expId;
 		try {
 			if (
 				req.body.hasOwnProperty("experienceTitle") &&
@@ -575,18 +569,20 @@ module.exports = {
 		}
 	},
 
-	async getSpecificUserPortfolio(req, res) {
+	async getSpecificUserProfile(req, res) {
 		try {
 			const { freelancerId } = req.params;
-			const user = await portfolioModel
-				.findOne({ user: freelancerId })
-				.populate("user");
+			const user = await userModel.findById(freelancerId);
+			const portfolio = await portfolioModel.find({ user: freelancerId });
 			const employmentHistory = await empHistoryModel
-				.find({ user: req.userId })
-				.populate("otherExperience");
+				.find({
+					user: freelancerId,
+				})
+				.populate({ path: "otherExperience" });
 			return res.status(200).send({
-				msg: "User Profile",
+				msg: "Specific user profile data",
 				user,
+				portfolio,
 				employmentHistory,
 			});
 		} catch (err) {

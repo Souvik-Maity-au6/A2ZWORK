@@ -67,7 +67,7 @@ class FreelancerProfilePage extends Component {
                                         </div>
                                         <div className="profile-description">
                                             <h2>{this.props.dataObj.userProfile.userName} {this.props.dataObj.userProfile.resume ?
-                                                <span className="resume-download" onClick={(event) => { downloadResume(this.props.dataObj.userProfile.resume) }} target="_blank" rel="noopener noreferrer">
+                                                <span className="resume-download" onClick={(event) => { downloadResume(this.props.dataObj.userProfile.resume) }}>
                                                     <i className="fas fa-user-check" style={{ color: "#28A745" }}></i>
                                                 </span>
                                                 : null}</h2>
@@ -98,7 +98,7 @@ class FreelancerProfilePage extends Component {
                                     </div>
                                     <div className="money-balance-container">
                                         <h6>Balance : </h6>
-                                        <p className="px-3 mr-auto">Your balance is <b>${this.props.dataObj.userProfile.freelancerCurrentBalance ? this.props.dataObj.userProfile.freelancerCurrentBalance : "00.00"}</b></p>
+                                        <p className="px-3 mr-auto">Your balance is <b>${this.props.dataObj.userProfile.freelancerCurrentBalance ? this.props.dataObj.userProfile.freelancerCurrentBalance : "00"}.00</b></p>
                                         {this.props.dataObj.userProfile.freelancerCurrentBalance ? <button className="btn btn-success">Get Paid Now</button> : null}
                                     </div>
                                     <div className="work-details-container">

@@ -16,10 +16,13 @@ const {
 	postEditClientProfile,
 	portfolioUpdate,
 	updateEmpHistory,
-	getSpecificUserPortfolio
+	getSpecificUserProfile,
 } = require("../../controllers/user/userController");
 
-const {getEmpHistory,getUserPortfolio} = require("../../controllers/data/dataController")
+const {
+	getEmpHistory,
+	getUserPortfolio,
+} = require("../../controllers/data/dataController");
 const { generateNewAccessToken } = require("../../middlewares/Auth");
 // const {
 // 	authentication,
@@ -64,10 +67,10 @@ router.post(
 	portfolioUpdate,
 );
 
-router.get("/getEmpHistory",authentication,getEmpHistory)
-router.get("/getUserPortfolio",authentication,getUserPortfolio)
+router.get("/getEmpHistory", authentication, getEmpHistory);
+router.get("/getUserPortfolio", authentication, getUserPortfolio);
 
 router.post("/postEmpHistory", authentication, updateEmpHistory);
 
-router.get("/getSpecificUserDetails/:freelancerId",authentication,getSpecificUserPortfolio)
+router.get("/getSpecificUserDetails/:freelancerId", getSpecificUserProfile);
 module.exports = router;
