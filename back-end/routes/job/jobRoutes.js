@@ -27,7 +27,7 @@ router.post("/addClientReview/:jobId",authentication,clientReview)
 router.get("/getClientReview/:jobId",getClientReview)
 router.post("/addFreelancerReview/:jobId",authentication,addFreelancerReview)
 router.get("/getFreelancerReview/:jobId",authentication,getFreelancerReview)
-router.patch("/hireFreelancer/:jobId/:freelancerId",authentication,hireFreelancer)
+router.get("/hireFreelancer/:jobId/:freelancerId",authentication,hireFreelancer)
 router.post("/sendHireEmail/:jobId/:freelancerId",sendHireEmail)
 
 
