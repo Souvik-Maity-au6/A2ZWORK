@@ -227,10 +227,11 @@ module.exports = {
 	async sendHireEmail(req,res){
 		const {jobId,freelancerId }= req.params
 		const expToken = sign({id:jobId},process.env.PRIVATE_KEY,{expiresIn:"24h"})
+		let newUser = await userModel.find({_id:freelancerId})
 		let html = `<a href=http://localhost:5000/hireFreelancer/${jobId}/${freelancerId}/${expToken}>Accept your Offer</a>`
 		const mailConfig = {
 			html,
-			newUser,
+			newUser[0],
 			subject: "Offer letter ",
 		};
 		await mail.mailConfig(mailConfig);
