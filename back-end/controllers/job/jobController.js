@@ -235,6 +235,9 @@ module.exports = {
 			subject: "Offer letter ",
 		};
 		await mail.mailConfig(mailConfig);
+		return res.status(200).send({
+			msg:"mail sent"
+		})
 	},
 	async hireFreelancer(req,res){
 
