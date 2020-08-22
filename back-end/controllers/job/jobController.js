@@ -1,9 +1,14 @@
 const jobPostModel = require("../../models/job/job");
 const applyJobModel = require("../../models/job/jobApplied");
+const {sign,verify} = require("jsonwebtoken")
+const userModel = require("../../models/user/User")
 const convert = require("../../converter");
 const cloudinary = require("../../cloudinary");
 const jobModel = require("../../models/job/job");
 const { notify } = require("../../routes/job/jobRoutes");
+const mail = require("../../sendMail");
+// const { verify } = require("../user/userController");
+
 
 module.exports = {
 	async jobPost(req, res) {
@@ -219,5 +224,33 @@ module.exports = {
 			return res.status(500).send({ msg: err.message });
 		}
 	},
+	async sendHireEmail(req,res){
+		const {jobId,freelancerId }= req.params
+		const expToken = sign({id:jobId},process.env.PRIVATE_KEY,{expiresIn:"24h"})
+		let html = `<a href=http://localhost:5000/hireFreelancer/${jobId}/${freelancerId}/${expToken}>Accept your Offer</a>`
+		const mailConfig = {
+			html,
+			newUser,
+			subject: "Offer letter ",
+		};
+		await mail.mailConfig(mailConfig);
+	},
+	async hireFreelancer(req,res){
+
+		try{
+
+			const {jobId,freelancerId,expToken }= req.params
+			verify(expToken,process.env.PRIVATE_KEY)
+			await applyJobModel.updateOne({jobId:jobId,userId:freelancerId},{jobStatus:"accepted"},{new:true})
+			const jobPosted = await jobModel.updateOne({_id:jobId},{jobStatus:"ongoing"},{new:true})
+			await userModel.updateOne({_id:req.userId},{clientCurrentBalance:jobPosted.budgetAmount})
+			return res.status(200).send({
+				msg:"Sucessfull"
+			})
+		}
+		catch(err){
+			return res.status(500).send({ msg: err.message });
+		}
+	}
 
 };

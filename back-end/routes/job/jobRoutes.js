@@ -10,11 +10,14 @@ const {
 	clientReview,
 	getClientReview,
 	addFreelancerReview,
-	getFreelancerReview
+	getFreelancerReview,
+	hireFreelancer,
+	sendHireEmail
+
 } = require("../../controllers/job/jobController");
 const { authentication } = require("../../middlewares/Auth");
 const router = Router();
-router.post("/jobPost", authentication, upload.array("projectFile"), jobPost);
+router.post("/jobPost", authentication, upload.array("projectFile"),jobPost);
 router.get("/getOpenJobs", getAllOpenJobs);
 router.get("/getParticularJob/:jobId", getParticularJob);
 router.get("/getUserJobPosted", authentication, getClientPostedJobs);
@@ -24,6 +27,8 @@ router.post("/addClientReview/:jobId",authentication,clientReview)
 router.get("/getClientReview/:jobId",getClientReview)
 router.post("/addFreelancerReview/:jobId",authentication,addFreelancerReview)
 router.get("/getFreelancerReview/:jobId",authentication,getFreelancerReview)
+router.patch("/hireFreelancer/:jobId/:freelancerId",authentication,hireFreelancer)
+router.get("/sendHireEmail/:jobId/:freelancerId",authentication,sendHireEmail)
 
 
 
