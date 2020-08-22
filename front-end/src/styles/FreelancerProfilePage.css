@@ -59,10 +59,11 @@
     margin-left: 200px;
 }
 .money-balance-container {
-    margin: 60px 0 0 200px;
+    margin: 60px 0 0 150px;
     display: flex;
     justify-content: center;
     align-items: flex-start;
+    flex-wrap: wrap;
 }
 .work-details-container {
     margin: 30px 0 0 200px;

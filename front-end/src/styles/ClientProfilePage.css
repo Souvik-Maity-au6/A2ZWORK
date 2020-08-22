@@ -18,6 +18,13 @@
     font-style: italic;
 
 }
+.client-money-balance-container {
+    margin: 60px 0 0 150px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
 .profile-img-edit-pencil {
     height: 30px;
     width: 30px;

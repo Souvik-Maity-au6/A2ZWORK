@@ -87,9 +87,9 @@ class ClientProfilePage extends Component {
                                             Logout
                                     </button>
                                     </div>
-                                    <div className="money-balance-container">
+                                    <div className="client-money-balance-container">
                                         <h6>Balance : </h6>
-                                        <p className="px-3 mr-auto">Your current balance is <b>${this.props.dataObj.userProfile.clientCurrentBalance ? this.props.dataObj.userProfile.clientCurrentBalance + ".00" : "00.00"}</b></p>
+                                        <p className="px-3 mr-auto">Your current due balance is <b>${this.props.dataObj.userProfile.clientCurrentBalance ? this.props.dataObj.userProfile.clientCurrentBalance + ".00" : "00.00"}</b></p>
                                         <button className="btn btn-success">Add money</button>
                                     </div>
                                     <div className="work-details-container">

@@ -12,24 +12,24 @@ const {
 	addFreelancerReview,
 	getFreelancerReview,
 	hireFreelancer,
-	sendHireEmail
-
+	sendHireEmail,
 } = require("../../controllers/job/jobController");
 const { authentication } = require("../../middlewares/Auth");
 const router = Router();
-router.post("/jobPost", authentication, upload.array("projectFile"),jobPost);
+router.post("/jobPost", authentication, upload.array("projectFile"), jobPost);
 router.get("/getOpenJobs", getAllOpenJobs);
 router.get("/getParticularJob/:jobId", getParticularJob);
 router.get("/getUserJobPosted", authentication, getClientPostedJobs);
 router.post("/applyJob/:jobId", authentication, jobApplied); //
 router.get("/getUserAppliedJob/:jobId", getAppliedJobFreelancer); //
-router.post("/addClientReview/:jobId",authentication,clientReview)
-router.get("/getClientReview/:jobId",getClientReview)
-router.post("/addFreelancerReview/:jobId",authentication,addFreelancerReview)
-router.get("/getFreelancerReview/:jobId",authentication,getFreelancerReview)
-router.get("/hireFreelancer/:jobId/:freelancerId",authentication,hireFreelancer)
-router.post("/sendHireEmail/:jobId/:freelancerId",sendHireEmail)
-
-
+router.post("/addClientReview/:jobId", authentication, clientReview);
+router.get("/getClientReview/:jobId", getClientReview);
+router.post("/addFreelancerReview/:jobId", authentication, addFreelancerReview);
+router.get("/getFreelancerReview/:jobId", authentication, getFreelancerReview);
+router.get(
+	"/hireFreelancer/:jobId/:freelancerId/:expToken/:userId",
+	hireFreelancer,
+);
+router.post("/sendHireEmail/:jobId/:freelancerId/:userId", sendHireEmail);
 
 module.exports = router;

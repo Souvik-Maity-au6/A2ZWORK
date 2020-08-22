@@ -1,14 +1,13 @@
 const jobPostModel = require("../../models/job/job");
 const applyJobModel = require("../../models/job/jobApplied");
-const {sign,verify} = require("jsonwebtoken")
-const userModel = require("../../models/user/User")
+const { sign, verify } = require("jsonwebtoken");
+const userModel = require("../../models/user/User");
 const convert = require("../../converter");
 const cloudinary = require("../../cloudinary");
 const jobModel = require("../../models/job/job");
 const { notify } = require("../../routes/job/jobRoutes");
 const mail = require("../../sendMail");
 // const { verify } = require("../user/userController");
-
 
 module.exports = {
 	async jobPost(req, res) {
@@ -140,7 +139,7 @@ module.exports = {
 			const { jobId } = req.params;
 			const appliedJobs = await applyJobModel
 				.find({ jobId })
-				.populate({ path: "userId"});
+				.populate({ path: "userId" });
 			return res.status(200).send({
 				msg: "Applied Jobs",
 				appliedJobs,
@@ -149,119 +148,130 @@ module.exports = {
 			return res.status(500).send({ msg: err.message });
 		}
 	},
-	async clientReview(req,res){
-		try{
-			const clientJobReview = await applyJobModel.find({jobId:req.params.jobId}).select("clientReview")
-			let sumRatings = clientJobReview.sumRatings+req.body.ratings
-			let ratingsCount = clientJobReview.ratingsCount++
+	async clientReview(req, res) {
+		try {
+			const clientJobReview = await applyJobModel
+				.find({ jobId: req.params.jobId })
+				.select("clientReview");
+			let sumRatings = clientJobReview.sumRatings + req.body.ratings;
+			let ratingsCount = clientJobReview.ratingsCount++;
 			const clientReview = {
-				
-				clientId:req.userId,
-				feedback:req.body.feedback,
+				clientId: req.userId,
+				feedback: req.body.feedback,
 				sumRatings,
 				ratingsCount,
-				ratings:sumRatings/	ratingCount
-			}
-			const clientReviewData = await new applyJobModel.findByIdAndUpdate(req.params.jobId,{...clientReview},{new:true})
+				ratings: sumRatings / ratingCount,
+			};
+			const clientReviewData = await new applyJobModel.findByIdAndUpdate(
+				req.params.jobId,
+				{ ...clientReview },
+				{ new: true },
+			);
 			return res.status(200).send({
-				msg:"Client Review Added",
-				clientReviewData
-			})
-
-		}
-		catch(err){
+				msg: "Client Review Added",
+				clientReviewData,
+			});
+		} catch (err) {
 			return res.status(500).send({ msg: err.message });
 		}
 	},
-	async getClientReview(req,res){
-		try{
-
-			const clientReview = await applyJobModel.find({jobId:req.params.jobId}).select("clientReview")
+	async getClientReview(req, res) {
+		try {
+			const clientReview = await applyJobModel
+				.find({ jobId: req.params.jobId })
+				.select("clientReview");
 			return res.status(200).send({
-				clientReview
-			})
-		}
-		catch(err){
+				clientReview,
+			});
+		} catch (err) {
 			return res.status(500).send({ msg: err.message });
 		}
 	},
 
-	async addFreelancerReview(req,res){
-
-		try{
-			const freelancerJobReview = await jobPostModel.find({_id:req.params.jobId}).select("freelancerReview")
-			let sumRatings = freelancerJobReview.sumRatings+req.body.ratings
-			let ratingsCount = freelancerJobReview.ratingsCount++
+	async addFreelancerReview(req, res) {
+		try {
+			const freelancerJobReview = await jobPostModel
+				.find({ _id: req.params.jobId })
+				.select("freelancerReview");
+			let sumRatings = freelancerJobReview.sumRatings + req.body.ratings;
+			let ratingsCount = freelancerJobReview.ratingsCount++;
 			const freelancerReview = {
-				
-				clientId:req.userId,
-				feedback:req.body.feedback,
+				clientId: req.userId,
+				feedback: req.body.feedback,
 				sumRatings,
 				ratingsCount,
-				ratings:sumRatings/	ratingCount
-			}
-			const freelancerReviewData = await new jobPostModel.updateOne({_id:req.params.jobId},{...freelancerReview},{new:true})
+				ratings: sumRatings / ratingCount,
+			};
+			const freelancerReviewData = await new jobPostModel.updateOne(
+				{ _id: req.params.jobId },
+				{ ...freelancerReview },
+				{ new: true },
+			);
 			return res.status(200).send({
-				msg:"Client Review Added",
-				freelancerReviewData
-			})
-
-		}
-		catch(err){
-			return res.status(500).send({ msg: err.message });
-		}
-
-	},
-	async getFreelancerReview(req,res){
-		try{
-
-			const freelancerReview = await jobPostModel.find({jobId:req.params.jobId}).select("freelancerReview")
-			return res.status(200).send({
-				freelancerReview
-			})
-		}
-		catch(err){
+				msg: "Client Review Added",
+				freelancerReviewData,
+			});
+		} catch (err) {
 			return res.status(500).send({ msg: err.message });
 		}
 	},
-	async sendHireEmail(req,res){
-		try{
-
-			const {jobId,freelancerId }= req.params
-			const expToken = sign({id:jobId},process.env.PRIVATE_KEY,{expiresIn:"24h"})
-			let newUser = await userModel.find({_id:freelancerId})
-			let html = `<a href=http://localhost:5000/hireFreelancer/${jobId}/${freelancerId}/${expToken}>Accept your Offer</a>`
+	async getFreelancerReview(req, res) {
+		try {
+			const freelancerReview = await jobPostModel
+				.find({ jobId: req.params.jobId })
+				.select("freelancerReview");
+			return res.status(200).send({
+				freelancerReview,
+			});
+		} catch (err) {
+			return res.status(500).send({ msg: err.message });
+		}
+	},
+	async sendHireEmail(req, res) {
+		try {
+			const { jobId, freelancerId, userId } = req.params;
+			const expToken = sign({ id: jobId }, process.env.PRIVATE_KEY, {
+				expiresIn: "24h",
+			});
+			let newUser = await userModel.find({ _id: freelancerId });
+			let html = `<a href=http://localhost:5000/hireFreelancer/${jobId}/${freelancerId}/${expToken}/${userId}>Accept your Offer</a>`;
 			const mailConfig = {
 				html,
-				newUser:newUser[0],
+				newUser: newUser[0],
 				subject: "Offer letter ",
 			};
 			await mail.mailConfig(mailConfig);
 			return res.status(200).send({
-				msg:"mail sent"
-			})
-		}
-		catch(err){
+				msg: "Job offer letter mail has been sent successfully",
+			});
+		} catch (err) {
 			return res.status(500).send({ msg: err.message });
-
 		}
 	},
-	async hireFreelancer(req,res){
-
-		try{
-
-			const {jobId,freelancerId,expToken }= req.params
-			verify(expToken,process.env.PRIVATE_KEY)
-			await applyJobModel.updateOne({jobId:jobId,userId:freelancerId},{jobStatus:"accepted"},{new:true})
-			const jobPosted = await jobModel.updateOne({_id:jobId},{jobStatus:"ongoing"},{new:true})
-			await userModel.updateOne({_id:req.userId},{clientCurrentBalance:jobPosted.budgetAmount})
+	async hireFreelancer(req, res) {
+		try {
+			const { jobId, freelancerId, expToken, userId } = req.params;
+			verify(expToken, process.env.PRIVATE_KEY);
+			await applyJobModel.updateOne(
+				{ jobId: jobId, userId: freelancerId },
+				{ jobStatus: "accepted" },
+				{ new: true },
+			);
+			await jobModel.updateOne(
+				{ _id: jobId },
+				{ jobStatus: "ongoing" },
+				{ new: true },
+			);
+			const jobPosted = await jobModel.findOne({ _id: jobId });
+			await userModel.updateOne(
+				{ _id: userId },
+				{ clientCurrentBalance: jobPosted.budgetAmount },
+			);
 			return res.status(200).send({
-				msg:"Sucessfull"
-			})
-		}
-		catch(err){
+				msg: " Congratulation and Best of luck for your new job",
+			});
+		} catch (err) {
 			return res.status(500).send({ msg: err.message });
 		}
-	}
-
+	},
 };
