@@ -135,7 +135,7 @@ module.exports = {
 			const { jobId } = req.params;
 			const appliedJobs = await applyJobModel
 				.find({ jobId })
-				.populate({ path: "userId", select: "userName" });
+				.populate({ path: "userId"});
 			return res.status(200).send({
 				msg: "Applied Jobs",
 				appliedJobs,
@@ -144,4 +144,27 @@ module.exports = {
 			return res.status(500).send({ msg: err.message });
 		}
 	},
+	async clientReview(req,res){
+		try{
+			// clientReview:{
+			// 	clientId:{
+			// 		type:Schema.Types.ObjectId,
+			// 		ref:"user"
+			// 	},
+			// 	feedbBack:{
+			// 		type:String,
+			// 	},
+			// 	ratings:{
+			// 		type:Number,
+			// 		default:0
+					
+			// 	}
+			// },
+			await applyJobModel 
+
+		}
+		catch(err){
+			return res.status(500).send({ msg: err.message });
+		}
+	}
 };

@@ -7,6 +7,7 @@ const {
 	getClientPostedJobs,
 	jobApplied,
 	getAppliedJobFreelancer,
+	clientReview
 } = require("../../controllers/job/jobController");
 const { authentication } = require("../../middlewares/Auth");
 const router = Router();
@@ -16,5 +17,6 @@ router.get("/getParticularJob/:jobId", getParticularJob);
 router.get("/getUserJobPosted", authentication, getClientPostedJobs);
 router.post("/applyJob/:jobId", authentication, jobApplied); //
 router.get("/getUserAppliedJob/:jobId", getAppliedJobFreelancer); //
+router.get("/addClientReview",)
 
 module.exports = router;
