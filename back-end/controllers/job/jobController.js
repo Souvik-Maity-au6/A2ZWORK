@@ -231,7 +231,7 @@ module.exports = {
 		let html = `<a href=http://localhost:5000/hireFreelancer/${jobId}/${freelancerId}/${expToken}>Accept your Offer</a>`
 		const mailConfig = {
 			html,
-			newUser[0],
+			newUser:newUser[0],
 			subject: "Offer letter ",
 		};
 		await mail.mailConfig(mailConfig);
