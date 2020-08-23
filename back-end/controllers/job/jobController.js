@@ -274,4 +274,20 @@ module.exports = {
 			return res.status(500).send({ msg: err.message });
 		}
 	},
+	async getFreelenacerJobDetails(req,res){
+
+		try{
+
+			const applyQuery =  applyJobModel.find({userId:req.userId})
+			return res.status(200).send({
+	
+				appliedJobs :await applyQuery.populate({path:"jobId",match:"applied"}),
+				ongoingJobs:await applyQuery.populate({path:"jobId",match:"ongoing"}),
+				completedJobs :await applyQuery.populate({path:"jobId",match:"completed"})
+			})
+		}
+		catch(err){
+			return res.status(500).send({ msg: err.message });
+		}
+	}
 };
