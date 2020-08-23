@@ -277,14 +277,44 @@ module.exports = {
 	async getFreelenacerJobDetails(req,res){
 
 		try{
-			const applyQuery =  await applyJobModel.find({userId:req.userId}).populate("jobId")
+			
+			const applyQuery = await applyJobModel.find({userId:req.userId})
+			const appliedJobQuery= await applyJobModel.find({userId:req.userId}).where({jobStatus:"applied"})
+			const acceptedJobQuery= await applyJobModel.find({userId:req.userId}).where({jobStatus:"accepted"})
+			const completedJobQuery = await applyJobModel.find({userId:req.userId}).where({jobStatus:"completed"})
+			// const DocumentLength =  await applyJobModel.find({userId:req.userId}).countDocuments()
+			// console.log(DocumentLength)
+			let appliedJobs=[]
+			let acceptedJobs=[]
+			let completedJobs=[]
+
+			// console.log(appliedJobQuery)
+
+			appliedJobs = appliedJobQuery.map(async item=>{
 		
-			console.log(applyQuery)
+				return await item.populate("jobId").execPopulate()
+			})
+			acceptedJobs=acceptedJobQuery.map(async item=>{
+				return await item.populate("jobId").execPopulate()
+			})
+			completedJobs=completedJobQuery.map(async item=>{
+				return await item.populate("jobId").execPopulate()
+			})
+			appliedJobs = await Promise.all(appliedJobs)
+			acceptedJobs=await Promise.all(acceptedJobs)
+			completedJobs=await Promise.all(completedJobs)
+			// console.log(appliedJobs)
+			// // for ( let i=0; i < appliedJobQuery.length; i++){
+
+			// 	console.log(appliedJobQuery[i])
+			// 	appliedJobs.push(appliedJobQuery[i].populate("jobId").execPopulate())
+			// }
 			return res.status(200).send({
-	
-				appliedJobs :await applyQuery.populate("jobId").where({jobStatus:"applied"}),
-				ongoingJobs:await applyQuery.populate("jobId").where({jobStatus:"ongoing"}),
-				completedJobs :await applyQuery.populate("jobId").where({jobStatus:"completed"})
+				msg:"Freelencer all job status",
+				appliedJobs,
+				completedJobs,
+				acceptedJobs
+				
 			})
 		}
 		catch(err){

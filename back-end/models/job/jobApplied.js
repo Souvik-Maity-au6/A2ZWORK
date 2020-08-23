@@ -5,7 +5,7 @@ const jobAppliedSchema = Schema({
 
     jobId:{
         type:Schema.Types.ObjectId,
-        ref:"job"
+        ref:"jobPost"
     },
     userId:{
         type:Schema.Types.ObjectId,
