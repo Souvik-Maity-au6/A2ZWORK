@@ -13,7 +13,8 @@ const {
 	getFreelancerReview,
 	hireFreelancer,
 	sendHireEmail,
-	getFreelenacerJobDetails
+	getFreelenacerJobDetails,
+	getFreelenacerJobApplication
 } = require("../../controllers/job/jobController");
 const { authentication } = require("../../middlewares/Auth");
 const router = Router();
@@ -33,5 +34,6 @@ router.get(
 );
 router.post("/sendHireEmail/:jobId/:freelancerId/:userId", sendHireEmail);
 router.get("/freelancerJobDetails",authentication,getFreelenacerJobDetails)
+router.get("/getFreelancerJobApplication/:jobId",authentication,getFreelenacerJobApplication)
 
 module.exports = router;

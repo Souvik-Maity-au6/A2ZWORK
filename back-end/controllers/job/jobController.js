@@ -320,5 +320,23 @@ module.exports = {
 		catch(err){
 			return res.status(500).send({ msg: err.message });
 		}
+	},
+
+	async getFreelenacerJobApplication(req,res){
+
+		try{
+			
+			const {jobId} = req.params
+	
+			const application = await applyJobModel.find({userId:req.userId,jobId:jobId})
+	
+			return res.status(200).send({
+				msg:"Job Application",
+				application
+			})
+		}
+		catch(err){
+			return res.status(500).send({ msg: err.message });
+		}
 	}
 };
