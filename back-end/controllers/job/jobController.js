@@ -281,9 +281,9 @@ module.exports = {
 			const applyQuery =  applyJobModel.find({userId:req.userId})
 			return res.status(200).send({
 	
-				appliedJobs :await applyQuery.populate({path:"jobId",match:"applied"}),
-				ongoingJobs:await applyQuery.populate({path:"jobId",match:"ongoing"}),
-				completedJobs :await applyQuery.populate({path:"jobId",match:"completed"})
+				appliedJobs :await applyQuery.populate({path:"jobId"}).where({jobStatus:"applied"}),
+				ongoingJobs:await applyQuery.populate({path:"jobId"}).where({jobStatus:"ongoing"}),
+				completedJobs :await applyQuery.populate({path:"jobId"}).where({jobStatus:"completed"})
 			})
 		}
 		catch(err){
