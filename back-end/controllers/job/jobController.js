@@ -119,7 +119,7 @@ module.exports = {
 	},
 	async jobApplied(req, res) {
 		try {
-			if (!(await applyJobModel.find({ userId: req.userId })).length) {
+			if (!(await applyJobModel.find({ userId: req.userId,jobId:req.params.jobId })).length) {
 				req.body.userId = req.userId;
 				req.body.jobId = req.params.jobId;
 				req.body.jobStatus = "applied";
@@ -277,11 +277,9 @@ module.exports = {
 	async getFreelenacerJobDetails(req,res){
 
 		try{
-
-			const user = await applyJobModel.find({userId:req.userId})
-			console.log(user)
-			const applyQuery =  applyJobModel.find({userId:req.userId})
-			console.log(await applyQuery.populate("jobId"))
+			const applyQuery =  await applyJobModel.find({userId:req.userId}).populate("jobId")
+		
+			console.log(applyQuery)
 			return res.status(200).send({
 	
 				appliedJobs :await applyQuery.populate("jobId").where({jobStatus:"applied"}),
