@@ -281,7 +281,7 @@ module.exports = {
 			const user = await applyJobModel.find({userId:req.userId})
 			console.log(user)
 			const applyQuery =  applyJobModel.find({userId:req.userId})
-			console.log(await applyQuery.populate("jobId").where({jobStatus:"applied"}))
+			console.log(await applyQuery.populate("jobId"))
 			return res.status(200).send({
 	
 				appliedJobs :await applyQuery.populate("jobId").where({jobStatus:"applied"}),
