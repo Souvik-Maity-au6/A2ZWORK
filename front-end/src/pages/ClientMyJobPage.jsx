@@ -59,7 +59,7 @@ class ClientMyJobPage extends Component {
                         <div className="ongoing-project-container">
                             <h4>Ongoing Projects : </h4>
                             {this.props.dataObj.allClientJobs.onGoingJob.length ?
-                                this.props.dataObj.allClientJobs.onGoingJob.map(job => <ClientJobs key={job._id} job={job} />)
+                                this.props.dataObj.allClientJobs.onGoingJob.map((job, index) => <ClientJobs key={job._id} index={index} job={job} />)
                                 : <div className="job-content-container">
                                     <h6>No content available</h6>
                                 </div>}
@@ -67,7 +67,7 @@ class ClientMyJobPage extends Component {
                         <div className="job-history-container">
                             <h4>Job history : </h4>
                             {this.props.dataObj.allClientJobs.closedJob.length ?
-                                this.props.dataObj.allClientJobs.closedJob.map(job => <ClientJobs key={job._id} job={job} />)
+                                this.props.dataObj.allClientJobs.closedJob.map((job, index) => <ClientJobs key={job._id} index={index} job={job} />)
                                 : <div className="job-content-container">
                                     <h6>No content available</h6>
                                 </div>}

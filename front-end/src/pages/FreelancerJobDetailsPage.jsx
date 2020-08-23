@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Swal from 'sweetalert2'
-import { getJobDetails, downloadResume, getAllJobApplications } from '../redux/actions/dataAction'
+import { getJobDetails, downloadResume, getFreelancerJobApplication } from '../redux/actions/dataAction'
 import { mergeStateToProps } from '../redux/mapStateToProps'
 import { headerAuthorization } from '../axios'
 import Spinner from '../components/common/Spinner'
 import '../styles/JobDetailsPage.css'
-import JobApplication from "../components/JobApplication"
+import FreelancerJobApplication from "../components/FreelancerJobApplication"
 
 const initialState = {
     jobDetails: "",
@@ -20,7 +20,7 @@ class JobDetailsPage extends Component {
 
         try {
             const response = await this.props.getJobDetails(this.props.match.params.jobId)
-            const applicationResponse = await this.props.getAllJobApplications(this.props.match.params.jobId)
+            const applicationResponse = await this.props.getFreelancerJobApplication(this.props.match.params.jobId)
             this.setState({ jobApplications: applicationResponse })
             this.setState({ jobDetails: response })
         } catch (err) {
@@ -59,10 +59,10 @@ class JobDetailsPage extends Component {
                 <div className="job-details-container mt-4">
                     {this.state.jobApplications ?
                         <>
-                            <h4>Job Applications({this.props.dataObj.allJobApplications.length}) : </h4>
+                            <h4>Job Application : </h4>
                             {this.props.dataObj.allJobApplications.length ?
                                 this.props.dataObj.allJobApplications.map((jobApplication, index) =>
-                                    <JobApplication key={jobApplication._id} jobApplication={jobApplication} index={index} />
+                                    <FreelancerJobApplication key={jobApplication._id} jobApplication={jobApplication} index={index} />
                                 )
                                 : <div className="job-application-container">
                                     <h6>No Application available</h6>
@@ -75,5 +75,5 @@ class JobDetailsPage extends Component {
     }
 }
 
-export default connect(mergeStateToProps, { getJobDetails, downloadResume, getAllJobApplications })(JobDetailsPage)
+export default connect(mergeStateToProps, { getJobDetails, downloadResume, getFreelancerJobApplication })(JobDetailsPage)
 

@@ -360,3 +360,58 @@ export const hireFreelancer = (jobId, freelancerId, userId) => async () => {
 		}
 	});
 };
+
+export const getFreelancerJobApplications = () => async dispatch => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			dispatch({ type: FETCH_ALL_JOB_APPLICATIONS, payload: null });
+			dispatch({ type: TOGGLE_FETCHING });
+			const response = await axios.get(
+				`${process.env.REACT_APP_BASE_URL}/freelancerJobDetails`,
+			);
+			console.log(response.data);
+			dispatch({
+				type: FETCH_ALL_JOB_APPLICATIONS,
+				payload: response.data,
+			});
+			resolve(response.data.msg);
+		} catch (err) {
+			console.log(err);
+			if (err.response.status === 401) {
+				reject("Your session has been expired...pls login again");
+			} else {
+				reject(err.response.data.msg);
+			}
+		} finally {
+			dispatch({ type: TOGGLE_FETCHING });
+		}
+	});
+};
+
+export const getFreelancerJobApplication = jobId => async dispatch => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			dispatch({ type: FETCH_ALL_JOB_APPLICATIONS, payload: null });
+			dispatch({ type: TOGGLE_FETCHING });
+			const response = await axios.get(
+				`${process.env
+					.REACT_APP_BASE_URL}/getFreelancerJobApplication/${jobId}`,
+			);
+			console.log(response.data);
+			dispatch({
+				type: FETCH_ALL_JOB_APPLICATIONS,
+				payload: response.data.application,
+			});
+			resolve(response.data.msg);
+		} catch (err) {
+			console.log(err);
+			if (err.response.status === 401) {
+				reject("Your session has been expired...pls login again");
+			} else {
+				reject(err.response.data.msg);
+			}
+		} finally {
+			dispatch({ type: TOGGLE_FETCHING });
+		}
+	});
+};

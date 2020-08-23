@@ -27,12 +27,18 @@ import FreelancerMyJobPage from "./pages/FreelancerMyJobPage";
 import JobPostPage from "./pages/JobPostPage";
 import JobDetailsPage from "./pages/JobDetailsPage";
 import ClientJobDetailsPage from "./pages/ClientJobDetailsPage";
+import freelancerJobDetailsPage from "./pages/FreelancerJobDetailsPage";
 
 function App() {
 	return (
 		<div className="App">
 			<Navbar />
 			<Switch>
+				<RouteProtection
+					exact
+					path="/freelancerJobDetailsPage/:jobId"
+					component={freelancerJobDetailsPage}
+				/>
 				<RouteProtection
 					exact
 					path="/clientJobDetailsPage/:jobId"

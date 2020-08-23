@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom'
 import FeedbackForm from './FeedbackForm'
+import { withRouter } from 'react-router-dom'
 import '../styles/JobFeedPage.css'
 
 const jobDescription = (description, letterCount) => {
@@ -15,12 +15,12 @@ const initialState = {
     feedbackForm: "none"
 }
 
-
 class JobFeed extends Component {
     state = initialState
     handleClickJobDetails = (event) => {
-        this.props.history.push(`/clientJobDetailsPage/${event.target.value}`)
+        this.props.history.push(`/freelancerJobDetailsPage/${event.target.value}`)
     }
+
     handleClickJobComplete = (event) => {
         this.setState({ feedbackForm: "block" })
     }
@@ -36,11 +36,6 @@ class JobFeed extends Component {
                     <div className="job-title">
                         <h5 className="mr-auto">{this.props.index + 1}. {this.props.job.jobTitle}</h5>
                         <button onClick={this.handleClickJobDetails} className="btn btn-success mx-3" value={this.props.job._id}>View details</button>
-                        {this.props.job.jobStatus === "open" &&
-                            <>
-                                <button className="btn btn-warning mx-3"><i className="fas fa-pencil-alt"></i></button>
-                                <button className="btn btn-warning"><i className="fas fa-trash-alt"></i></button>
-                            </>}
                         {this.props.job.jobStatus === "ongoing" && <button onClick={this.handleClickJobComplete} className="btn btn-warning">Completed</button>}
                     </div>
                     <div className="job-budget-container mx-3 my-3">
