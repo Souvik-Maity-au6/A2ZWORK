@@ -156,12 +156,34 @@ module.exports = {
 			// console.log(checkFreelancerReview)
 			if(checkFreelancerReview.freelancerReview.ratings){
 
-				const job = await applyJobModel.findOne({jobId:req.params.jobId})
+				const job = await applyJobModel.findOne({jobId:req.params.jobId,jobStatus:"accepted"})
 				console.log("job",job)
 				job.clientReview.feedback=req.body.feedback;
 				job.clientReview.ratings=req.body.ratings;
 				job.clientReview.clientId=req.userId
 				job.jobStatus="completed"
+				await job.save()
+
+				const freelancerId = (await applyJobModel.find({jobId:req.params.jobId,jobStatus:"completed"}))[0].user
+				
+				const freelancerCompletedJobs = await jobPostModel.find({user:freelancerId,jobStatus:"completed"})
+
+				let ratingSum =0
+				let length = freelancerCompletedJobs.length
+				freelancerCompletedJobs.forEach(item=>{
+					// console.log(item.freelancerReview.ratings)
+					ratingSum +=item.clientReview.ratings
+				})
+				
+				// console.log(freelancerJobs)
+
+				
+
+				let averageRating = ratingSum/length
+				console.log("average rating", averageRating)
+
+				await userModel.findOneAndUpdate({_id:freelancerId},{freelancerAverageRating:averageRating})
+
 				
 				console.log("one")
 				await jobPostModel.updateOne({_id:req.params.jobId},{jobStatus:"completed"},{new:true})
