@@ -161,7 +161,7 @@ module.exports = {
 				job.clientReview.feedback=req.body.feedback;
 				job.clientReview.ratings=req.body.ratings;
 				job.clientReview.clientId=req.userId
-				job.clientReview.jobStatus="completed"
+				job.jobStatus="completed"
 				
 				console.log("one")
 				await jobPostModel.updateOne({_id:req.params.jobId},{jobStatus:"completed"},{new:true})
@@ -172,8 +172,9 @@ module.exports = {
 				let balance = (await userModel.findById(req.userId)).clientCurrentBalance - checkFreelancerReview.budgetAmount
 				await userModel.findByIdAndUpdate(req.userId,{clientCurrentBalance:balance},{new:true})
 				await userModel.findOneAndUpdate({_id:job.userId},{freelancerCurrentBalance:checkFreelancerReview.budgetAmount})
+				
 				//client
-				await userModel.update({_id:req.userId},{$push:{workHistory:req.params.jobId}})
+				await userModel.update({_id:req.userId},{$push:{jobDone:req.params.jobId}})
 				console.log("3")
 				// freelancer
 				await userModel.update({_id:job.userId},{$push:{workHistory:req.params.jobId}})
@@ -209,7 +210,7 @@ module.exports = {
 		try {
 
 			const checkReview=await jobPostModel.findById(req.params.jobId)
-			if(!checkReview.freelancerReview.ratings){
+			// if(!checkReview.freelancerReview.ratings){
 
 				const job = await jobPostModel.findById(req.params.jobId)
 				console.log(job)
@@ -219,13 +220,29 @@ module.exports = {
 	
 				const jobSave =  new jobPostModel(job)
 				await jobSave.save()
+				const clientId = (await jobPostModel.find({_id:req.params.jobId}))[0].user
+				const freelancerJobs = await jobPostModel.find({'freelancerReview.ratings':{$gt:0},user:clientId})
+				console.log(freelancerJobs)
+
+				let ratingSum =0
+				let length = freelancerJobs.length
+				freelancerJobs.forEach(item=>{
+					// console.log(item.freelancerReview.ratings)
+					ratingSum +=item.freelancerReview.ratings
+				})
+
+				let averageRating = ratingSum/length
+				console.log("average rating", averageRating)
+
+				await userModel.findOneAndUpdate({_id:clientId},{clientAverageRating:averageRating})
+
 				return res.status(200).send({
 					msg: "Your review has been saved.Job will complete after client's acceptance",
 				});
-			}
-			return res.status(404).send({
-				msg:"You have already given the ratings"
-			})
+			// }
+			// return res.status(404).send({
+			// 	msg:"You have already given the ratings"
+			// })
 		} catch (err) {
 			return res.status(500).send({ msg: err.message });
 		}

@@ -228,6 +228,12 @@ const userSchema = Schema({
 	freelancerDescription: {
 		type: String,
 	},
+	clientAverageRating:{
+		type:Number
+	},
+	freelancerAverageRating:{
+		type:Number
+	}
 });
 
 userSchema.path("skills").validate(function(skills) {
