@@ -151,23 +151,14 @@ module.exports = {
 	},
 	async clientReview(req, res) {
 		try {
-			const clientJobReview = await applyJobModel
-				.find({ jobId: req.params.jobId })
-				.select("clientReview");
-			let sumRatings = clientJobReview.sumRatings + req.body.ratings;
-			let ratingsCount = clientJobReview.ratingsCount++;
-			const clientReview = {
-				clientId: req.userId,
-				feedback: req.body.feedback,
-				sumRatings,
-				ratingsCount,
-				ratings: sumRatings / ratingCount,
-			};
-			const clientReviewData = await new applyJobModel.findByIdAndUpdate(
-				req.params.jobId,
-				{ ...clientReview },
-				{ new: true },
-			);
+			const job = await applyJobModel.findOne({jobId:req.params.jobId})
+			console.log(job)
+			job.ClinetReview.feedBack=req.body.feedback;
+			job.ClientReview.ratings=req.body.ratings;
+			job.ClinetReview.clientId=req.userId
+
+			const jobSave =  new applyJobModel(job)
+			await jobSave.save()
 			return res.status(200).send({
 				msg: "Client Review Added",
 				clientReviewData,
