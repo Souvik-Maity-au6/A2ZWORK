@@ -45,7 +45,8 @@ const jobSchema = Schema({
             ref:"user",
         },
         ratings:{
-            type:Number
+            type:Number,
+            default:0
         },
         feedBack:{
             type:String

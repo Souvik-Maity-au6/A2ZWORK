@@ -193,6 +193,7 @@ module.exports = {
 			const freelancerJobReview = await jobPostModel
 				.find({ _id: req.params.jobId })
 				.select("freelancerReview");
+			console.log(freelancerReview)
 			let sumRatings = freelancerJobReview.sumRatings + req.body.ratings;
 			let ratingsCount = freelancerJobReview.ratingsCount++;
 			const freelancerReview = {
