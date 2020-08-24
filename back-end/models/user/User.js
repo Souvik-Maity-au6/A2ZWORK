@@ -11,9 +11,9 @@ const userSchema = Schema({
 		type: String,
 		default: null,
 	},
-	saveJob:{
-		type:Schema.Types.ObjectId,
-		ref:"job",
+	saveJob: {
+		type: Schema.Types.ObjectId,
+		ref: "job",
 	},
 	userName: {
 		type: String,
@@ -64,10 +64,12 @@ const userSchema = Schema({
 			],
 		},
 	],
-	jobDone: [{
-		type: Schema.Types.ObjectId,
-		ref: "jobPost",
-	}],
+	jobDone: [
+		{
+			type: Schema.Types.ObjectId,
+			ref: "jobPost",
+		},
+	],
 	availability: {
 		type: String,
 	},
@@ -132,9 +134,11 @@ const userSchema = Schema({
 	},
 	totalEarning: {
 		type: Number,
+		default: 0,
 	},
 	totalSpending: {
 		type: Number,
+		default: 0,
 	},
 	clientCurrentBalance: {
 		type: Number,
@@ -163,7 +167,7 @@ const userSchema = Schema({
 	workHistory: [
 		{
 			type: Schema.Types.ObjectId,
-			ref:"jobPost"
+			ref: "jobPost",
 		},
 	],
 	profileImage: {
@@ -228,12 +232,12 @@ const userSchema = Schema({
 	freelancerDescription: {
 		type: String,
 	},
-	clientAverageRating:{
-		type:Number
+	clientAverageRating: {
+		type: Number,
 	},
-	freelancerAverageRating:{
-		type:Number
-	}
+	freelancerAverageRating: {
+		type: Number,
+	},
 });
 
 userSchema.path("skills").validate(function(skills) {

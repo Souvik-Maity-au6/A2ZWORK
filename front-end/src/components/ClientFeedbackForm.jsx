@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import StarRatings from 'react-star-ratings';
 import { connect } from 'react-redux'
 import Swal from 'sweetalert2'
-import { addFreelancerReview } from '../redux/actions/dataAction'
+import { addClientReview } from '../redux/actions/dataAction'
 import pre_loader from '../img/pre_loader.svg';
 import '../styles/JobDetailsPage.css'
 
@@ -32,7 +32,7 @@ class FeedbackForm extends Component {
             feedback: this.state.feedback
         }
         try {
-            const response = await this.props.addFreelancerReview(jobId, review)
+            const response = await this.props.addClientReview(jobId, review)
             Swal.fire({
                 icon: 'success',
                 title: `${response}`
@@ -87,4 +87,4 @@ class FeedbackForm extends Component {
 }
 
 
-export default connect(null, { addFreelancerReview })(FeedbackForm)
+export default connect(null, { addClientReview })(FeedbackForm)

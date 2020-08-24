@@ -98,7 +98,7 @@ class ClientProfilePage extends Component {
                                             <p>Total Spendings</p>
                                         </div>
                                         <div className="text-center px-5">
-                                            <h6>{this.props.dataObj.userProfile.jobPosted ? this.props.dataObj.userProfile.jobPosted.length : "00"}</h6>
+                                            <h6>{this.props.dataObj.userProfile.jobPosted ? this.props.dataObj.userProfile.jobDone.length : "00"}</h6>
                                             <p>Total Jobs</p>
                                         </div>
                                         <div className="text-center">

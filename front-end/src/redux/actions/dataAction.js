@@ -415,3 +415,43 @@ export const getFreelancerJobApplication = jobId => async dispatch => {
 		}
 	});
 };
+
+export const addFreelancerReview = (jobId, review) => () => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			const response = await axios.post(
+				`${process.env.REACT_APP_BASE_URL}/addFreelancerReview/${jobId}`,
+				review,
+			);
+			console.log(response.data);
+			resolve(response.data.msg);
+		} catch (err) {
+			console.log(err);
+			if (err.response.status === 401) {
+				reject("Your session has been expired...pls login again");
+			} else {
+				reject(err.response.data.msg);
+			}
+		}
+	});
+};
+
+export const addClientReview = (jobId, review) => () => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			const response = await axios.post(
+				`${process.env.REACT_APP_BASE_URL}/addClientReview/${jobId}`,
+				review,
+			);
+			console.log(response.data);
+			resolve(response.data.msg);
+		} catch (err) {
+			console.log(err);
+			if (err.response.status === 401) {
+				reject("Your session has been expired...pls login again");
+			} else {
+				reject(err.response.data.msg);
+			}
+		}
+	});
+};

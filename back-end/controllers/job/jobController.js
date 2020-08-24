@@ -120,7 +120,12 @@ module.exports = {
 	},
 	async jobApplied(req, res) {
 		try {
-			if (!(await applyJobModel.find({ userId: req.userId,jobId:req.params.jobId })).length) {
+			if (
+				!(await applyJobModel.find({
+					userId: req.userId,
+					jobId: req.params.jobId,
+				})).length
+			) {
 				req.body.userId = req.userId;
 				req.body.jobId = req.params.jobId;
 				req.body.jobStatus = "applied";
@@ -151,65 +156,108 @@ module.exports = {
 	},
 	async clientReview(req, res) {
 		try {
-			console.log(req.body)
-			const checkFreelancerReview=await jobPostModel.findById(req.params.jobId)
+			console.log(req.params);
+			console.log(req.body);
+			const checkFreelancerReview = await jobPostModel.findById(
+				req.params.jobId,
+			);
 			// console.log(checkFreelancerReview)
-			if(checkFreelancerReview.freelancerReview.ratings){
+			if (checkFreelancerReview.freelancerReview.ratings) {
+				const job = await applyJobModel.findOne({
+					jobId: req.params.jobId,
+					jobStatus: "accepted",
+				});
+				// console.log("job", job);
+				job.clientReview.feedback = req.body.feedback;
+				job.clientReview.ratings = req.body.ratings;
+				job.clientReview.clientId = req.userId;
+				job.jobStatus = "completed";
+				await job.save();
 
-				const job = await applyJobModel.findOne({jobId:req.params.jobId,jobStatus:"accepted"})
-				console.log("job",job)
-				job.clientReview.feedback=req.body.feedback;
-				job.clientReview.ratings=req.body.ratings;
-				job.clientReview.clientId=req.userId
-				job.jobStatus="completed"
-				await job.save()
-
-				const freelancerId = (await applyJobModel.find({jobId:req.params.jobId,jobStatus:"completed"}))[0].user
-				
-				const freelancerCompletedJobs = await jobPostModel.find({user:freelancerId,jobStatus:"completed"})
-
-				let ratingSum =0
-				let length = freelancerCompletedJobs.length
-				freelancerCompletedJobs.forEach(item=>{
+				const freelancerId = (await applyJobModel.find({
+					jobId: req.params.jobId,
+					jobStatus: "completed",
+				}))[0].userId;
+				console.log(freelancerId);
+				const freelancerCompletedJobs = await applyJobModel.find({
+					userId: freelancerId,
+					jobStatus: "completed",
+				});
+				console.log(freelancerCompletedJobs);
+				let ratingSum = 0;
+				let length = freelancerCompletedJobs.length;
+				freelancerCompletedJobs.forEach(item => {
 					// console.log(item.freelancerReview.ratings)
-					ratingSum +=item.clientReview.ratings
-				})
-				
+					ratingSum += item.clientReview.ratings;
+				});
+
 				// console.log(freelancerJobs)
 
-				
+				let averageRating = ratingSum / length;
+				console.log("average rating", averageRating);
+				await userModel.findOneAndUpdate(
+					{ _id: freelancerId },
+					{ freelancerAverageRating: averageRating },
+				);
 
-				let averageRating = ratingSum/length
-				console.log("average rating", averageRating)
+				console.log("one");
+				await jobPostModel.updateOne(
+					{ _id: req.params.jobId },
+					{ jobStatus: "completed" },
+					{ new: true },
+				);
+				const jobSave = new applyJobModel(job);
+				await jobSave.save();
 
-				await userModel.findOneAndUpdate({_id:freelancerId},{freelancerAverageRating:averageRating})
+				console.log("two");
+				let balance =
+					(await userModel.findById(req.userId)).clientCurrentBalance -
+					checkFreelancerReview.budgetAmount;
+				let totalSpending =
+					(await userModel.findById(req.userId)).totalSpending +
+					checkFreelancerReview.budgetAmount;
+				await userModel.findByIdAndUpdate(
+					req.userId,
+					{ clientCurrentBalance: balance, totalSpending: totalSpending },
+					{ new: true },
+				);
+				let freelancerBalance =
+					(await userModel.findById(freelancerId)).freelancerCurrentBalance +
+					checkFreelancerReview.budgetAmount;
+				let totalEarning =
+					(await userModel.findById(freelancerId)).totalEarning +
+					checkFreelancerReview.budgetAmount;
+				await userModel.findOneAndUpdate(
+					{ _id: job.userId },
+					{
+						freelancerCurrentBalance: freelancerBalance,
+						totalEarning: totalEarning,
+					},
+				);
 
-				
-				console.log("one")
-				await jobPostModel.updateOne({_id:req.params.jobId},{jobStatus:"completed"},{new:true})
-				const jobSave =  new applyJobModel(job)
-				await jobSave.save()
-
-				console.log("two")
-				let balance = (await userModel.findById(req.userId)).clientCurrentBalance - checkFreelancerReview.budgetAmount
-				await userModel.findByIdAndUpdate(req.userId,{clientCurrentBalance:balance},{new:true})
-				await userModel.findOneAndUpdate({_id:job.userId},{freelancerCurrentBalance:checkFreelancerReview.budgetAmount})
-				
 				//client
-				await userModel.update({_id:req.userId},{$push:{jobDone:req.params.jobId}})
-				console.log("3")
+				await userModel.update(
+					{ _id: req.userId },
+					{ $push: { jobDone: req.params.jobId } },
+				);
+				console.log("3");
 				// freelancer
-				await userModel.update({_id:job.userId},{$push:{workHistory:req.params.jobId}})
-				console.log("4")
+				await userModel.update(
+					{ _id: job.userId },
+					{ $push: { workHistory: req.params.jobId } },
+				);
+				console.log("4");
 
 				return res.status(200).send({
 					msg: "Client Review Added",
 				});
 			}
 			return res.status(404).send({
-				msg:"Please let freelancer to give review after that u can provide review"
-			})
+				msg:
+					"Please let freelancer to give review after that u can provide review",
+			});
 		} catch (err) {
+			console.log(err);
 			return res.status(500).send({ msg: err.message });
 		}
 	},
@@ -227,44 +275,49 @@ module.exports = {
 	},
 
 	async addFreelancerReview(req, res) {
-
-		console.log(req.body)
+		console.log(req.body);
 		try {
+			const checkReview = await jobPostModel.findById(req.params.jobId);
+			if (!checkReview.freelancerReview.ratings) {
+				const job = await jobPostModel.findById(req.params.jobId);
+				console.log(job);
+				job.freelancerReview.feedback = req.body.feedback;
+				job.freelancerReview.ratings = req.body.ratings;
+				job.freelancerReview.freelancerId = req.userId;
 
-			const checkReview=await jobPostModel.findById(req.params.jobId)
-			if(!checkReview.freelancerReview.ratings){
+				const jobSave = new jobPostModel(job);
+				await jobSave.save();
+				const clientId = (await jobPostModel.find({ _id: req.params.jobId }))[0]
+					.user;
+				const freelancerJobs = await jobPostModel.find({
+					"freelancerReview.ratings": { $gt: 0 },
+					user: clientId,
+				});
+				console.log(freelancerJobs);
 
-				const job = await jobPostModel.findById(req.params.jobId)
-				console.log(job)
-				job.freelancerReview.feedback=req.body.feedback;
-				job.freelancerReview.ratings=req.body.ratings;
-				job.freelancerReview.freelancerId=req.userId
-	
-				const jobSave =  new jobPostModel(job)
-				await jobSave.save()
-				const clientId = (await jobPostModel.find({_id:req.params.jobId}))[0].user
-				const freelancerJobs = await jobPostModel.find({'freelancerReview.ratings':{$gt:0},user:clientId})
-				console.log(freelancerJobs)
-
-				let ratingSum =0
-				let length = freelancerJobs.length
-				freelancerJobs.forEach(item=>{
+				let ratingSum = 0;
+				let length = freelancerJobs.length;
+				freelancerJobs.forEach(item => {
 					// console.log(item.freelancerReview.ratings)
-					ratingSum +=item.freelancerReview.ratings
-				})
+					ratingSum += item.freelancerReview.ratings;
+				});
 
-				let averageRating = ratingSum/length
-				console.log("average rating", averageRating)
+				let averageRating = ratingSum / length;
+				console.log("average rating", averageRating);
 
-				await userModel.findOneAndUpdate({_id:clientId},{clientAverageRating:averageRating})
+				await userModel.findOneAndUpdate(
+					{ _id: clientId },
+					{ clientAverageRating: averageRating },
+				);
 
 				return res.status(200).send({
-					msg: "Your review has been saved.Job will complete after client's acceptance",
+					msg:
+						"Your review has been saved.Job will complete after client's acceptance",
 				});
 			}
 			return res.status(404).send({
-				msg:"You have already given the ratings"
-			})
+				msg: "You have already given the ratings",
+			});
 		} catch (err) {
 			return res.status(500).send({ msg: err.message });
 		}
@@ -328,35 +381,38 @@ module.exports = {
 			return res.status(500).send({ msg: err.message });
 		}
 	},
-	async getFreelenacerJobDetails(req,res){
-
-		try{
-			
-			const applyQuery = await applyJobModel.find({userId:req.userId})
-			const appliedJobQuery= await applyJobModel.find({userId:req.userId}).where({jobStatus:"applied"})
-			const acceptedJobQuery= await applyJobModel.find({userId:req.userId}).where({jobStatus:"accepted"})
-			const completedJobQuery = await applyJobModel.find({userId:req.userId}).where({jobStatus:"completed"})
+	async getFreelenacerJobDetails(req, res) {
+		try {
+			const applyQuery = await applyJobModel.find({ userId: req.userId });
+			const appliedJobQuery = await applyJobModel
+				.find({ userId: req.userId })
+				.where({ jobStatus: "applied" });
+			const acceptedJobQuery = await applyJobModel
+				.find({ userId: req.userId })
+				.where({ jobStatus: "accepted" });
+			const completedJobQuery = await applyJobModel
+				.find({ userId: req.userId })
+				.where({ jobStatus: "completed" });
 			// const DocumentLength =  await applyJobModel.find({userId:req.userId}).countDocuments()
 			// console.log(DocumentLength)
-			let appliedJobs=[]
-			let acceptedJobs=[]
-			let completedJobs=[]
+			let appliedJobs = [];
+			let acceptedJobs = [];
+			let completedJobs = [];
 
 			// console.log(appliedJobQuery)
 
-			appliedJobs = appliedJobQuery.map(async item=>{
-		
-				return await item.populate("jobId").execPopulate()
-			})
-			acceptedJobs=acceptedJobQuery.map(async item=>{
-				return await item.populate("jobId").execPopulate()
-			})
-			completedJobs=completedJobQuery.map(async item=>{
-				return await item.populate("jobId").execPopulate()
-			})
-			appliedJobs = await Promise.all(appliedJobs)
-			acceptedJobs=await Promise.all(acceptedJobs)
-			completedJobs=await Promise.all(completedJobs)
+			appliedJobs = appliedJobQuery.map(async item => {
+				return await item.populate("jobId").execPopulate();
+			});
+			acceptedJobs = acceptedJobQuery.map(async item => {
+				return await item.populate("jobId").execPopulate();
+			});
+			completedJobs = completedJobQuery.map(async item => {
+				return await item.populate("jobId").execPopulate();
+			});
+			appliedJobs = await Promise.all(appliedJobs);
+			acceptedJobs = await Promise.all(acceptedJobs);
+			completedJobs = await Promise.all(completedJobs);
 			// console.log(appliedJobs)
 			// // for ( let i=0; i < appliedJobQuery.length; i++){
 
@@ -364,33 +420,31 @@ module.exports = {
 			// 	appliedJobs.push(appliedJobQuery[i].populate("jobId").execPopulate())
 			// }
 			return res.status(200).send({
-				msg:"Freelencer all job status",
+				msg: "Freelencer all job status",
 				appliedJobs,
 				completedJobs,
-				acceptedJobs
-				
-			})
-		}
-		catch(err){
+				acceptedJobs,
+			});
+		} catch (err) {
 			return res.status(500).send({ msg: err.message });
 		}
 	},
 
-	async getFreelenacerJobApplication(req,res){
+	async getFreelenacerJobApplication(req, res) {
+		try {
+			const { jobId } = req.params;
 
-		try{
-			
-			const {jobId} = req.params
-	
-			const application = await applyJobModel.find({userId:req.userId,jobId:jobId})
-	
+			const application = await applyJobModel.find({
+				userId: req.userId,
+				jobId: jobId,
+			});
+
 			return res.status(200).send({
-				msg:"Job Application",
-				application
-			})
-		}
-		catch(err){
+				msg: "Job Application",
+				application,
+			});
+		} catch (err) {
 			return res.status(500).send({ msg: err.message });
 		}
-	}
+	},
 };

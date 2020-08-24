@@ -36,7 +36,7 @@ class JobFeed extends Component {
                     <div className="job-title">
                         <h5 className="mr-auto">{this.props.index + 1}. {this.props.job.jobTitle}</h5>
                         <button onClick={this.handleClickJobDetails} className="btn btn-success mx-3" value={this.props.job._id}>View details</button>
-                        {this.props.job.jobStatus === "ongoing" && <button onClick={this.handleClickJobComplete} className="btn btn-warning">Completed</button>}
+                        {this.props.job.jobStatus === "ongoing" && <button onClick={this.handleClickJobComplete} className="btn btn-warning" value={this.props.job._id}>Completed</button>}
                     </div>
                     <div className="job-budget-container mx-3 my-3">
                         <span><b>Est-Budget : </b></span>
@@ -46,7 +46,7 @@ class JobFeed extends Component {
                     <p className="ml-3">{jobDescription(this.props.job.jobDescription, 200)}</p>
                 </div>
                 <div className="feedback-form-container" style={{ display: this.state.feedbackForm }}>
-                    <FeedbackForm cancelFeedbackForm={this.cancelFeedbackForm} />
+                    <FeedbackForm cancelFeedbackForm={this.cancelFeedbackForm} jobId={this.props.job._id} />
                 </div>
             </>
         )

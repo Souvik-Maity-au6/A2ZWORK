@@ -16,7 +16,7 @@ class JobApplication extends Component {
     state = initialState
     componentDidMount() {
         (() => {
-            const freelancerRatings = this.props.jobApplication.clientReview.ratings
+            const freelancerRatings = this.props.jobApplication.userId.freelancerAverageRating
             const starPercentage = (freelancerRatings / 5) * 100;
 
             // Round to nearest 10
@@ -86,7 +86,7 @@ class JobApplication extends Component {
                         <div className="stars-outer ml-3">
                             <div className="stars-inner" style={{ width: this.state.starRating }}></div>
                         </div>
-                        <span className="number-rating px-3"> {this.props.jobApplication.clientReview.ratings} of {this.props.jobApplication.userId.workHistory.length} reviews</span>
+                        <span className="number-rating px-3"> {this.props.jobApplication.userId.freelancerAverageRating} of {this.props.jobApplication.userId.workHistory.length} reviews</span>
                         <div className="cover-letter my-3 mx-3">
                             <h6>Cover Letter : </h6>
                             <p className="mx-3">{this.props.jobApplication.coverLetter}</p>

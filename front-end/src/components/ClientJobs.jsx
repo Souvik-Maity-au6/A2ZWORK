@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
-import FeedbackForm from './FeedbackForm'
+import ClientFeedbackForm from './ClientFeedbackForm'
 import '../styles/JobFeedPage.css'
 
 const jobDescription = (description, letterCount) => {
@@ -51,7 +51,7 @@ class JobFeed extends Component {
                     <p className="ml-3">{jobDescription(this.props.job.jobDescription, 200)}</p>
                 </div>
                 <div className="feedback-form-container" style={{ display: this.state.feedbackForm }}>
-                    <FeedbackForm cancelFeedbackForm={this.cancelFeedbackForm} />
+                    <ClientFeedbackForm jobId={this.props.job._id} cancelFeedbackForm={this.cancelFeedbackForm} />
                 </div>
             </>
         )
