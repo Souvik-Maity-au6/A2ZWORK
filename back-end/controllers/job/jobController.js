@@ -7,6 +7,7 @@ const cloudinary = require("../../cloudinary");
 const jobModel = require("../../models/job/job");
 const { notify } = require("../../routes/job/jobRoutes");
 const mail = require("../../sendMail");
+const { updateOne } = require("../../models/job/job");
 // const { verify } = require("../user/userController");
 
 module.exports = {
@@ -189,28 +190,11 @@ module.exports = {
 	},
 
 	async addFreelancerReview(req, res) {
+
 		try {
-			const freelancerJobReview = await jobPostModel
-				.find({ _id: req.params.jobId })
-				.select("freelancerReview");
-			console.log(freelancerReview)
-			let sumRatings = freelancerJobReview.sumRatings + req.body.ratings;
-			let ratingsCount = freelancerJobReview.ratingsCount++;
-			const freelancerReview = {
-				clientId: req.userId,
-				feedback: req.body.feedback,
-				sumRatings,
-				ratingsCount,
-				ratings: sumRatings / ratingCount,
-			};
-			const freelancerReviewData = await new jobPostModel.updateOne(
-				{ _id: req.params.jobId },
-				{ ...freelancerReview },
-				{ new: true },
-			);
+			const freelancerReview = await updateOne({_id:req.params.jobId},{...req.body},{new:true})
 			return res.status(200).send({
-				msg: "Client Review Added",
-				freelancerReviewData,
+				msg: "Freelancer Review Added",
 			});
 		} catch (err) {
 			return res.status(500).send({ msg: err.message });
