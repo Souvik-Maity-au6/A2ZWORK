@@ -151,21 +151,36 @@ module.exports = {
 	},
 	async clientReview(req, res) {
 		try {
-
+			console.log(req.body)
 			const checkFreelancerReview=await jobPostModel.findById(req.params.jobId)
-			if(!checkFreelancerReview.freelancerReview.ratings){
+			// console.log(checkFreelancerReview)
+			if(checkFreelancerReview.freelancerReview.ratings){
 
 				const job = await applyJobModel.findOne({jobId:req.params.jobId})
-				console.log(job)
-				job.ClinetReview.feedBack=req.body.feedback;
-				job.ClientReview.ratings=req.body.ratings;
-				job.ClinetReview.clientId=req.userId
-	
+				console.log("job",job)
+				job.clientReview.feedback=req.body.feedback;
+				job.clientReview.ratings=req.body.ratings;
+				job.clientReview.clientId=req.userId
+				job.clientReview.jobStatus="completed"
+				
+				console.log("one")
+				await jobPostModel.updateOne({_id:req.params.jobId},{jobStatus:"completed"},{new:true})
 				const jobSave =  new applyJobModel(job)
 				await jobSave.save()
+
+				console.log("two")
+				let balance = (await userModel.findById(req.userId)).clientCurrentBalance - checkFreelancerReview.budgetAmount
+				await userModel.findByIdAndUpdate(req.userId,{clientCurrentBalance:balance},{new:true})
+				await userModel.findOneAndUpdate({_id:job.userId},{freelancerCurrentBalance:checkFreelancerReview.budgetAmount})
+				//client
+				await userModel.update({_id:req.userId},{$push:{workHistory:req.params.jobId}})
+				console.log("3")
+				// freelancer
+				await userModel.update({_id:job.userId},{$push:{workHistory:req.params.jobId}})
+				console.log("4")
+
 				return res.status(200).send({
 					msg: "Client Review Added",
-					clientReviewData,
 				});
 			}
 			return res.status(404).send({
@@ -198,7 +213,7 @@ module.exports = {
 
 				const job = await jobPostModel.findById(req.params.jobId)
 				console.log(job)
-				job.freelancerReview.feedBack=req.body.feedback;
+				job.freelancerReview.feedback=req.body.feedback;
 				job.freelancerReview.ratings=req.body.ratings;
 				job.freelancerReview.freelancerId=req.userId
 	

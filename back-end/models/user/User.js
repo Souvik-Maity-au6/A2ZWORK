@@ -66,7 +66,7 @@ const userSchema = Schema({
 	],
 	jobDone: [{
 		type: Schema.Types.ObjectId,
-		ref: "job",
+		ref: "jobPost",
 	}],
 	availability: {
 		type: String,
@@ -162,7 +162,8 @@ const userSchema = Schema({
 	},
 	workHistory: [
 		{
-			type: String,
+			type: Schema.Types.ObjectId,
+			ref:"jobPost"
 		},
 	],
 	profileImage: {
