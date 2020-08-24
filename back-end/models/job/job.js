@@ -48,19 +48,9 @@ const jobSchema = Schema({
             type:Number,
             default:0
         },
-        feedBack:{
+        feedback:{
             type:String
         },
-        sumRatings:{
-            type:Number,
-            default:0,
-            select:false
-        },
-        ratingsCount:{
-            type:Number,
-            default:0,
-            select:false
-        }
     },
     user:{
         type:Schema.Types.ObjectId,

@@ -192,20 +192,17 @@ module.exports = {
 	async addFreelancerReview(req, res) {
 
 		console.log(req.body)
-
-		const freelancerReview={
-			...req.body
-		}
 		try {
 			const job = await jobPostModel.findById(req.params.jobId)
 			console.log(job)
-			job.freelancerReview.feedBack=req.body.feedBack;
+			job.freelancerReview.feedBack=req.body.feedback;
 			job.freelancerReview.ratings=req.body.ratings;
+			job.freelancerReview.freelancerId=req.userId
 
 			const jobSave =  new jobPostModel(job)
 			await jobSave.save()
 			return res.status(200).send({
-				msg: "Freelancer Review Added",
+				msg: "Your review has been saved.Job will complete after client's acceptance",
 			});
 		} catch (err) {
 			return res.status(500).send({ msg: err.message });
