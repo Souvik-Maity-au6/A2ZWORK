@@ -151,18 +151,26 @@ module.exports = {
 	},
 	async clientReview(req, res) {
 		try {
-			const job = await applyJobModel.findOne({jobId:req.params.jobId})
-			console.log(job)
-			job.ClinetReview.feedBack=req.body.feedback;
-			job.ClientReview.ratings=req.body.ratings;
-			job.ClinetReview.clientId=req.userId
 
-			const jobSave =  new applyJobModel(job)
-			await jobSave.save()
-			return res.status(200).send({
-				msg: "Client Review Added",
-				clientReviewData,
-			});
+			const checkFreelancerReview=await jobPostModel.findById(req.params.jobId)
+			if(!checkFreelancerReview.freelancerReview.ratings){
+
+				const job = await applyJobModel.findOne({jobId:req.params.jobId})
+				console.log(job)
+				job.ClinetReview.feedBack=req.body.feedback;
+				job.ClientReview.ratings=req.body.ratings;
+				job.ClinetReview.clientId=req.userId
+	
+				const jobSave =  new applyJobModel(job)
+				await jobSave.save()
+				return res.status(200).send({
+					msg: "Client Review Added",
+					clientReviewData,
+				});
+			}
+			return res.status(404).send({
+				msg:"Please let freelancer to give review after that u can provide review"
+			})
 		} catch (err) {
 			return res.status(500).send({ msg: err.message });
 		}
@@ -184,17 +192,25 @@ module.exports = {
 
 		console.log(req.body)
 		try {
-			const job = await jobPostModel.findById(req.params.jobId)
-			console.log(job)
-			job.freelancerReview.feedBack=req.body.feedback;
-			job.freelancerReview.ratings=req.body.ratings;
-			job.freelancerReview.freelancerId=req.userId
 
-			const jobSave =  new jobPostModel(job)
-			await jobSave.save()
-			return res.status(200).send({
-				msg: "Your review has been saved.Job will complete after client's acceptance",
-			});
+			const checkReview=await jobPostModel.findById(req.params.jobId)
+			if(!checkReview.freelancerReview.ratings){
+
+				const job = await jobPostModel.findById(req.params.jobId)
+				console.log(job)
+				job.freelancerReview.feedBack=req.body.feedback;
+				job.freelancerReview.ratings=req.body.ratings;
+				job.freelancerReview.freelancerId=req.userId
+	
+				const jobSave =  new jobPostModel(job)
+				await jobSave.save()
+				return res.status(200).send({
+					msg: "Your review has been saved.Job will complete after client's acceptance",
+				});
+			}
+			return res.status(404).send({
+				msg:"You have already given the ratings"
+			})
 		} catch (err) {
 			return res.status(500).send({ msg: err.message });
 		}
