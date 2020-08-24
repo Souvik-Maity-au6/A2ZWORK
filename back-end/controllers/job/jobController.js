@@ -210,7 +210,7 @@ module.exports = {
 		try {
 
 			const checkReview=await jobPostModel.findById(req.params.jobId)
-			// if(!checkReview.freelancerReview.ratings){
+			if(!checkReview.freelancerReview.ratings){
 
 				const job = await jobPostModel.findById(req.params.jobId)
 				console.log(job)
@@ -239,10 +239,10 @@ module.exports = {
 				return res.status(200).send({
 					msg: "Your review has been saved.Job will complete after client's acceptance",
 				});
-			// }
-			// return res.status(404).send({
-			// 	msg:"You have already given the ratings"
-			// })
+			}
+			return res.status(404).send({
+				msg:"You have already given the ratings"
+			})
 		} catch (err) {
 			return res.status(500).send({ msg: err.message });
 		}
