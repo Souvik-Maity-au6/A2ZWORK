@@ -5,6 +5,7 @@ import { getFreelancerProfileData, downloadResume } from '../redux/actions/dataA
 import { mapToPropsData } from '../redux/mapStateToProps'
 import person_icon from '../img/person_icon.png'
 import Spinner from '../components/common/Spinner'
+import FreelancerWorkHistory from '../components/FreelancerWorkHistory'
 import '../styles/FreelancerProfilePage.css'
 
 const initialState = {
@@ -169,9 +170,12 @@ class FreelancerProfileViewPage extends Component {
                                 <div className="row profile-view-container mt-3">
                                     <div className="col">
                                         <h4>Work history : </h4>
-                                        <div className="work-history-container">
-                                            <h6>No Work History available</h6>
-                                        </div>
+                                        {this.props.dataObj.userProfile.user.workHistory.length ?
+                                            this.props.dataObj.userProfile.user.workHistory.map((job, index) =>
+                                                <FreelancerWorkHistory key={job} index={index} jobId={job} />)
+                                            : <div className="work-history-container">
+                                                <h6>No Work History available</h6>
+                                            </div>}
                                     </div>
                                 </div>
                                 <div className="row profile-view-container mt-3">

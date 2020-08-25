@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { getJobDetails, getClientReview } from '../redux/actions/dataAction'
+import { getJobDetailsHistory, getClientReview } from '../redux/actions/dataAction'
 import { mapToPropsData } from '../redux/mapStateToProps'
 import '../styles/JobFeedPage.css'
 
@@ -17,9 +17,9 @@ class FreelancerWorkHistory extends Component {
 
     async componentDidMount() {
         const jobId = this.props.jobId
-        const userId = JSON.parse(localStorage.getItem("user")).userId
         try {
-            const response = await this.props.getJobDetails(jobId)
+            const response = await this.props.getJobDetailsHistory(jobId)
+            const userId = this.props.dataObj.jobDetailsHistory.freelancerReview.freelancerId
             const clientReview = await this.props.getClientReview(jobId, userId)
             Promise.all([clientReview, response])
             this.setState({ job: response, clientReview: clientReview })
@@ -53,8 +53,8 @@ class FreelancerWorkHistory extends Component {
                     this.state.clientReview && <>
                         <div className="work-history-job border-bottom mb-3">
                             <div className="job-title">
-                                <h4 className="mr-auto">{this.props.index + 1}. {this.props.dataObj.jobDetails.jobTitle}</h4>
-                                <button onClick={this.handleClickJobDetails} className="btn btn-success mx-3" value={this.props.dataObj.jobDetails._id}>View details</button>
+                                <h4 className="mr-auto">{this.props.index + 1}. {this.props.dataObj.jobDetailsHistory.jobTitle}</h4>
+                                <button onClick={this.handleClickJobDetails} className="btn btn-success mx-3" value={this.props.dataObj.jobDetailsHistory._id}>View details</button>
                             </div>
                             <div className="review-container">
                                 <div className="stars-outer ml-3">
@@ -65,8 +65,8 @@ class FreelancerWorkHistory extends Component {
                             </div>
                             <div className="job-budget-container mx-3 my-3">
                                 <span><b>Est-Budget : </b></span>
-                                <span className="mx-3">{this.props.dataObj.jobDetails.budgetType}</span>
-                                <span>${this.props.dataObj.jobDetails.budgetAmount}.00</span>
+                                <span className="mx-3">{this.props.dataObj.jobDetailsHistory.budgetType}</span>
+                                <span>${this.props.dataObj.jobDetailsHistory.budgetAmount}.00</span>
                             </div>
                         </div>
                     </>}
@@ -75,4 +75,4 @@ class FreelancerWorkHistory extends Component {
     }
 }
 
-export default connect(mapToPropsData, { getJobDetails, getClientReview })(withRouter(FreelancerWorkHistory))
+export default connect(mapToPropsData, { getJobDetailsHistory, getClientReview })(withRouter(FreelancerWorkHistory))
