@@ -5,6 +5,8 @@ import {
 	FETCH_JOB_DETAILS,
 	FETCH_CLIENT_ALL_JOBS,
 	FETCH_ALL_JOB_APPLICATIONS,
+	FETCH_CLIENT_REVIEW,
+	FETCH_JOB_DETAILS_HISTORY,
 } from "../actionTypes";
 
 const initialState = {
@@ -14,6 +16,8 @@ const initialState = {
 	jobDetails: null,
 	allClientJobs: null,
 	allJobApplications: null,
+	clientReview: null,
+	jobDetailsHistory: null,
 };
 
 const dataReducer = (state = initialState, action) => {
@@ -32,6 +36,10 @@ const dataReducer = (state = initialState, action) => {
 			return { ...state, allClientJobs: payload };
 		case FETCH_ALL_JOB_APPLICATIONS:
 			return { ...state, allJobApplications: payload };
+		case FETCH_CLIENT_REVIEW:
+			return { ...state, clientReview: payload };
+		case FETCH_JOB_DETAILS_HISTORY:
+			return { ...state, jobDetailsHistory: payload };
 		default:
 			return state;
 	}

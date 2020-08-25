@@ -26,14 +26,14 @@ class JobFeedPage extends Component {
     }
     render() {
         return (
-            <div className="container">
-                <div className="job-search-box">
+            <div className="container mt-5">
+                {/* <div className="job-search-box">
                     <form className="form-inline">
                         <input type="text" className="job-search-input" placeholder="Search jobs by category..." required />
                         <button className="btn btn-success mx-3"><i className='fas fa-search'></i></button>
                         <button className="btn btn-warning"><i className="fas fa-filter"></i></button>
                     </form>
-                </div>
+                </div> */}
                 {this.state.allOpenJobs ?
                     this.props.dataObj.allOpenJobs.map(job => <JobFeed key={job._id} job={job} />)
                     : <Spinner />}

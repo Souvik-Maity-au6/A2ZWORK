@@ -51,7 +51,7 @@ class JobDetailsPage extends Component {
                                     )}
                                     </h6>
                                     <h6>Skills required : </h6>
-                                    {this.props.dataObj.jobDetails.skills.map((skill, index) => <span key={index + 1} className="skill-text">{skill}</span>)}
+                                    {this.props.dataObj.jobDetails.skills.map((skill, index) => <span key={index + 1} className="skill-text-job">{skill}</span>)}
                                 </div>
                             </div>
                         </div>

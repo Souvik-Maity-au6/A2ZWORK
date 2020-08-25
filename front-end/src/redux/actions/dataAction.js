@@ -7,6 +7,8 @@ import {
 	FETCH_JOB_DETAILS,
 	FETCH_CLIENT_ALL_JOBS,
 	FETCH_ALL_JOB_APPLICATIONS,
+	FETCH_CLIENT_REVIEW,
+	FETCH_JOB_DETAILS_HISTORY,
 } from "../actionTypes";
 export const editFreelancerProfile = mainProfileData => async dispatch => {
 	return new Promise(async (resolve, reject) => {
@@ -452,6 +454,78 @@ export const addClientReview = (jobId, review) => () => {
 			} else {
 				reject(err.response.data.msg);
 			}
+		}
+	});
+};
+
+export const getClientReview = (jobId, userId) => dispatch => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			try {
+				dispatch({ type: FETCH_CLIENT_REVIEW, payload: null });
+				dispatch({ type: TOGGLE_FETCHING });
+				const response = await axios.get(
+					`${process.env
+						.REACT_APP_BASE_URL}/getClientReview/${jobId}/${userId}`,
+				);
+				console.log(response.data);
+				dispatch({
+					type: FETCH_CLIENT_REVIEW,
+					payload: response.data,
+				});
+				resolve(response.data.msg);
+			} catch (err) {
+				console.log(err);
+				if (err.response.status === 401) {
+					reject("Your session has been expired...pls login again");
+				} else {
+					reject(err.response.data.msg);
+				}
+			} finally {
+				dispatch({ type: TOGGLE_FETCHING });
+			}
+		} catch (err) {}
+	});
+};
+
+export const getJobDetailsHistory = jobId => dispatch => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			dispatch({ type: FETCH_JOB_DETAILS_HISTORY, payload: null });
+			dispatch({ type: TOGGLE_FETCHING });
+			const response = await axios.get(
+				`${process.env.REACT_APP_BASE_URL}/getParticularJob/${jobId}`,
+			);
+
+			console.log(response.data);
+			dispatch({ type: FETCH_JOB_DETAILS_HISTORY, payload: response.data.job });
+			resolve(response.data.msg);
+		} catch (err) {
+			console.log(err);
+			reject(err.response.data.msg);
+		} finally {
+			dispatch({ type: TOGGLE_FETCHING });
+		}
+	});
+};
+
+export const searchJobsByCategory = category => dispatch => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			dispatch({ type: FETCH_ALL_OPEN_JOBS, payload: null });
+			dispatch({ type: TOGGLE_FETCHING });
+			const response = await axios.post(
+				`${process.env.REACT_APP_BASE_URL}/searchJobsByCategory`,
+				{ category },
+			);
+			console.log(response.data);
+			dispatch({ type: FETCH_ALL_OPEN_JOBS, payload: response.data.openJob });
+			resolve(response.data.msg);
+		} catch (err) {
+			console.log(err);
+			reject(err.response.data.msg);
+		} finally {
+			dispatch({ type: TOGGLE_FETCHING });
 		}
 	});
 };

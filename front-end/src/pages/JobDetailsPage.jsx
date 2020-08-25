@@ -6,6 +6,7 @@ import { getJobDetails, downloadResume } from '../redux/actions/dataAction'
 import { mergeStateToProps } from '../redux/mapStateToProps'
 import { headerAuthorization } from '../axios'
 import Spinner from '../components/common/Spinner'
+import JobDetailsWorkHistory from '../components/JobDetailsWorkHistory'
 import '../styles/JobDetailsPage.css'
 
 const initialState = {
@@ -31,7 +32,7 @@ class JobDetailsPage extends Component {
     componentDidUpdate(prevProps, prevState) {
         if (prevState.jobDetails !== this.state.jobDetails) {
             (() => {
-                const clientRatings = this.props.dataObj.jobDetails.user.avarageClientRatings || 0
+                const clientRatings = this.props.dataObj.jobDetails.user.clientAverageRating || 0
                 const starPercentage = (clientRatings / 5) * 100;
 
                 // Round to nearest 10
@@ -74,19 +75,21 @@ class JobDetailsPage extends Component {
                                     )}
                                     </h6>
                                     <h6>Skills required : </h6>
-                                    {this.props.dataObj.jobDetails.skills.map((skill, index) => <span key={index + 1} className="skill-text">{skill}</span>)}
+                                    {this.props.dataObj.jobDetails.skills.map((skill, index) => <span key={index + 1} className="skill-text-job">{skill}</span>)}
 
                                 </div>
                                 <div className="col-3">
                                     <div className="job-client-details-container">
-                                        <div className="project-button-container border-bottom pb-3">
-                                            {this.props.userObj.user.isFreelancer ? <>
-                                                <button onClick={this.handleClickSubmitProposal} className="btn btn-success mb-4">Submit a Proposal</button>
-                                                <button className="btn btn-warning"><i className="fa fa-heart px-3" aria-hidden="true"></i>Save Job</button>
-                                            </> :
-                                                <button className="btn btn-success">Post a Job like this</button>}
+                                        {this.props.dataObj.jobDetails.jobStatus === "completed" ? <h6>This job is no more available</h6> :
+                                            <div className="project-button-container border-bottom pb-3">
+                                                {this.props.userObj.user.isFreelancer ? <>
+                                                    <button onClick={this.handleClickSubmitProposal} className="btn btn-success mb-4">Submit a Proposal</button>
+                                                    <button className="btn btn-warning"><i className="fa fa-heart px-3" aria-hidden="true"></i>Save Job</button>
+                                                </> :
+                                                    <button className="btn btn-success">Post a Job like this</button>}
 
-                                        </div>
+                                            </div>}
+
                                         <div className="client-details mt-3">
                                             <h5>About the client</h5>
                                             <h6>Company : {this.props.dataObj.jobDetails.user.companyName}</h6>
@@ -99,9 +102,9 @@ class JobDetailsPage extends Component {
                                             <div className="stars-outer">
                                                 <div className="stars-inner" style={{ width: this.state.starRating }}></div>
                                             </div>
-                                            {this.props.dataObj.jobDetails.user.avarageClientRatings ? <span className="number-rating px-3">{this.props.dataObj.jobDetails.user.avarageClientRatings} of {this.props.dataObj.jobDetails.user.jobDone.length} reviews</span> : <span className="number-rating px-3"> 0 of 0 reviews</span>}
+                                            {this.props.dataObj.jobDetails.user.clientAverageRating ? <span className="number-rating px-3">{this.props.dataObj.jobDetails.user.clientAverageRating} of {this.props.dataObj.jobDetails.user.jobDone.length} reviews</span> : <span className="number-rating px-3"> 0 of 0 reviews</span>}
                                             <h6 className="mt-3">Location : {this.props.dataObj.jobDetails.user.companyContactDetails.state}, {this.props.dataObj.jobDetails.user.companyContactDetails.country}</h6>
-                                            <h6 className="mt-3">0 Job posted</h6>
+                                            <h6 className="mt-3">{this.props.dataObj.jobDetails.user.jobDone.length} Job completed</h6>
                                             <h6 className="mt-3">Total $00.00 spent</h6>
                                         </div>
                                     </div>
@@ -112,10 +115,13 @@ class JobDetailsPage extends Component {
                             <JobApplyForm jobId={this.props.match.params.jobId} jobApply={this.cancelJobApply} />
                         </div>
                         <div className="job-details-container mt-4">
-                            <h4>Client's Job history(0)</h4>
-                            <div className="client-job-history-container">
-                                <h6>No history available</h6>
-                            </div>
+                            <h4>Client's Job history({this.props.dataObj.jobDetails.user.jobDone.length})</h4>
+                            {this.props.dataObj.jobDetails.user.jobDone.length ?
+                                this.props.dataObj.jobDetails.user.jobDone.map((job, index) => <JobDetailsWorkHistory key={job} index={index} jobId={job} />) :
+                                <div className="client-job-history-container">
+                                    <h6>No history available</h6>
+                                </div>}
+
                         </div>
                     </>
                     : <Spinner />}

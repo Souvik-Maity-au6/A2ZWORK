@@ -8,6 +8,7 @@ import { getUserProfileData } from '../redux/actions/dataAction'
 import { headerAuthorization } from '../axios'
 import person_icon from '../img/person_icon.png'
 import Spinner from '../components/common/Spinner'
+import WorkHistory from '../components/WorkHistory'
 import '../styles/ClientProfilePage.css'
 
 const initialState = {
@@ -98,7 +99,7 @@ class ClientProfilePage extends Component {
                                             <p>Total Spendings</p>
                                         </div>
                                         <div className="text-center px-5">
-                                            <h6>{this.props.dataObj.userProfile.jobPosted ? this.props.dataObj.userProfile.jobDone.length : "00"}</h6>
+                                            <h6>{this.props.dataObj.userProfile.jobDone ? this.props.dataObj.userProfile.jobDone.length : "00"}</h6>
                                             <p>Total Jobs</p>
                                         </div>
                                         <div className="text-center">
@@ -148,9 +149,11 @@ class ClientProfilePage extends Component {
                             <div className="row profile-view-container mt-3">
                                 <div className="col">
                                     <h4>Job history : </h4>
-                                    <div className="work-history-container">
-                                        <h6>No Job History available</h6>
-                                    </div>
+                                    {this.props.dataObj.userProfile.jobDone.length ?
+                                        this.props.dataObj.userProfile.jobDone.map((job, index) => <WorkHistory key={job} jobId={job} index={index} />) :
+                                        <div className="work-history-container">
+                                            <h6>No Job History available</h6>
+                                        </div>}
                                 </div>
                             </div>
                             <div className="row profile-view-container mt-3">

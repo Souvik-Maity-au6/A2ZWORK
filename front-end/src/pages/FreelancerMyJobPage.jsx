@@ -63,9 +63,12 @@ class ClientMyJobPage extends Component {
                     </div>
                     <div className="job-history-container">
                         <h4>Job history : </h4>
-                        <div className="job-content-container">
-                            <h6>No content available</h6>
-                        </div>
+                        {this.props.dataObj.allJobApplications.completedJobs.length ?
+                            this.props.dataObj.allJobApplications.completedJobs.map((job, index) =>
+                                <FreelancerJobs key={job._id} index={index} job={job.jobId} />)
+                            : <div className="job-content-container">
+                                <h6>No job accepted yet</h6>
+                            </div>}
                     </div>
                 </> : <Spinner />}
             </div>

@@ -5,6 +5,7 @@ import logo from '../../img/logo.png'
 import { mapToPropsUser } from "../../redux/mapStateToProps"
 import { userLogout } from '../../redux/actions/userAction'
 import person_icon from '../../img/person_icon.png'
+import NavSearchInput from './NavSearchInput'
 
 const Navbar = (props) => {
     return (
@@ -24,10 +25,7 @@ const Navbar = (props) => {
                                 <Link to="/about" className="nav-link">How it works</Link>
                             </li>
                         </ul>}
-                    <form className="form-inline mr-auto nav-search-form">
-                        <input className="mr-sm-2 nav-search-input" type="search" placeholder="Search for jobs or freelancers..." required />
-                        <input className="btn btn-success nav-search-button" type="submit" value="Search" />
-                    </form>
+                    <NavSearchInput />
                     <>
                         {!props.userObj.user || props.userObj.user.isFreelancer ? <ul className="navbar-nav">
                             <li className="nav-item">

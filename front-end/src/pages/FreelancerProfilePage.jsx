@@ -4,6 +4,7 @@ import Swal from 'sweetalert2'
 import { mapToPropsData } from "../redux/mapStateToProps"
 import { userLogout } from '../redux/actions/userAction'
 import { getUserProfileData, downloadResume, getUserPortfolio, getEmploymentHistory } from '../redux/actions/dataAction'
+import FreelancerWorkHistory from '../components/FreelancerWorkHistory'
 import { headerAuthorization } from '../axios'
 import person_icon from '../img/person_icon.png'
 import Spinner from '../components/common/Spinner'
@@ -103,7 +104,7 @@ class FreelancerProfilePage extends Component {
                                     </div>
                                     <div className="work-details-container">
                                         <div className="text-center">
-                                            <h6>${this.props.dataObj.userProfile.totalEarnings ? this.props.dataObj.userProfile.totalEarnings + `+` : "00.00"}</h6>
+                                            <h6>${this.props.dataObj.userProfile.totalEarning ? this.props.dataObj.userProfile.totalEarning + `+` : "00.00"}</h6>
                                             <p>Total Earnings</p>
                                         </div>
                                         <div className="text-center px-5">
@@ -251,9 +252,13 @@ class FreelancerProfilePage extends Component {
                             <div className="row profile-view-container mt-3">
                                 <div className="col">
                                     <h4>Work history : </h4>
-                                    <div className="work-history-container">
-                                        <h6>No Work History available</h6>
-                                    </div>
+                                    {this.props.dataObj.userProfile.workHistory.length ?
+                                        this.props.dataObj.userProfile.workHistory.map((job, index) =>
+                                            <FreelancerWorkHistory key={job} index={index} jobId={job} />)
+                                        : <div className="work-history-container">
+                                            <h6>No Work History available</h6>
+                                        </div>}
+
                                 </div>
                             </div>
                             <div className="row profile-view-container mt-3">

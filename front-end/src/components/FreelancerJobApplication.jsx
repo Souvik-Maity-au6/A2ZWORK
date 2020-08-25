@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
-import { connect } from 'react-redux'
 import Swal from 'sweetalert2'
 import pre_loader from '../img/pre_loader.svg';
-// import { withdrawApplication } from '../redux/actions/dataAction'
+
 import '../styles/JobDetailsPage.css'
 
 const initialState = {
@@ -14,18 +13,6 @@ const initialState = {
 
 class JobApplication extends Component {
     state = initialState
-    componentDidMount() {
-        // (() => {
-        //     const freelancerRatings = this.props.jobApplication.clientReview.ratings
-        //     const starPercentage = (freelancerRatings / 5) * 100;
-
-        //     // Round to nearest 10
-        //     const starPercentageRounded = `${Math.round(starPercentage / 10) * 10}%`;
-
-        //     // Set width of stars-inner to percentage
-        //     this.setState({ starRating: starPercentageRounded })
-        // })()
-    }
     handleClickWithdrawApplication = async (event) => {
         this.setState({ pre_loader: "inline-block", submit_button: "none" })
         const freelancerId = event.target.value

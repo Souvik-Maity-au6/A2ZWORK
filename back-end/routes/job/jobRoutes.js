@@ -15,7 +15,7 @@ const {
 	sendHireEmail,
 	getFreelenacerJobDetails,
 	getFreelenacerJobApplication,
-	searchByJobCategory
+	searchByJobCategory,
 } = require("../../controllers/job/jobController");
 const { authentication } = require("../../middlewares/Auth");
 const router = Router();
@@ -26,7 +26,7 @@ router.get("/getUserJobPosted", authentication, getClientPostedJobs);
 router.post("/applyJob/:jobId", authentication, jobApplied); //
 router.get("/getUserAppliedJob/:jobId", getAppliedJobFreelancer); //
 router.post("/addClientReview/:jobId", authentication, clientReview);
-router.get("/getClientReview/:jobId", getClientReview);
+router.get("/getClientReview/:jobId/:userId", getClientReview);
 router.post("/addFreelancerReview/:jobId", authentication, addFreelancerReview);
 router.get("/getFreelancerReview/:jobId", authentication, getFreelancerReview);
 router.get(
@@ -34,9 +34,13 @@ router.get(
 	hireFreelancer,
 );
 router.post("/sendHireEmail/:jobId/:freelancerId/:userId", sendHireEmail);
-router.get("/freelancerJobDetails",authentication,getFreelenacerJobDetails)
-router.get("/getFreelancerJobApplication/:jobId",authentication,getFreelenacerJobApplication)
+router.get("/freelancerJobDetails", authentication, getFreelenacerJobDetails);
+router.get(
+	"/getFreelancerJobApplication/:jobId",
+	authentication,
+	getFreelenacerJobApplication,
+);
 
-router.get("/searchJobsByCategory",searchByJobCategory)
+router.post("/searchJobsByCategory", searchByJobCategory);
 
 module.exports = router;

@@ -112,7 +112,7 @@ module.exports = {
 				msg: "posted job by client",
 				openJob: await query.where({ jobStatus: "open" }),
 				onGoingJob: await query.where({ jobStatus: "ongoing" }),
-				closedJob: await query.where({ jobStatus: "closed" }),
+				closedJob: await query.where({ jobStatus: "completed" }),
 			});
 		} catch (err) {
 			return res.status(500).send({ msg: err.message });
@@ -264,10 +264,14 @@ module.exports = {
 	async getClientReview(req, res) {
 		try {
 			const clientReview = await applyJobModel
-				.find({ jobId: req.params.jobId })
+				.findOne({ jobId: req.params.jobId, userId: req.params.userId })
 				.select("clientReview");
+			const freelancer = await userModel.findById(req.params.userId);
 			return res.status(200).send({
+				msg: "Client review",
 				clientReview,
+				freelancerId: req.params.userId,
+				freelancer: freelancer.userName,
 			});
 		} catch (err) {
 			return res.status(500).send({ msg: err.message });
@@ -447,21 +451,19 @@ module.exports = {
 			return res.status(500).send({ msg: err.message });
 		}
 	},
-	async searchByJobCategory(req,res){
-
-
-		try{
-
-			let {category}=req.body
-			console.log(category)
-			const jobs = await jobPostModel.find({ "category" : { $regex:".*"+category+".*", $options: 'i' }})
+	async searchByJobCategory(req, res) {
+		try {
+			let { category } = req.body;
+			console.log(category);
+			const jobs = await jobPostModel.find({
+				category: { $regex: ".*" + category + ".*", $options: "i" },
+			});
 			return res.status(200).send({
-				msg:"Related jobs",
-				jobs
-			})
-		}
-		catch(err){
+				msg: "Related jobs",
+				jobs,
+			});
+		} catch (err) {
 			return res.status(500).send({ msg: err.message });
 		}
-	}
+	},
 };

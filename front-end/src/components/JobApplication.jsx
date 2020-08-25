@@ -54,7 +54,7 @@ class JobApplication extends Component {
 
         return (
             <>
-                {this.props.jobApplication.jobStatus === "applied" ?
+                {this.props.jobApplication.jobStatus === "applied" &&
                     <div className="job-application border-bottom mb-3">
                         <div className="job-application-title">
                             <h5 className="mr-auto">{this.props.index + 1}. Name : {this.props.jobApplication.userId.userName}</h5>
@@ -68,13 +68,15 @@ class JobApplication extends Component {
                         <div className="stars-outer ml-3">
                             <div className="stars-inner" style={{ width: this.state.starRating }}></div>
                         </div>
-                        <span className="number-rating px-3"> {this.props.jobApplication.clientReview.ratings} of {this.props.jobApplication.userId.workHistory.length} reviews</span>
+                        <span className="number-rating px-3"> {this.props.jobApplication.userId.freelancerAverageRating} of {this.props.jobApplication.userId.workHistory.length} reviews</span>
                         <div className="cover-letter my-3 mx-3">
                             <h6>Cover Letter : </h6>
                             <p className="mx-3">{this.props.jobApplication.coverLetter}</p>
                         </div>
                     </div>
-                    : <div className="job-application my-3">
+                }
+                {this.props.jobApplication.jobStatus === "ongoing" &&
+                    <div className="job-application my-3">
                         <div className="job-application-title">
                             <h5 className="mr-auto">Name : {this.props.jobApplication.userId.userName} (Working on this job)</h5>
                             <div className="job-application-button-container">
@@ -92,6 +94,27 @@ class JobApplication extends Component {
                             <p className="mx-3">{this.props.jobApplication.coverLetter}</p>
                         </div>
                     </div>}
+                {this.props.jobApplication.jobStatus === "completed" &&
+                    <div className="job-application my-3">
+                        <div className="job-application-title">
+                            <h5 className="mr-auto">Name : {this.props.jobApplication.userId.userName} (Worked on this job)</h5>
+                            <div className="job-application-button-container">
+                                <img src={pre_loader} alt="loading" width="75" height="75" style={{ display: this.state.pre_loader }} />
+                                <button onClick={this.handleClickViewProfile} className="btn btn-success" value={this.props.jobApplication.userId._id}>View profile</button>
+                                <button className="btn btn-success mx-3" value={this.props.jobApplication.userId._id}>Message</button>
+                            </div>
+                        </div>
+                        <div className="stars-outer ml-3">
+                            <div className="stars-inner" style={{ width: this.state.starRating }}></div>
+                        </div>
+                        <span className="number-rating px-3"> {this.props.jobApplication.userId.freelancerAverageRating} of {this.props.jobApplication.userId.workHistory.length} reviews</span>
+                        <div className="cover-letter my-3 mx-3">
+                            <h6>Cover Letter : </h6>
+                            <p className="mx-3">{this.props.jobApplication.coverLetter}</p>
+                        </div>
+                    </div>}
+
+
             </>
 
         )
