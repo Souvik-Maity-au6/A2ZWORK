@@ -447,4 +447,21 @@ module.exports = {
 			return res.status(500).send({ msg: err.message });
 		}
 	},
+	async searchByJobCategory(req,res){
+
+
+		try{
+
+			let {category}=req.body
+			console.log(category)
+			const jobs = await jobPostModel.find({ "category" : { $regex:".*"+category+".*", $options: 'i' }})
+			return res.status(200).send({
+				msg:"Related jobs",
+				jobs
+			})
+		}
+		catch(err){
+			return res.status(500).send({ msg: err.message });
+		}
+	}
 };
