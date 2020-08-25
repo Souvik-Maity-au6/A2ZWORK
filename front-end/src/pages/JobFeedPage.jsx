@@ -20,6 +20,9 @@ class JobFeedPage extends Component {
                     const category = JSON.parse(localStorage.getItem("user")).category
                     const response = await this.props.getAllOpenJobs(category)
                     this.setState({ allOpenJobs: response })
+                } else {
+                    const response = await this.props.getAllOpenJobs()
+                    this.setState({ allOpenJobs: response })
                 }
             } else {
                 const response = await this.props.getAllOpenJobs()
@@ -45,7 +48,7 @@ class JobFeedPage extends Component {
                         <button className="btn btn-warning"><i className="fas fa-filter"></i></button>
                     </form>
                 </div> */}
-                {this.state.allOpenJobs ?
+                {this.props.dataObj.allOpenJobs ?
                     this.props.dataObj.allOpenJobs.map(job => <JobFeed key={job._id} job={job} />)
                     : <Spinner />}
             </div>

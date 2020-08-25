@@ -18,9 +18,9 @@ class FreelancerWorkHistory extends Component {
 
     async componentDidMount() {
         const jobId = this.props.jobId
-        const userId = JSON.parse(localStorage.getItem("user")).userId
         try {
             const response = await this.props.getJobDetailsHistory(jobId)
+            const userId = this.props.dataObj.jobDetailsHistory.freelancerReview.freelancerId
             const clientReview = await this.props.getClientReview(jobId, userId)
 
             const clientRatings = this.props.dataObj.jobDetailsHistory.freelancerReview.ratings

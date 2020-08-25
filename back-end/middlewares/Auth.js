@@ -43,7 +43,7 @@ module.exports = {
 				profileImage: newUser.profileImage,
 				isClient: newUser.isClient,
 				isFreelancer: newUser.isFreelancer,
-				category: user[0].category,
+				category: newUser.category,
 				acceptTermsCondition: newUser.acceptTermsCondition,
 			});
 		} catch (err) {

@@ -245,7 +245,6 @@ export const getAllOpenJobs = (category = "") => async dispatch => {
 			if (category.includes("&")) {
 				category = category.split("&").join("@");
 			}
-			dispatch({ type: FETCH_ALL_OPEN_JOBS, payload: null });
 			dispatch({ type: TOGGLE_FETCHING });
 			const response = await axios.get(
 				`${process.env.REACT_APP_BASE_URL}/getOpenJobs?${category.length !== 0
@@ -465,6 +464,7 @@ export const addClientReview = (jobId, review) => () => {
 };
 
 export const getClientReview = (jobId, userId) => dispatch => {
+	console.log(jobId, userId);
 	return new Promise(async (resolve, reject) => {
 		try {
 			try {
@@ -520,12 +520,12 @@ export const searchJobsByCategory = category => dispatch => {
 		try {
 			dispatch({ type: FETCH_ALL_OPEN_JOBS, payload: null });
 			dispatch({ type: TOGGLE_FETCHING });
-			const response = await axios.post(
-				`${process.env.REACT_APP_BASE_URL}/searchJobsByCategory`,
-				{ category },
+			const response = await axios.get(
+				`${process.env
+					.REACT_APP_BASE_URL}/searchJobsByCategory?category=${category}`,
 			);
 			console.log(response.data);
-			dispatch({ type: FETCH_ALL_OPEN_JOBS, payload: response.data.openJob });
+			dispatch({ type: FETCH_ALL_OPEN_JOBS, payload: response.data.jobs });
 			resolve(response.data.msg);
 		} catch (err) {
 			console.log(err);

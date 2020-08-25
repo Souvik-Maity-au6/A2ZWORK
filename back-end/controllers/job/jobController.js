@@ -470,6 +470,7 @@ module.exports = {
 			console.log(category);
 			const jobs = await jobPostModel.find({
 				category: { $regex: ".*" + category + ".*", $options: "i" },
+				jobStatus: "open",
 			});
 			return res.status(200).send({
 				msg: "Related jobs",

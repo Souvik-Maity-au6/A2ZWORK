@@ -54,6 +54,9 @@ class JobDetailsPage extends Component {
     cancelJobApply = () => {
         this.setState({ jobApply: "none" })
     }
+    handleClickJobPostPage = () => {
+        this.props.history.push("/jobPost")
+    }
     render() {
         return (
             <div className="container mt-5">
@@ -86,7 +89,7 @@ class JobDetailsPage extends Component {
                                                     <button onClick={this.handleClickSubmitProposal} className="btn btn-success mb-4">Submit a Proposal</button>
                                                     <button className="btn btn-warning"><i className="fa fa-heart px-3" aria-hidden="true"></i>Save Job</button>
                                                 </> :
-                                                    <button className="btn btn-success">Post a Job like this</button>}
+                                                    <button onClick={this.handleClickJobPostPage} className="btn btn-success">Post a Job like this</button>}
 
                                             </div>}
 
@@ -105,7 +108,7 @@ class JobDetailsPage extends Component {
                                             {this.props.dataObj.jobDetails.user.clientAverageRating ? <span className="number-rating px-3">{this.props.dataObj.jobDetails.user.clientAverageRating} of {this.props.dataObj.jobDetails.user.jobDone.length} reviews</span> : <span className="number-rating px-3"> 0 of 0 reviews</span>}
                                             <h6 className="mt-3">Location : {this.props.dataObj.jobDetails.user.companyContactDetails.state}, {this.props.dataObj.jobDetails.user.companyContactDetails.country}</h6>
                                             <h6 className="mt-3">{this.props.dataObj.jobDetails.user.jobDone.length} Job completed</h6>
-                                            <h6 className="mt-3">Total $00.00 spent</h6>
+                                            <h6 className="mt-3">Total ${this.props.dataObj.jobDetails.user.totalSpending}+ spent</h6>
                                         </div>
                                     </div>
                                 </div>

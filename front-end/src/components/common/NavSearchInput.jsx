@@ -16,8 +16,10 @@ class NavSearchInput extends Component {
     handleSubmitSearchJobs = async (event) => {
         event.preventDefault()
         try {
-            const response = await this.props.searchJobsByCategory(this.state)
-            this.props.history.push("/jobFeed")
+            const response = await this.props.searchJobsByCategory(this.state.category)
+            if (response) {
+                this.props.history.push("/jobFeed")
+            }
         } catch (err) {
             console.log(err)
             Swal.fire({
