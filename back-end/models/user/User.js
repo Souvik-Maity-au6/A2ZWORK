@@ -145,12 +145,15 @@ const userSchema = Schema({
 	},
 	freelancerCurrentBalance: {
 		type: Number,
+		default:0
 	},
 	clientTotalJobHours: {
 		type: Number,
+		default:0
 	},
 	freelancerTotalJobHours: {
 		type: Number,
+		default:0
 	},
 	projectPreference: {
 		type: String,
@@ -185,6 +188,7 @@ const userSchema = Schema({
 	],
 	hourlyRate: {
 		type: Number,
+		default:0
 	},
 	isClient: {
 		type: Boolean,
@@ -234,9 +238,11 @@ const userSchema = Schema({
 	},
 	clientAverageRating: {
 		type: Number,
+		default:0
 	},
 	freelancerAverageRating: {
 		type: Number,
+		default:0
 	},
 });
 
