@@ -466,7 +466,7 @@ module.exports = {
 	},
 	async searchByJobCategory(req, res) {
 		try {
-			let { category } = req.body;
+			let { category } = req.query;
 			console.log(category);
 			const jobs = await jobPostModel.find({
 				category: { $regex: ".*" + category + ".*", $options: "i" },

@@ -41,6 +41,6 @@ router.get(
 	getFreelenacerJobApplication,
 );
 
-router.post("/searchJobsByCategory", searchByJobCategory);
+router.get("/searchJobsByCategory", searchByJobCategory);
 
 module.exports = router;
