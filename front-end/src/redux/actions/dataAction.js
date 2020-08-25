@@ -238,13 +238,19 @@ export const getFreelancerProfileData = freelancerId => dispatch => {
 	});
 };
 
-export const getAllOpenJobs = () => async dispatch => {
+export const getAllOpenJobs = (category = "") => async dispatch => {
+	console.log(category);
 	return new Promise(async (resolve, reject) => {
 		try {
+			if (category.includes("&")) {
+				category = category.split("&").join("@");
+			}
 			dispatch({ type: FETCH_ALL_OPEN_JOBS, payload: null });
 			dispatch({ type: TOGGLE_FETCHING });
 			const response = await axios.get(
-				`${process.env.REACT_APP_BASE_URL}/getOpenJobs`,
+				`${process.env.REACT_APP_BASE_URL}/getOpenJobs?${category.length !== 0
+					? "category=" + category
+					: ""}`,
 			);
 			console.log(response.data);
 			dispatch({ type: FETCH_ALL_OPEN_JOBS, payload: response.data.openJob });

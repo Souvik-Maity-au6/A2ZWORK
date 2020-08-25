@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Swal from 'sweetalert2'
 import JobFeed from '../components/JobFeed'
-import { getAllOpenJobs } from '../redux/actions/dataAction'
+import { getAllOpenJobs, searchJobsByCategory } from '../redux/actions/dataAction'
 import { mapToPropsData } from '../redux/mapStateToProps'
 import Spinner from '../components/common/Spinner'
 import '../styles/JobFeedPage.css'
@@ -15,8 +15,19 @@ class JobFeedPage extends Component {
     state = initialState
     async componentDidMount() {
         try {
-            const response = await this.props.getAllOpenJobs()
-            this.setState({ allOpenJobs: response })
+            if (localStorage.getItem("user")) {
+                if (JSON.parse(localStorage.getItem("user")).category) {
+                    const category = JSON.parse(localStorage.getItem("user")).category
+                    const response = await this.props.getAllOpenJobs(category)
+                    this.setState({ allOpenJobs: response })
+                }
+            } else {
+                const response = await this.props.getAllOpenJobs()
+                this.setState({ allOpenJobs: response })
+            }
+
+
+
         } catch (err) {
             Swal.fire({
                 icon: 'error',
@@ -42,4 +53,4 @@ class JobFeedPage extends Component {
     }
 }
 
-export default connect(mapToPropsData, { getAllOpenJobs })(JobFeedPage)
+export default connect(mapToPropsData, { getAllOpenJobs, searchJobsByCategory })(JobFeedPage)

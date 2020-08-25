@@ -76,6 +76,7 @@ module.exports = {
 					companyName: user[0].companyName,
 					refreshToken: user[0].refreshToken,
 					isClient: user[0].isClient,
+					category: user[0].category,
 					isFreelancer: user[0].isFreelancer,
 					profileImage: user[0].profileImage,
 					acceptTermsCondition: user[0].acceptTermsCondition,

@@ -75,11 +75,24 @@ module.exports = {
 	},
 	async getAllOpenJobs(req, res) {
 		try {
-			const openJob = await jobModel.find({ jobStatus: "open" });
-			return res.status(200).send({
-				msg: "All opened jobs",
-				openJob,
-			});
+			console.log(req.query);
+			if (req.query.category) {
+				const category = req.query.category.replace("@", "&");
+				const openJob = await jobModel.find({
+					jobStatus: "open",
+					category: category,
+				});
+				return res.status(200).send({
+					msg: "All opened jobs",
+					openJob,
+				});
+			} else {
+				const openJob = await jobModel.find({ jobStatus: "open" });
+				return res.status(200).send({
+					msg: "All opened jobs",
+					openJob,
+				});
+			}
 		} catch (err) {
 			return res.status(500).send({ msg: err.message });
 		}
