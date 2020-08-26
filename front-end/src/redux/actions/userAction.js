@@ -70,7 +70,10 @@ export const userLogout = () => async dispatch => {
 export const sendForgotPasswordEmail = userEmail => async () => {
 	return new Promise(async (resolve, reject) => {
 		try {
-			const response = await axios.post("/sendForgotPasswordEmail", userEmail);
+			const response = await axios.post(
+				`${process.env.REACT_APP_BASE_URL}/sendForgotPasswordEmail`,
+				userEmail,
+			);
 			console.log(response.data);
 
 			localStorage.setItem(
@@ -90,7 +93,8 @@ export const resetPassword = (forgotPasswordToken, newPassword) => async () => {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const response = await axios.post(
-				`/changePassword/${forgotPasswordToken}`,
+				`${process.env
+					.REACT_APP_BASE_URL}/changePassword/${forgotPasswordToken}`,
 				newPassword,
 			);
 			console.log(response.data);
