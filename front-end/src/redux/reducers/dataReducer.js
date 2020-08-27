@@ -7,6 +7,9 @@ import {
 	FETCH_ALL_JOB_APPLICATIONS,
 	FETCH_CLIENT_REVIEW,
 	FETCH_JOB_DETAILS_HISTORY,
+	SET_CHAT_ROOM,
+	FETCH_CHAT_ROOM_MESSAGES,
+	FETCH_ALL_CHAT_ROOMS,
 } from "../actionTypes";
 
 const initialState = {
@@ -18,6 +21,9 @@ const initialState = {
 	allJobApplications: null,
 	clientReview: null,
 	jobDetailsHistory: null,
+	chatroom: null,
+	chatroomMessages: null,
+	allChatroom: null,
 };
 
 const dataReducer = (state = initialState, action) => {
@@ -40,6 +46,12 @@ const dataReducer = (state = initialState, action) => {
 			return { ...state, clientReview: payload };
 		case FETCH_JOB_DETAILS_HISTORY:
 			return { ...state, jobDetailsHistory: payload };
+		case SET_CHAT_ROOM:
+			return { ...state, chatroom: payload };
+		case FETCH_CHAT_ROOM_MESSAGES:
+			return { ...state, chatroomMessages: payload };
+		case FETCH_ALL_CHAT_ROOMS:
+			return { ...state, allChatroom: payload };
 		default:
 			return state;
 	}

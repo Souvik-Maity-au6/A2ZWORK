@@ -28,6 +28,27 @@ class RegistrationPage extends Component {
     handleChangeRegistration = (event) => {
         this.setState({ [event.target.name]: event.target.value })
     }
+    responseFacebook = (response) => {
+        console.log("Facebook", response)
+    }
+    responseGoogleOnSuccess = (response) => {
+        console.log("Google", response)
+    }
+    responseGoogleOnFailure = (response) => {
+        console.log("Google", response)
+    }
+    responseGithubOnSuccess = (response) => {
+        console.log("Github", response)
+    }
+    responseGithubOnFailure = (response) => {
+        console.log("Github", response)
+    }
+    handleSuccessLinkedin = (response) => {
+        console.log("Linkedin", response)
+    }
+    handleFailureLinkedin = (response) => {
+        console.log("Linkedin", response)
+    }
     handleSubmitRegistration = async (event) => {
         event.preventDefault()
         this.setState({ pre_loader: !this.state.pre_loader, submit_button: "none" })
@@ -102,36 +123,37 @@ class RegistrationPage extends Component {
                     </div>
                     <div className="social-media-login">
                         <FacebookLogin
-                            appId="1088597931155576"
+                            appId={process.env.REACT_APP_FACEBOOK_APP_ID}
                             fields="name,email,picture"
-                            onClick="{componentClicked}"
-                            callback="{responseFacebook}"
-                            textButton="Continue with Facebook"
+                            callback={this.responseFacebook}
                             cssClass="facebook-login-button"
+                            textButton="Sign in with Facebook"
                             icon="fa-facebook px-3"
                         />
                         <GoogleLogin
-                            clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
+                            clientId={process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID}
                             render={renderProps => (
-                                <button className="google-login-button" onClick={renderProps.onClick} disabled={renderProps.disabled}><img src={google_icon} alt="Google" width="20" height="20" style={{ marginRight: "10px" }} />Continue with Google</button>
+                                <button className="google-login-button" onClick={renderProps.onClick} disabled={renderProps.disabled}><img src={google_icon} alt="Google" width="20" height="20" style={{ marginRight: "10px" }} />Sign in with Google</button>
                             )}
-                            onSuccess="{responseGoogle}"
-                            onFailure="{responseGoogle}"
+                            onSuccess={this.responseGoogleOnSuccess}
+                            onFailure={this.responseGoogleOnFailure}
                             cookiePolicy={'single_host_origin'}
                         />
-                        <GitHubLogin clientId="ac56fad434a3a3c1561e"
-                            onSuccess="{onSuccess}"
-                            onFailure="{onFailure}"
+                        <GitHubLogin
+                            clientId={process.env.REACT_APP_GITHUB_CLIENT_ID}
+                            onSuccess={this.responseGithubOnSuccess}
+                            onFailure={this.responseGithubOnFailure}
                             className="github-login-button"
-                            buttonText="Continue with GitHub"
+                            buttonText="Sign in with GitHub"
                         />
                         <LinkedIn
-                            clientId="81lx5we2omq9xh"
-                            onFailure="{this.handleFailure}"
-                            onSuccess="{this.handleSuccess}"
+                            clientId={process.env.REACT_APP_LINKEDIN_APP_ID}
+                            onFailure={this.handleFailureLinkedin}
+                            onSuccess={this.handleSuccessLinkedin}
                             redirectUri="http://localhost:3000/linkedin"
+                            scope="r_liteprofile,r_emailaddress"
                             renderElement={({ onClick, disabled }) => (
-                                <button className="linkedin-login-button" onClick={onClick} disabled={disabled}><img src={linkedin_icon} alt="Linkedin" width="24" height="24" style={{ marginRight: "10px" }} />Continue with LinkedIn</button>
+                                <button className="linkedin-login-button" onClick={onClick} disabled={disabled}><img src={linkedin_icon} alt="Linkedin" width="24" height="24" style={{ marginRight: "10px" }} />Sign in with LinkedIn</button>
                             )}
                         />
                     </div>

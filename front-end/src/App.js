@@ -1,5 +1,6 @@
 import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
+import { LinkedInPopUp } from "react-linkedin-login-oauth2";
 import "./App.css";
 
 // Load components
@@ -28,12 +29,15 @@ import JobPostPage from "./pages/JobPostPage";
 import JobDetailsPage from "./pages/JobDetailsPage";
 import ClientJobDetailsPage from "./pages/ClientJobDetailsPage";
 import freelancerJobDetailsPage from "./pages/FreelancerJobDetailsPage";
+import MessagePage from "./pages/MessagePage";
 
 function App() {
 	return (
 		<div className="App">
 			<Navbar />
 			<Switch>
+				<Route exact path="/linkedin" component={LinkedInPopUp} />
+				<RouteProtection exact path="/messages" component={MessagePage} />
 				<RouteProtection
 					exact
 					path="/freelancerJobDetailsPage/:jobId"

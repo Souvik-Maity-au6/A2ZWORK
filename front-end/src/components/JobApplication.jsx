@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import Swal from 'sweetalert2'
 import pre_loader from '../img/pre_loader.svg';
-import { hireFreelancer } from '../redux/actions/dataAction'
+import { hireFreelancer, createChatRoom } from '../redux/actions/dataAction'
 import '../styles/JobDetailsPage.css'
 
 const initialState = {
@@ -50,6 +50,20 @@ class JobApplication extends Component {
             this.setState({ pre_loader: "none", submit_button: "inline-block" })
         }
     }
+    handleClickMessage = async (event) => {
+        event.persist()
+        try {
+            const response = await this.props.createChatRoom(event.target.value)
+            if (response) {
+                this.props.history.push(`/messages?freelancerId=${event.target.value}`)
+            }
+        } catch (err) {
+            Swal.fire({
+                icon: 'error',
+                title: `${err}`
+            })
+        }
+    }
     render() {
 
         return (
@@ -62,7 +76,7 @@ class JobApplication extends Component {
                                 <img src={pre_loader} alt="loading" width="75" height="75" style={{ display: this.state.pre_loader }} />
                                 <button style={{ display: this.state.submit_button }} onClick={this.handleClickHireFreelancer} className="btn btn-success mx-3" value={this.props.jobApplication.userId._id}>Hire</button>
                                 <button onClick={this.handleClickViewProfile} className="btn btn-success" value={this.props.jobApplication.userId._id}>View profile</button>
-                                <button className="btn btn-success mx-3" value={this.props.jobApplication.userId._id}>Message</button>
+                                <button onClick={this.handleClickMessage} className="btn btn-success mx-3" value={this.props.jobApplication.userId._id}>Message</button>
                             </div>
                         </div>
                         <div className="stars-outer ml-3">
@@ -75,14 +89,14 @@ class JobApplication extends Component {
                         </div>
                     </div>
                 }
-                {this.props.jobApplication.jobStatus === "ongoing" &&
+                {this.props.jobApplication.jobStatus === "accepted" &&
                     <div className="job-application my-3">
                         <div className="job-application-title">
                             <h5 className="mr-auto">Name : {this.props.jobApplication.userId.userName} (Working on this job)</h5>
                             <div className="job-application-button-container">
                                 <img src={pre_loader} alt="loading" width="75" height="75" style={{ display: this.state.pre_loader }} />
                                 <button onClick={this.handleClickViewProfile} className="btn btn-success" value={this.props.jobApplication.userId._id}>View profile</button>
-                                <button className="btn btn-success mx-3" value={this.props.jobApplication.userId._id}>Message</button>
+                                <button onClick={this.handleClickMessage} className="btn btn-success mx-3" value={this.props.jobApplication.userId._id}>Message</button>
                             </div>
                         </div>
                         <div className="stars-outer ml-3">
@@ -101,7 +115,7 @@ class JobApplication extends Component {
                             <div className="job-application-button-container">
                                 <img src={pre_loader} alt="loading" width="75" height="75" style={{ display: this.state.pre_loader }} />
                                 <button onClick={this.handleClickViewProfile} className="btn btn-success" value={this.props.jobApplication.userId._id}>View profile</button>
-                                <button className="btn btn-success mx-3" value={this.props.jobApplication.userId._id}>Message</button>
+                                <button onClick={this.handleClickMessage} className="btn btn-success mx-3" value={this.props.jobApplication.userId._id}>Message</button>
                             </div>
                         </div>
                         <div className="stars-outer ml-3">
@@ -121,4 +135,4 @@ class JobApplication extends Component {
     }
 }
 
-export default connect(null, { hireFreelancer })(withRouter(JobApplication))
+export default connect(null, { hireFreelancer, createChatRoom })(withRouter(JobApplication))

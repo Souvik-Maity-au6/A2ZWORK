@@ -138,7 +138,8 @@ class LoginPage extends Component {
                             clientId={process.env.REACT_APP_LINKEDIN_APP_ID}
                             onFailure={this.handleFailureLinkedin}
                             onSuccess={this.handleSuccessLinkedin}
-                            redirectUri="http://localhost:3000"
+                            redirectUri="http://localhost:3000/linkedin"
+                            scope="r_liteprofile,r_emailaddress"
                             renderElement={({ onClick, disabled }) => (
                                 <button className="linkedin-login-button" onClick={onClick} disabled={disabled}><img src={linkedin_icon} alt="Linkedin" width="24" height="24" style={{ marginRight: "10px" }} />Sign in with LinkedIn</button>
                             )}

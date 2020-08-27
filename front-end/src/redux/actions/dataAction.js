@@ -9,6 +9,9 @@ import {
 	FETCH_ALL_JOB_APPLICATIONS,
 	FETCH_CLIENT_REVIEW,
 	FETCH_JOB_DETAILS_HISTORY,
+	SET_CHAT_ROOM,
+	FETCH_ALL_CHAT_ROOMS,
+	FETCH_CHAT_ROOM_MESSAGES,
 } from "../actionTypes";
 export const editFreelancerProfile = mainProfileData => async dispatch => {
 	return new Promise(async (resolve, reject) => {
@@ -530,6 +533,107 @@ export const searchJobsByCategory = category => dispatch => {
 		} catch (err) {
 			console.log(err);
 			reject(err.response.data.msg);
+		} finally {
+			dispatch({ type: TOGGLE_FETCHING });
+		}
+	});
+};
+
+export const createChatRoom = userId_2 => async dispatch => {
+	const userId_1 = JSON.parse(localStorage.getItem("user")).userId;
+	const roomName = userId_1.toString() + "-" + userId_2.toString();
+	return new Promise(async (resolve, reject) => {
+		try {
+			const response = await axios.post(
+				`${process.env.REACT_APP_BASE_URL}/createChatroom`,
+				{
+					name: roomName,
+					freelancer: userId_2,
+					client: userId_1,
+				},
+			);
+			console.log(response.data);
+			resolve(response.data.msg);
+			dispatch({ type: SET_CHAT_ROOM, payload: response.data.chatroom });
+		} catch (err) {
+			console.log(err);
+			if (err.response.status === 401) {
+				reject("Your session has been expired...pls login again");
+			} else {
+				reject(err.response.data.msg);
+			}
+		}
+	});
+};
+
+export const getAllChatrooms = () => async dispatch => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			dispatch({ type: TOGGLE_FETCHING });
+			dispatch({ type: FETCH_ALL_CHAT_ROOMS, payload: null });
+			const response = await axios.get(
+				`${process.env.REACT_APP_BASE_URL}/allChatrooms`,
+			);
+			console.log(response.data);
+			resolve(response.data.msg);
+			dispatch({
+				type: FETCH_ALL_CHAT_ROOMS,
+				payload: response.data.chatrooms,
+			});
+		} catch (err) {
+			console.log(err);
+			if (err.response.status === 401) {
+				reject("Your session has been expired...pls login again");
+			} else {
+				reject(err.response.data.msg);
+			}
+		} finally {
+			dispatch({ type: TOGGLE_FETCHING });
+		}
+	});
+};
+
+export const getSpecificChatroom = chatroomId => async dispatch => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			dispatch({ type: SET_CHAT_ROOM, payload: null });
+			const response = await axios.get(
+				`${process.env.REACT_APP_BASE_URL}/chatroom/${chatroomId}`,
+			);
+			console.log(response.data);
+			resolve(response.data.msg);
+			dispatch({ type: SET_CHAT_ROOM, payload: response.data.chatroom });
+		} catch (err) {
+			console.log(err);
+			if (err.response.status === 401) {
+				reject("Your session has been expired...pls login again");
+			} else {
+				reject(err.response.data.msg);
+			}
+		}
+	});
+};
+export const fetchChatroomAllMessages = chatroomId => async dispatch => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			dispatch({ type: FETCH_CHAT_ROOM_MESSAGES, payload: null });
+			dispatch({ type: TOGGLE_FETCHING });
+			const response = await axios.get(
+				`${process.env.REACT_APP_BASE_URL}/chatroomMessages/${chatroomId}`,
+			);
+			console.log(response.data);
+			dispatch({
+				type: FETCH_CHAT_ROOM_MESSAGES,
+				payload: response.data.messages,
+			});
+			resolve(response.data.messages);
+		} catch (err) {
+			console.log(err);
+			if (err.response.status === 401) {
+				reject("Your session has been expired...pls login again");
+			} else {
+				reject(err.response.data.msg);
+			}
 		} finally {
 			dispatch({ type: TOGGLE_FETCHING });
 		}
