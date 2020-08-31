@@ -613,7 +613,7 @@ module.exports = {
 				});
 			}
 			const newUser = new userModel({ ...req.body });
-			const user = await newUser.save();
+			const user = await newUser.save({validateBeforeSave:false});
 			return res.status(200).send({
 				msg: {
 					title:"Account created sucessfully",
