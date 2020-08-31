@@ -8,6 +8,7 @@ const jobModel = require("../../models/job/job");
 const { notify } = require("../../routes/job/jobRoutes");
 const mail = require("../../sendMail");
 const { updateOne } = require("../../models/job/job");
+const {sendJobOfferPage} = require("../../static/jobOffer");
 // const { verify } = require("../user/userController");
 
 module.exports = {
@@ -358,7 +359,9 @@ module.exports = {
 				expiresIn: "24h",
 			});
 			let newUser = await userModel.find({ _id: freelancerId });
-			let html = `<a href=http://localhost:5000/hireFreelancer/${jobId}/${freelancerId}/${expToken}/${userId}>Accept your Offer</a>`;
+
+			// let html = `<a href=http://localhost:5000/hireFreelancer/${jobId}/${freelancerId}/${expToken}/${userId}>Accept your Offer</a>`;
+			let html = sendJobOfferPage(`http://localhost:5000/hireFreelancer/${jobId}/${freelancerId}/${expToken}/${userId}`,newUser[0].userName);
 			const mailConfig = {
 				html,
 				newUser: newUser[0],

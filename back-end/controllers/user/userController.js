@@ -213,6 +213,7 @@ module.exports = {
 		}
 	},
 	async sendForgotPasswordEmail(req, res) {
+
 		const { userEmail } = req.body;
 		if (!userEmail) {
 			return res.status(403).send({
@@ -221,41 +222,53 @@ module.exports = {
 		}
 		try {
 			const user = await userModel.findOne({ userEmail: userEmail });
-			console.log(user);
-			if (!user) {
-				return res
-					.status(403)
-					.send({ msg: "Please create your account first" });
+			if(!user.isSocialLogin){
+
+					console.log(user);
+					if (!user) {
+						return res
+							.status(403)
+							.send({ msg: "Please create your account first" });
+					}
+					const forgotPasswordToken = await sign(
+						{ id: user._id },
+						process.env.PRIVATE_KEY,
+						{ expiresIn: "4h" },
+					);
+					const forgotPasswordHtml = sendForgotPasswordDesign(
+						`http://localhost:3000/changePassword/${forgotPasswordToken}`,
+						user.userName,
+					);
+		
+					const mailConfig = {
+						html: forgotPasswordHtml,
+						newUser: user,
+						subject: "Forgot Password Confirmation mail ",
+					};
+		
+					// let html = `<a href="http://localhost:5000/changePassword/${user[0].token/forgotPasswordToken}">Click Here to change the password</a>`;
+					const email = await mail.mailConfig(mailConfig);
+					return res.status(200).send({
+						msg: {
+							title: "Reset Password link has been send ",
+							text: "Please Check your Email to reset password",
+						},
+						forgotPasswordToken,
+					});
+				} 
+				else{
+
+					return res.status(200).send({
+						msg:"Your email is not valid !!!"
+					})
+					
+				}
 			}
-			const forgotPasswordToken = await sign(
-				{ id: user._id },
-				process.env.PRIVATE_KEY,
-				{ expiresIn: "4h" },
-			);
-			const forgotPasswordHtml = sendForgotPasswordDesign(
-				`http://localhost:3000/changePassword/${forgotPasswordToken}`,
-				user.userName,
-			);
-
-			const mailConfig = {
-				html: forgotPasswordHtml,
-				newUser: user,
-				subject: "Forgot Password Confirmation mail ",
-			};
-
-			// let html = `<a href="http://localhost:5000/changePassword/${user[0].token/forgotPasswordToken}">Click Here to change the password</a>`;
-			const email = await mail.mailConfig(mailConfig);
-			return res.status(200).send({
-				msg: {
-					title: "Reset Password link has been send ",
-					text: "Please Check your Email to reset password",
-				},
-				forgotPasswordToken,
-			});
-		} catch (err) {
-			console.log(err);
-			return res.status(500).send({ msg: err.message });
-		}
+			catch (err) {
+				console.log(err);
+				return res.status(500).send({ msg: err.message });
+			}
+		
 	},
 
 	async changePassword(req, res) {
@@ -592,4 +605,60 @@ module.exports = {
 			});
 		}
 	},
+	async socialRegistration(req,res){
+		try{
+			if (!(req.body.isClient ^ req.body.isFreelancer)) {
+				return res.status(400).send({
+					msg: "Please select your account type !!!",
+				});
+			}
+			const newUser = new userModel({ ...req.body });
+			const user = await newUser.save();
+			return res.status(200).send({
+				msg: {
+					title:"Account created sucessfully",
+				},
+			});
+
+		}
+		catch(err){
+			return res.status(500).send({
+				msg: err.message,
+			});
+		}
+	},
+	async socialLogin(req,res){
+		const {email,socialLoginId}=req.body;
+		try{
+			const user=await userModel.find({email:email,socialLoginId:socialLoginId});
+			if(user[0]){
+				user[0].generateToken();
+				user[0].generateRefreshToken();
+				await user[0].save({ validateBeforeSave: false });
+				return res.status(200).send({
+					msg: `Welcome ${user[0].userName}`,
+					userId: user[0].id,
+					userName: user[0].userName,
+					userEmail: user[0].userEmail,
+					accessToken: user[0].token,
+					companyName: user[0].companyName,
+					refreshToken: user[0].refreshToken,
+					isClient: user[0].isClient,
+					category: user[0].category,
+					isFreelancer: user[0].isFreelancer,
+					profileImage: user[0].profileImage,
+					acceptTermsCondition: user[0].acceptTermsCondition,
+				});
+			}
+			return res.status(200).send({
+				msg:'Incorrect credential !!!'
+			})
+
+		}
+		catch(err){
+			return res.status(500).send({
+				msg: err.message,
+			});
+		}
+	}
 };

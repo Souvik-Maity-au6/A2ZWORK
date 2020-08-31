@@ -17,6 +17,8 @@ const {
 	portfolioUpdate,
 	updateEmpHistory,
 	getSpecificUserProfile,
+	socialRegistration,
+	socialLogin
 } = require("../../controllers/user/userController");
 
 const {
@@ -73,4 +75,7 @@ router.get("/getUserPortfolio", authentication, getUserPortfolio);
 router.post("/postEmpHistory", authentication, updateEmpHistory);
 
 router.get("/getSpecificUserDetails/:freelancerId", getSpecificUserProfile);
+
+router.post('/socialRegister',socialRegistration);
+router.post('/socialLogin',socialLogin);
 module.exports = router;

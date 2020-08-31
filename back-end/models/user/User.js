@@ -248,6 +248,10 @@ const userSchema = Schema({
 		type: Boolean,
 		default: false,
 	},
+	socialLoginId:{
+		type:String,
+		default:null
+	}
 });
 
 userSchema.path("skills").validate(function(skills) {
