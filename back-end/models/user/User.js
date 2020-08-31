@@ -265,7 +265,7 @@ userSchema.statics.findByEmailAndPassword = async function(email, password) {
 	let userObj = null;
 	try {
 		return new Promise(async function(resolve, reject) {
-			if(!user.isSocialLogin){
+			if(this.isSocialLogin){
 
 				const user = await userModel.find({ userEmail: email });
 	
