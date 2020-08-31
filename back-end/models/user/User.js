@@ -248,10 +248,10 @@ const userSchema = Schema({
 		type: Boolean,
 		default: false,
 	},
-	socialLoginId:{
-		type:String,
-		default:null
-	}
+	socialLoginId: {
+		type: String,
+		default: null,
+	},
 });
 
 userSchema.path("skills").validate(function(skills) {
@@ -265,19 +265,17 @@ userSchema.statics.findByEmailAndPassword = async function(email, password) {
 	let userObj = null;
 	try {
 		return new Promise(async function(resolve, reject) {
-			if(this.isSocialLogin){
-
+			if (this.isSocialLogin) {
 				const user = await userModel.find({ userEmail: email });
-	
+
 				if (user.length === 0) return reject("Incorrect credentials");
 				userObj = user;
 				const isMatched = await compare(password, user[0].password);
-	
+
 				if (!isMatched) return reject("Incorrect credentials");
 				resolve(userObj);
-			}
-			else{
-				reject('Invalid user !!!');
+			} else {
+				reject("Invalid user !!!");
 			}
 		});
 	} catch (err) {
