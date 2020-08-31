@@ -5,10 +5,10 @@ import Swal from 'sweetalert2'
 import FacebookLogin from 'react-facebook-login'
 import GoogleLogin from 'react-google-login';
 // import GitHubLogin from 'react-github-login';
-import LinkedIn from 'react-linkedin-login-oauth2';
+// import LinkedIn from 'react-linkedin-login-oauth2';
 import google_icon from '../img/google_icon.svg'
-import linkedin_icon from '../img/linkedin_icon.svg';
-import { userLogin } from '../redux/actions/userAction'
+// import linkedin_icon from '../img/linkedin_icon.svg';
+import { userLogin, userSocialLogin } from '../redux/actions/userAction'
 import { mapToPropsUser } from '../redux/mapStateToProps'
 import pre_loader from '../img/pre_loader.svg';
 import '../styles/LoginPage.css'
@@ -25,27 +25,91 @@ class LoginPage extends Component {
     handleChangeLogin = (event) => {
         this.setState({ [event.target.name]: event.target.value })
     }
-    responseFacebook = (response) => {
+    responseFacebook = async (response) => {
         console.log("Facebook", response)
+        if (!response.status) {
+            const currentUser = {
+                userEmail: response.email,
+                socialLoginId: response.userID,
+            }
+            console.log("currentUser", currentUser)
+            try {
+                const response = await this.props.userSocialLogin(currentUser)
+                Swal.fire({
+                    icon: 'success',
+                    title: `${response.msg}`,
+                })
+
+                if (response.isClient) {
+                    this.props.history.push("/clientProfile")
+                } else if (response.isFreelancer) {
+                    this.props.history.push("/freelancerProfile")
+                }
+            } catch (err) {
+                console.log(err)
+                Swal.fire({
+                    icon: 'error',
+                    title: `${err}`,
+                })
+                this.setState(initialState)
+            }
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: `${response.status}`,
+            })
+            this.setState(initialState)
+        }
     }
-    responseGoogleOnSuccess = (response) => {
+    responseGoogleOnSuccess = async (response) => {
         console.log("Google", response)
+        const currentUser = {
+            userEmail: response.profileObj.email,
+            socialLoginId: response.profileObj.googleId,
+        }
+
+        console.log("user", currentUser)
+        try {
+            const response = await this.props.userSocialLogin(currentUser)
+            Swal.fire({
+                icon: 'success',
+                title: `${response.msg}`,
+            })
+
+            if (response.isClient) {
+                this.props.history.push("/clientProfile")
+            } else if (response.isFreelancer) {
+                this.props.history.push("/freelancerProfile")
+            }
+        } catch (err) {
+            console.log(err)
+            Swal.fire({
+                icon: 'error',
+                title: `${err}`,
+            })
+            this.setState(initialState)
+        }
     }
     responseGoogleOnFailure = (response) => {
         console.log("Google", response)
+        Swal.fire({
+            icon: 'error',
+            title: `${response.error}`,
+        })
+        this.setState(initialState)
     }
-    responseGithubOnSuccess = (response) => {
-        console.log("Github", response)
-    }
-    responseGithubOnFailure = (response) => {
-        console.log("Github", response)
-    }
-    handleSuccessLinkedin = (response) => {
-        console.log("Linkedin", response)
-    }
-    handleFailureLinkedin = (response) => {
-        console.log("Linkedin", response)
-    }
+    // responseGithubOnSuccess = (response) => {
+    //     console.log("Github", response)
+    // }
+    // responseGithubOnFailure = (response) => {
+    //     console.log("Github", response)
+    // }
+    // handleSuccessLinkedin = (response) => {
+    //     console.log("Linkedin", response)
+    // }
+    // handleFailureLinkedin = (response) => {
+    //     console.log("Linkedin", response)
+    // }
     handleSubmitLogin = async (event) => {
         event.preventDefault()
         this.setState({ pre_loader: !this.state.pre_loader, submit_button: "none" })
@@ -136,7 +200,7 @@ class LoginPage extends Component {
                             className="github-login-button"
                             buttonText="Sign in with GitHub"
                         /> */}
-                        <LinkedIn
+                        {/* <LinkedIn
                             clientId={process.env.REACT_APP_LINKEDIN_APP_ID}
                             onFailure={this.handleFailureLinkedin}
                             onSuccess={this.handleSuccessLinkedin}
@@ -145,7 +209,7 @@ class LoginPage extends Component {
                             renderElement={({ onClick, disabled }) => (
                                 <button className="linkedin-login-button" onClick={onClick} disabled={disabled}><img src={linkedin_icon} alt="Linkedin" width="24" height="24" style={{ marginRight: "10px" }} />Sign in with LinkedIn</button>
                             )}
-                        />
+                        /> */}
                     </div>
                     <div className="login-border">
                         <div className="login-border-line-2"></div>
@@ -161,4 +225,4 @@ class LoginPage extends Component {
     }
 }
 
-export default connect(mapToPropsUser, { userLogin })(LoginPage)
+export default connect(mapToPropsUser, { userLogin, userSocialLogin })(LoginPage)

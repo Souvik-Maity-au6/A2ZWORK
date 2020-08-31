@@ -47,6 +47,45 @@ export const userLogin = currentUser => async dispatch => {
 	});
 };
 
+export const userSocialRegistration = newUser => async dispatch => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			dispatch({ type: TOGGLE_AUTHENTICATING });
+			const response = await axios.post(
+				`${process.env.REACT_APP_BASE_URL}/socialRegister`,
+				newUser,
+			);
+			console.log(response.data);
+			resolve(response.data.msg);
+		} catch (err) {
+			console.error(err.response.data);
+			reject(err.response.data.msg);
+		} finally {
+			dispatch({ type: TOGGLE_AUTHENTICATING });
+		}
+	});
+};
+
+export const userSocialLogin = currentUser => async dispatch => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			dispatch({ type: TOGGLE_AUTHENTICATING });
+			const response = await axios.post(
+				`${process.env.REACT_APP_BASE_URL}/socialLogin`,
+				currentUser,
+			);
+			// console.log(response.data);
+			dispatch({ type: SET_USER, payload: response.data });
+			resolve(response.data);
+		} catch (err) {
+			console.error(err.response.data);
+			reject(err.response.data.msg);
+		} finally {
+			dispatch({ type: TOGGLE_AUTHENTICATING });
+		}
+	});
+};
+
 export const userLogout = () => async dispatch => {
 	return new Promise(async (resolve, reject) => {
 		try {
