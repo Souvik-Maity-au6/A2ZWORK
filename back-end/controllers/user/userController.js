@@ -605,6 +605,7 @@ module.exports = {
 					msg: "Please select your account type !!!",
 				});
 			}
+			req.body.isSocialLogin=true;
 			const newUser = new userModel({ ...req.body });
 			const user = await newUser.save({ validateBeforeSave: false });
 			return res.status(200).send({
