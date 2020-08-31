@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import Swal from 'sweetalert2'
 import FacebookLogin from 'react-facebook-login'
 import GoogleLogin from 'react-google-login';
-import GitHubLogin from 'react-github-login';
+// import GitHubLogin from 'react-github-login';
 import LinkedIn from 'react-linkedin-login-oauth2';
 import google_icon from '../img/google_icon.svg'
 import linkedin_icon from '../img/linkedin_icon.svg';
@@ -127,13 +127,15 @@ class LoginPage extends Component {
                             onFailure={this.responseGoogleOnFailure}
                             cookiePolicy={'single_host_origin'}
                         />
-                        <GitHubLogin
+                        {/* <GitHubLogin
                             clientId={process.env.REACT_APP_GITHUB_CLIENT_ID}
+                            redirectUri=""
+                            scope="user"
                             onSuccess={this.responseGithubOnSuccess}
                             onFailure={this.responseGithubOnFailure}
                             className="github-login-button"
                             buttonText="Sign in with GitHub"
-                        />
+                        /> */}
                         <LinkedIn
                             clientId={process.env.REACT_APP_LINKEDIN_APP_ID}
                             onFailure={this.handleFailureLinkedin}

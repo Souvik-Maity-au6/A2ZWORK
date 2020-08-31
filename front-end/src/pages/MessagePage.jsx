@@ -93,7 +93,7 @@ class MessagePage extends Component {
                                                         <h6>Name : {chatroom.freelancer.userName}</h6>
                                                         <p>{chatroom.freelancer.address.country}, {chatroom.freelancer.address.state}</p>
                                                     </div>
-                                                    <button onClick={(event) => this.handleClickMessageSend(chatroom._id, chatroom.freelancer.userName)} className="btn btn-warning btn-sm message-display" value={chatroom._id, chatroom.freelancer.userName}>message</button>
+                                                    <button onClick={(event) => this.handleClickMessageSend(chatroom._id, chatroom.freelancer.userName)} className="btn btn-warning btn-sm message-display" value="{chatroom._id, chatroom.freelancer.userName}">message</button>
                                                 </> : <>
                                                     <img src={chatroom.client.profileImage ? chatroom.client.profileImage : ""} alt="profile" onError={(e) => { e.target.onerror = null; e.target.src = `${person_icon}`; }} width="50"
                                                         height="50" />
@@ -101,7 +101,7 @@ class MessagePage extends Component {
                                                         <h6>Name : {chatroom.client.userName}</h6>
                                                         <p>{chatroom.client.companyContactDetails.country}, {chatroom.client.companyContactDetails.state}</p>
                                                     </div>
-                                                    <button onClick={(event) => this.handleClickMessageSend(chatroom._id, chatroom.client.userName)} className="btn btn-warning btn-sm message-display" value={chatroom._id, chatroom.client.userName}>message</button>
+                                                    <button onClick={(event) => this.handleClickMessageSend(chatroom._id, chatroom.client.userName)} className="btn btn-warning btn-sm message-display" value="{chatroom._id chatroom.client.userName}">message</button>
                                                 </>}
                                         </div>)}
                                 </div>

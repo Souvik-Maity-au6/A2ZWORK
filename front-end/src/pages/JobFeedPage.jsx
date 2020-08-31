@@ -40,7 +40,7 @@ class JobFeedPage extends Component {
     }
     render() {
         return (
-            <div className="container mt-5">
+            <div className="container mt-5 job-feed-page-container">
                 {/* <div className="job-search-box">
                     <form className="form-inline">
                         <input type="text" className="job-search-input" placeholder="Search jobs by category..." required />
@@ -49,7 +49,13 @@ class JobFeedPage extends Component {
                     </form>
                 </div> */}
                 {this.props.dataObj.allOpenJobs ?
-                    this.props.dataObj.allOpenJobs.map(job => <JobFeed key={job._id} job={job} />)
+                    <>
+                        {this.props.dataObj.allOpenJobs.length ?
+                            this.props.dataObj.allOpenJobs.map(job => <JobFeed key={job._id} job={job} />) : <div className="no-jobs-notice">
+                                <h1>No jobs available right now... please comeback later</h1>
+                            </div>}
+                    </>
+
                     : <Spinner />}
             </div>
         )
