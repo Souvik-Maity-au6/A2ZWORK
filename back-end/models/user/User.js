@@ -265,14 +265,20 @@ userSchema.statics.findByEmailAndPassword = async function(email, password) {
 	let userObj = null;
 	try {
 		return new Promise(async function(resolve, reject) {
-			const user = await userModel.find({ userEmail: email });
+			if(!user.isSocialLogin){
 
-			if (user.length === 0) return reject("Incorrect credentials");
-			userObj = user;
-			const isMatched = await compare(password, user[0].password);
-
-			if (!isMatched) return reject("Incorrect credentials");
-			resolve(userObj);
+				const user = await userModel.find({ userEmail: email });
+	
+				if (user.length === 0) return reject("Incorrect credentials");
+				userObj = user;
+				const isMatched = await compare(password, user[0].password);
+	
+				if (!isMatched) return reject("Incorrect credentials");
+				resolve(userObj);
+			}
+			else{
+				reject('Invalid user !!!');
+			}
 		});
 	} catch (err) {
 		reject(err);
