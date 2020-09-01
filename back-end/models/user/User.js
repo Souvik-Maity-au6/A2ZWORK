@@ -265,7 +265,10 @@ userSchema.statics.findByEmailAndPassword = async function(email, password) {
 	let userObj = null;
 	try {
 		return new Promise(async function(resolve, reject) {
-			if (this.isSocialLogin) {
+			const isSocialLogin = (await userModel
+				.find({ userEmail: email })
+				.select("isSocialLogin"))[0].isSocialLogin;
+			if (!isSocialLogin) {
 				const user = await userModel.find({ userEmail: email });
 
 				if (user.length === 0) return reject("Incorrect credentials");

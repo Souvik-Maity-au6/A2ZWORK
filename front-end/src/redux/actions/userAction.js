@@ -18,6 +18,8 @@ export const userRegistration = newUser => async dispatch => {
 				reject(
 					"Please enter a valid password that must contain min 6 character atleast one upper case , one lower case and one special character",
 				);
+			} else if (err.response.data.msg.includes("userEmail")) {
+				reject("This email is already registered...pls login");
 			} else {
 				reject(err.response.data.msg);
 			}

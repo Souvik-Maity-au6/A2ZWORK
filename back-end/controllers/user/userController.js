@@ -408,6 +408,7 @@ module.exports = {
 					profileImage: updatedProfile.profileImage,
 					comapanyName: updatedProfile.companyName,
 					acceptTermsCondition: updatedProfile.acceptTermsCondition,
+					category: updatedProfile.category,
 				});
 			} else {
 				return res.status(403).send({
@@ -605,7 +606,7 @@ module.exports = {
 					msg: "Please select your account type !!!",
 				});
 			}
-			req.body.isSocialLogin=true;
+			req.body.isSocialLogin = true;
 			const newUser = new userModel({ ...req.body });
 			const user = await newUser.save({ validateBeforeSave: false });
 			return res.status(200).send({

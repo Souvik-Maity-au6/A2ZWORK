@@ -72,7 +72,9 @@ class MessagePage extends Component {
     }
     scrollToBottom = () => {
         const messageList = this.messagesEnd.current;
-        messageList.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+        if (messageList) {
+            messageList.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+        }
     }
     render() {
         return (
@@ -122,7 +124,7 @@ class MessagePage extends Component {
                                 </div>
                             </div>
                         </>
-                        : <h1>No message connection available for you</h1>}
+                        : <h1 className="text-center" style={{ marginTop: '200px' }}>No message connection available for you</h1>}
                 </> : <Spinner />}
             </div>
         )
