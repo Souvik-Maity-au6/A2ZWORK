@@ -21,8 +21,10 @@ A2ZWORK is the best online job marketplace for clients and freelancers. A2ZWORK 
     3. Search jobs by category
     4. Create job postings
     5. Hire freelancers for the job
-    6. Retrieve metadata information - available categories, tests, skills, regions, etc.
-    7. Retrieve time and financial reports for freelancers, teams and companies
+    6. Social media login(Facebook,Google,LinkedIn, Github)
+    7. Live Chat with freelancers and clients 24X7
+    8. Retrieve metadata information - available categories, tests, skills, regions, etc.
+    9. Retrieve time and financial reports for freelancers, teams and companies
 # Teck Stacks : 
      
     1. Node.js
@@ -38,15 +40,13 @@ A2ZWORK is the best online job marketplace for clients and freelancers. A2ZWORK 
 
 # Future Goals: 
 
-    1. Social media login(Facebook,Google,LinkedIn, Github)
-    2. Live Chat with freelancers and clients 24X7
-    3. Make custom payments and generate Invoice
-    4. Profile information edit and update seperately
-    5. Creating more freelancing categories
-    6. Two way authentication
-    7. Video chat with freelancers and clients
-    8. Creating and managing teams
-    9. More dynamic UI/UX and features update
+    1. Make custom payments and generate Invoice
+    2. Profile information edit and update seperately
+    3. Creating more freelancing categories
+    4. Two way authentication
+    5. Video chat with freelancers and clients
+    6. Creating and managing teams
+    7. More dynamic UI/UX and features update
 
 # Project Run :
      
