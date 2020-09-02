@@ -61,7 +61,11 @@ export const userSocialRegistration = newUser => async dispatch => {
 			resolve(response.data.msg);
 		} catch (err) {
 			console.error(err.response.data);
-			reject(err.response.data.msg);
+			if (err.response.data.msg.includes("userEmail")) {
+				reject("This email is already registered...pls login");
+			} else {
+				reject(err.response.data.msg);
+			}
 		} finally {
 			dispatch({ type: TOGGLE_AUTHENTICATING });
 		}
